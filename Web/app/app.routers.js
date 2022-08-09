@@ -7,9 +7,9 @@ function route(app){
 
 
     //User Services
-    app.use('/customer', customerRouter);
-    app.use('/admin', adminRouter);
-    app.use('/', authRouter);
+    app.use('/api/v1.0/customer', customerRouter);
+    app.use('/api/v1.0/admin', adminRouter);
+    app.use('/api/v1.0/', authRouter);
 
 
     app.use(function(req, res, next) {
