@@ -22,7 +22,6 @@ class Auth {
     }
 
     signup() {
-        //Linh thieu lang
     }
     
     authorize(){}
