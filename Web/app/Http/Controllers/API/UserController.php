@@ -34,8 +34,8 @@ class UserController extends Controller
     }
     public function checkLogin(Request $req)
     {
-        $username = $req->username;
-        $password = bcrypt($req->password);
+        $username = (string) $req->username;
+        $password = (string)  bcrypt($req->password);
         $usernameCheck = $this->user->where('username', $username);
         $passwordCheck = $usernameCheck->where('password', $password);
         if ($usernameCheck->count() > 0) {
