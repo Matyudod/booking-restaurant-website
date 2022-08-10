@@ -34,9 +34,10 @@ class UserController extends Controller
     }
     public function checkLogin(Request $req)
     {
-        $user = $req;
-        $usernameCheck = $this->user->where('username', $user->username);
-        $passwordCheck = $usernameCheck->where('password', password_hash($user->password, null));
+        $username = $req->username;
+        $password = bcrypt($req->password);
+        $usernameCheck = $this->user->where('username', $username);
+        $passwordCheck = $usernameCheck->where('password', $password);
         if ($usernameCheck->count() > 0) {
             if ($passwordCheck->count() > 0) {
                 return response()->json(true, Response::HTTP_OK);
