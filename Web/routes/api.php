@@ -26,4 +26,5 @@ use App\Http\Controllers\API\UserController;
 Route::controller(UserController::class)->group(function () {
     Route::get('/customer-list', 'getCustomerList');
     Route::get('/admin-list', 'getAdminList');
+    Route::post('/checklogin', 'checkLogin');
 });
