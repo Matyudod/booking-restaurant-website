@@ -1,37 +1,37 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Feadbacks', {
+    await queryInterface.createTable("Feadbacks", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       comment_id: {
         allowNull: false,
-        references: { model: 'Comments', key: 'id' },
-        type: Sequelize.INTEGER
+        references: { model: "Comments", key: "id" },
+        type: Sequelize.INTEGER,
       },
       admin_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       content: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Feadbacks');
-  }
+    await queryInterface.dropTable("Feadbacks");
+  },
 };

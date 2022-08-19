@@ -1,32 +1,32 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Orders', {
+    await queryInterface.createTable("Orders", {
       bill_id: {
         allowNull: false,
-        references: { model: 'Bills', key: 'id' },
-        type: Sequelize.INTEGER
+        references: { model: "Bills", key: "id" },
+        type: Sequelize.INTEGER,
       },
       pabulum_id: {
         allowNull: false,
-        references: { model: 'Foods', key: 'id' },
-        type: Sequelize.INTEGER
+        references: { model: "Foods", key: "id" },
+        type: Sequelize.INTEGER,
       },
       quantity: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Orders');
-  }
+    await queryInterface.dropTable("Orders");
+  },
 };

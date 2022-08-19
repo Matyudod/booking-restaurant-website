@@ -1,35 +1,35 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('BookATables', {
+    await queryInterface.createTable("BookATables", {
       customer_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       table_id: {
         allowNull: false,
-        references: { model: 'Tables', key: 'id' },
-        type: Sequelize.INTEGER
+        references: { model: "Tables", key: "id" },
+        type: Sequelize.INTEGER,
       },
       received_date: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       payment_date: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('BookATables');
-  }
+    await queryInterface.dropTable("BookATables");
+  },
 };
