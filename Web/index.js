@@ -6,6 +6,7 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.static(path.join(__dirname, "src", "public")));
 app.use(
   express.urlencoded({
@@ -13,6 +14,7 @@ app.use(
   })
 );
 app.use(express.json());
+
 route(app);
 
 app.listen(port, () => {
