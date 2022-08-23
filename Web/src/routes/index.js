@@ -7,10 +7,11 @@ function route(app) {
     let urlDefault = "/api/";
     app.use(urlDefault + "user", userRouter);
     app.use(urlDefault + "table", tableRouter);
+    app.use(urlDefault + "book-a-table", tableRouter);
 
-    // app.get("/mockup-data",(req,res)=>{
-    //     dumyData(25);
-    //     res.send("true");
-    // });
+    app.get("/mockup-data", (req, res) => {
+        //dumyData(25);
+        res.send("true");
+    });
 }
 module.exports = route;

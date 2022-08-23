@@ -7,6 +7,7 @@ const scheme = require("../../Businesses/ValidationProviders");
 const getOne = require("../../Businesses/GetOneSupporter");
 const update = require("../../Businesses/UpdateSupporter");
 const updateStatus = require("../../Businesses/UpdateStatusSuporter");
+//status : 1 is active | 0 is removed
 class UserController {
     loginHandler(req, res) {
         let user = {

@@ -26,7 +26,16 @@ module.exports = {
     idValidation: {
         id: "number|min:1|default:0",
     },
+    statusValidation: {
+        status: "number|min:-1|max:5",
+    },
     tokenValidation: {
         token: "string|min:1",
+    },
+    bookingInfoDtoValidation: {
+        customer_id: "number|min:1",
+        table_id: "number|min:1",
+        received_date: "date",
+        payment_date: "date|optional",
     },
 };

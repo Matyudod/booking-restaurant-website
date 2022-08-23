@@ -7,6 +7,7 @@ const getList = require("../../Businesses/GetListSupporter");
 const getOne = require("../../Businesses/GetOneSupporter");
 const update = require("../../Businesses/UpdateSupporter");
 const updateStatus = require("../../Businesses/UpdateStatusSuporter");
+//status : 2 is used | 1 is waiting | 0 is blank | -1 is removed
 class TableController {
     pagination(req, res) {
         let params = req.query;
@@ -56,6 +57,23 @@ class TableController {
             .catch((error) => {
                 res.status(500).json(errorProvider.APIErrorServer);
             });
+    }
+
+    updateStatusTable(req, res) {
+        let table = {
+            id: parseInt(req.params.id),
+        };
+        let status = {
+            status: parseInt(req.body.id),
+        };
+
+        const v = new Validator();
+        let validationResponse = v.validate(status, scheme.statusValidation);
+        if (validationResponse !== true) {
+            res.status(400).json(errorProvider.errorSignupFieldIsNull);
+        } else {
+            updateStatus(table, models.Tables, res, "User", status.status);
+        }
     }
 }
 module.exports = new TableController();

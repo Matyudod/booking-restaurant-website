@@ -31,6 +31,14 @@ module.exports = {
         message: "Id do not exist.",
         type_message: "error_dialog",
     },
+    errorFieldIsExisted: {
+        message: "{1} is existed.",
+        type_message: "error_dialog",
+    },
+    errorTableBooked: {
+        message: "This table is already booked.",
+        type_message: "error_dialog",
+    },
     errorNotFound: {
         message: "{1} is not found.",
         type_message: "error_dialog",

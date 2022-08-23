@@ -27,23 +27,23 @@ module.exports = (params, models, res, status = 1) => {
     let validationResponse = v.validate(pagination, scheme.pageValidation);
     if (validationResponse !== true) {
         res.status(400).json(errorProvider.errorSignupFieldIsNull);
+    } else {
+        models
+            .findAndCountAll({
+                where: {
+                    status: status,
+                },
+                order: [order],
+                limit: pagination.size,
+                offset: (pagination.page - 1) * pagination.size,
+            })
+            .then((results) => {
+                results.page = pagination.page;
+                results.size = pagination.size;
+                res.status(200).json(results);
+            })
+            .catch((error) => {
+                res.status(500).json(errorProvider.APIErrorServer);
+            });
     }
-
-    models
-        .findAndCountAll({
-            where: {
-                status: status,
-            },
-            order: [order],
-            limit: pagination.size,
-            offset: (pagination.page - 1) * pagination.size,
-        })
-        .then((results) => {
-            results.page = pagination.page;
-            results.size = pagination.size;
-            res.status(200).json(results);
-        })
-        .catch((error) => {
-            res.status(500).json(errorProvider.APIErrorServer);
-        });
 };
