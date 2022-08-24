@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "src", "public")));
 app.use(
     express.urlencoded({
+        limit: "50mb",
         extended: true,
     })
 );

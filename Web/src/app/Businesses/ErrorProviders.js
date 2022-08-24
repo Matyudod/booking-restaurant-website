@@ -51,6 +51,10 @@ module.exports = {
         message: "{1} status is updated.",
         type_message: "success_dialog",
     },
+    imageUploadError: {
+        message: "Image is not found.",
+        type_message: "error",
+    },
     authError: {
         message: "Invalid or expired token provided.",
         type_message: "error",
