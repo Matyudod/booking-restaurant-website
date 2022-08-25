@@ -43,6 +43,10 @@ module.exports = {
         message: "{1} is not found.",
         type_message: "error_dialog",
     },
+    createSuccessful: {
+        message: "{1} is created.",
+        type_message: "success_dialog",
+    },
     updateSuccessful: {
         message: "{1} is updated.",
         type_message: "success_dialog",

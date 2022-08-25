@@ -51,4 +51,11 @@ module.exports = {
         price: "number|min:1",
         image: "string|min:1",
     },
+    foodCreateValidation: {
+        cooking_method_id: "number|min:1",
+        food_group_id: "number|min:1",
+        name: "string|min:1|max:255",
+        price: "number|min:1",
+        image: "string|min:1",
+    },
 };

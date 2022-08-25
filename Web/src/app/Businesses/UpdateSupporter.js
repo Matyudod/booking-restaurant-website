@@ -30,7 +30,6 @@ module.exports = (params, validate, models, res, forTable, status = true) => {
                 }
             })
             .catch((error) => {
-                console.log(error);
                 res.status(500).json(errorProvider.APIErrorServer);
             });
     }

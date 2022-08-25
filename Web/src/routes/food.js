@@ -8,6 +8,7 @@ const foodController = require("../app/Apis/Food/FoodController");
 router.get("/pagination", foodController.pagination);
 router.get("/get/:id", foodController.get);
 
+router.post("/create", foodController.create);
 router.put("/update/:id", foodController.update);
 
 router.delete("/delete/:id", foodController.delete);
