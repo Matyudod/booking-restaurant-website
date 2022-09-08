@@ -1,24 +1,32 @@
 "use strict";
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable("BookATables", {
-            customer_id: {
+        await queryInterface.createTable("Foods", {
+            id: {
                 allowNull: false,
-                references: { model: "Users", key: "id" },
+                autoIncrement: true,
+                primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            table_id: {
+            main_ingredient_id: {
                 allowNull: false,
-                references: { model: "Tables", key: "id" },
                 type: Sequelize.INTEGER,
             },
-            received_date: {
+            name: {
                 allowNull: false,
-                type: Sequelize.DATE,
+                type: Sequelize.STRING,
             },
-            payment_date: {
-                allowNull: true,
-                type: Sequelize.DATE,
+            price: {
+                allowNull: false,
+                type: Sequelize.INTEGER,
+            },
+            image_url: {
+                allowNull: false,
+                type: Sequelize.STRING,
+            },
+            status: {
+                allowNull: false,
+                type: Sequelize.BOOLEAN,
             },
             createdAt: {
                 allowNull: false,
@@ -31,6 +39,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("BookATables");
+        await queryInterface.dropTable("Foods");
     },
 };

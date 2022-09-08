@@ -14,12 +14,10 @@ module.exports = {
             },
             amount: {
                 allowNull: true,
-                defaultValue: null,
                 type: Sequelize.INTEGER,
             },
             percent: {
                 allowNull: true,
-                defaultValue: null,
                 type: Sequelize.INTEGER,
             },
             createdAt: {

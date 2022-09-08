@@ -1,39 +1,24 @@
 "use strict";
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable("Foods", {
+        await queryInterface.createTable("Comments", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            cooking_method_id: {
+            bill_id: {
                 allowNull: false,
-                references: { model: "CookingMethods", key: "id" },
                 type: Sequelize.INTEGER,
             },
-            food_group_id: {
-                allowNull: false,
-                references: { model: "FoodGourps", key: "id" },
-                type: Sequelize.INTEGER,
-            },
-            name: {
+            content: {
                 allowNull: false,
                 type: Sequelize.STRING,
             },
-            price: {
+            point: {
                 allowNull: false,
                 type: Sequelize.INTEGER,
-            },
-            image_url: {
-                allowNull: false,
-                type: Sequelize.STRING,
-            },
-            status: {
-                allowNull: false,
-                defaultValue: true,
-                type: Sequelize.BOOLEAN,
             },
             createdAt: {
                 allowNull: false,
@@ -46,6 +31,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("Foods");
+        await queryInterface.dropTable("Comments");
     },
 };

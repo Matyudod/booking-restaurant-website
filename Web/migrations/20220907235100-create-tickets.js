@@ -1,25 +1,40 @@
 "use strict";
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable("Comments", {
+        await queryInterface.createTable("Tickets", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            bill_id: {
+            customer_id: {
                 allowNull: false,
-                references: { model: "Bills", key: "id" },
                 type: Sequelize.INTEGER,
             },
-            content: {
+            type_party_id: {
+                allowNull: true,
+                type: Sequelize.INTEGER,
+            },
+            table_id: {
+                allowNull: false,
+                type: Sequelize.INTEGER,
+            },
+            received_date: {
+                allowNull: false,
+                type: Sequelize.DATE,
+            },
+            payment_date: {
+                allowNull: true,
+                type: Sequelize.DATE,
+            },
+            customer_phone: {
                 allowNull: false,
                 type: Sequelize.STRING,
             },
-            point: {
+            customer_address: {
                 allowNull: false,
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
             },
             createdAt: {
                 allowNull: false,
@@ -32,6 +47,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("Comments");
+        await queryInterface.dropTable("Tickets");
     },
 };
