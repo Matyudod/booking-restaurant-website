@@ -1,5 +1,4 @@
 const Validator = require("fastest-validator");
-const scheme = require("./ValidationProviders");
 const models = require("../../../models");
 module.exports = (req, res, next) => {
     const token = req.headers.authorization;

@@ -9,62 +9,63 @@ const update = require("../../Businesses/UpdateSupporter");
 const updateStatus = require("../../Businesses/UpdateStatusSuporter");
 //status : 1 is active | 0 is removed
 class UserController {
-    async loginHandler(req, res) {
+    loginHandler(req, res) {
         let user = {
             username: req.body.username,
             password: req.body.password,
             status: true,
         };
+        console.log(user);
         const v = new Validator();
         let validationResponse = v.validate(user, scheme.loginValidation);
         if (validationResponse !== true) {
             res.status(400).json(errorProvider.errorLoginFieldIsNull);
         } else {
-            await models.Users.findOne({
+            models.Users.findOne({
                 where: {
                     username: user.username,
                     status: user.status,
                 },
             })
-                .then(async (result) => {
+                .then((result) => {
                     if (result != null) {
-                        await bcrypt.compare(
-                            user.password,
-                            result.password,
-                            async function (err, correct) {
-                                if (correct) {
-                                    models.Users.update(
-                                        {
-                                            refreshToken: await createToken(user.username),
+                        bcrypt.compare(user.password, result.password, async (err, correct) => {
+                            if (correct) {
+                                models.Users.update(
+                                    {
+                                        refreshToken: await createToken(user.username),
+                                    },
+                                    {
+                                        where: {
+                                            username: user.username,
+                                            status: user.status,
                                         },
-                                        {
-                                            where: {
-                                                username: user.username,
-                                                status: user.status,
-                                            },
-                                        }
-                                    ).then((result) => {
-                                        models.Users.findOne({
-                                            where: {
-                                                username: user.username,
-                                                status: user.status,
-                                            },
-                                        })
-                                            .then((result) => {
-                                                res.status(200).json({
-                                                    data: result,
-                                                    message: errorProvider.successLoginComplete,
-                                                });
-                                            })
-                                            .catch((err) => {
-                                                res.status(500).json(errorProvider.APIErrorServer);
+                                    }
+                                ).then((result) => {
+                                    models.Users.findOne({
+                                        where: {
+                                            username: user.username,
+                                            status: user.status,
+                                        },
+                                    })
+                                        .then((result) => {
+                                            res.status(200).json({
+                                                data: result,
+                                                message: errorProvider.successLoginComplete,
                                             });
-                                    });
-                                } else {
-                                    res.status(200).json(errorProvider.errorLoginFieldIncorrect);
-                                }
+                                        })
+                                        .catch((err) => {
+                                            res.status(500).json(errorProvider.APIErrorServer);
+                                        });
+                                });
+                            } else {
+                                res.status(200).json(errorProvider.errorLoginFieldIncorrect);
                             }
-                        );
+                        });
+                    } else {
+                        let errorNotFound = errorProvider.errorNotFound;
+                        errorNotFound.message = errorNotFound.message.replace("{1}", "User".trim());
+                        res.status(200).json(errorNotFound);
                     }
                 })
                 .catch((error) => {
@@ -73,7 +74,7 @@ class UserController {
         }
     }
 
-    signupHandler(req, res) {
+    async signupHandler(req, res) {
         let user = {
             name: req.body.name,
             email: req.body.email,
@@ -82,7 +83,7 @@ class UserController {
             birthday: new Date(req.body.birthday),
             is_admin: false,
             status: true,
-            token: createToken(),
+            refreshToken: await createToken(req.body.username),
         };
 
         const v = new Validator();
@@ -162,7 +163,7 @@ class UserController {
 
         models.Users.findAndCountAll({
             where: {
-                is_admin: true,
+                is_admin: is_admin,
                 status: status,
             },
             order: [order],
@@ -212,7 +213,7 @@ class UserController {
 
         models.Users.findAndCountAll({
             where: {
-                is_admin: true,
+                is_admin: is_admin,
                 status: status,
             },
             order: [order],

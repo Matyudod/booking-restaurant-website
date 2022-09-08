@@ -12,7 +12,7 @@ function route(app) {
     app.use(urlDefault + "book-a-table", tableRouter);
 
     app.get("/mockup-data", (req, res) => {
-        //dumyData(25);
+        // dumyData(25);
         res.send("true");
     });
 }

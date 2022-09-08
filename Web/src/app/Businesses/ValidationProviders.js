@@ -1,7 +1,7 @@
 module.exports = {
     loginValidation: {
         username: "string|min:1|max:255",
-        password: "string|min:8|max:255",
+        password: "string|min:1|max:255",
     },
     signupValidation: {
         name: "string|min:1|max:255",
