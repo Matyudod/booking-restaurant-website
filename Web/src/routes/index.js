@@ -2,8 +2,8 @@ const dumyData = require("../../seeders");
 const userRouter = require("./user");
 const tableRouter = require("./table");
 const foodRouter = require("./food");
-const checkAuthMiddleware = require("../app/Businesses/CheckAuth");
-const checkAdminMiddleware = require("../app/Businesses/CheckAdmin");
+const checkAuthMiddleware = require("../app/Middlewares/CheckAuth");
+const checkAdminMiddleware = require("../app/Middlewares/CheckAdmin");
 function route(app) {
     let urlDefault = "/api/";
     app.use(urlDefault + "user", userRouter);

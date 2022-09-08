@@ -1,10 +1,10 @@
 const Validator = require("fastest-validator");
-const scheme = require("./ValidationProviders");
+const scheme = require("../Businesses/ValidationProviders");
 const models = require("../../../models");
 module.exports = (req, res, next) => {
     try {
         const user = {
-            token: req.headers.authorization,
+            refreshToken: req.headers.authorization,
         };
         const v = new Validator();
         let validationResponse = v.validate(pagination, scheme.pageValidation);
@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
         } else {
             models.Users.findOne({
                 where: {
-                    token: user.token,
+                    refreshToken: user.refreshToken,
                 },
             })
                 .then((result) => {

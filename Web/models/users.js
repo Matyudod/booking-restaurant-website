@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             birthday: DataTypes.DATE,
             is_admin: DataTypes.BOOLEAN,
             status: DataTypes.BOOLEAN,
+            refreshToken: DataTypes.STRING,
         },
         {
             sequelize,

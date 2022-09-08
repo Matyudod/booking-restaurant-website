@@ -1,6 +1,6 @@
 const models = require("../../../../models");
 const errorProvider = require("../../Businesses/ErrorProviders");
-const createToken = require("../../Businesses/RandomToken");
+const createToken = require("../../Businesses/GetToken");
 const bcrypt = new require("bcrypt");
 const Validator = require("fastest-validator");
 const scheme = require("../../Businesses/ValidationProviders");
@@ -9,7 +9,7 @@ const update = require("../../Businesses/UpdateSupporter");
 const updateStatus = require("../../Businesses/UpdateStatusSuporter");
 //status : 1 is active | 0 is removed
 class UserController {
-    loginHandler(req, res) {
+    async loginHandler(req, res) {
         let user = {
             username: req.body.username,
             password: req.body.password,
@@ -20,22 +20,22 @@ class UserController {
         if (validationResponse !== true) {
             res.status(400).json(errorProvider.errorLoginFieldIsNull);
         } else {
-            models.Users.findOne({
+            await models.Users.findOne({
                 where: {
                     username: user.username,
                     status: user.status,
                 },
             })
-                .then((result) => {
+                .then(async (result) => {
                     if (result != null) {
-                        bcrypt.compare(
+                        await bcrypt.compare(
                             user.password,
                             result.password,
                             async function (err, correct) {
                                 if (correct) {
                                     models.Users.update(
                                         {
-                                            token: createToken(),
+                                            refreshToken: await createToken(user.username),
                                         },
                                         {
                                             where: {
