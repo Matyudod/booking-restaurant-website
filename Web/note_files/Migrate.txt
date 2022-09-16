@@ -17,7 +17,7 @@ sequelize model:generate --name Tables --attributes name:string, number_of_seat:
 sequelize model:generate --name TypesOfParty --attributes name:string
 
 --Foods
-sequelize model:generate --name Foods --attributes main_ingredient_id:integer, name:string, price:integer, image_url:string, status:boolean
+sequelize model:generate --name Foods --attributes  name:string, price:integer, image_url:string, status:boolean
 
 --MainIngredientDetails
 sequelize model:generate --name MainIngredientDetails --attributes food_id:integer, main_ingredient_id:integer, quantity:integer
