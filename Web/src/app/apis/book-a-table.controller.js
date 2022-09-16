@@ -1,12 +1,12 @@
-const models = require("../../../../models");
-const errorProvider = require("../../Businesses/ErrorProviders");
+const models = require("../../../models");
+const errorProvider = require("../businesses/ErrorProviders");
 const { Op } = require("sequelize");
 const Validator = require("fastest-validator");
-const scheme = require("../../Businesses/ValidationProviders");
-const getList = require("../../Businesses/GetListSupporter");
-const getOne = require("../../Businesses/GetOneSupporter");
-const update = require("../../Businesses/UpdateSupporter");
-const updateStatus = require("../../Businesses/UpdateStatusSuporter");
+const scheme = require("../businesses/ValidationProviders");
+const getList = require("../businesses/GetListSupporter");
+const getOne = require("../businesses/GetOneSupporter");
+const update = require("../businesses/UpdateSupporter");
+const updateStatus = require("../businesses/UpdateStatusSuporter");
 
 class BookATableController {
     bookAtable(req, res) {

@@ -1,5 +1,5 @@
 const Validator = require("fastest-validator");
-const scheme = require("../Businesses/ValidationProviders");
+const scheme = require("../businesses/ValidationProviders");
 const models = require("../../../models");
 module.exports = (req, res, next) => {
     try {

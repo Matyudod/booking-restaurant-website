@@ -1,12 +1,12 @@
-const models = require("../../../../models");
-const errorProvider = require("../../Businesses/ErrorProviders");
-const createToken = require("../../Businesses/GetToken");
+const models = require("../../../models");
+const errorProvider = require("../businesses/ErrorProviders");
+const createToken = require("../businesses/GetToken");
 const bcrypt = new require("bcrypt");
 const Validator = require("fastest-validator");
-const scheme = require("../../Businesses/ValidationProviders");
-const getOne = require("../../Businesses/GetOneSupporter");
-const update = require("../../Businesses/UpdateSupporter");
-const updateStatus = require("../../Businesses/UpdateStatusSuporter");
+const scheme = require("../businesses/ValidationProviders");
+const getOne = require("../businesses/GetOneSupporter");
+const update = require("../businesses/UpdateSupporter");
+const updateStatus = require("../businesses/UpdateStatusSuporter");
 //status : 1 is active | 0 is removed
 class UserController {
     loginHandler(req, res) {

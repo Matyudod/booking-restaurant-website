@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { faker } = require("@faker-js/faker");
-const checkAuthMiddleware = require("../app/Middlewares/CheckAuth");
-const checkAdminMiddleware = require("../app/Middlewares/CheckAdmin");
-const foodController = require("../app/Apis/Food/FoodController");
+const checkAuthMiddleware = require("../app/middlewares/CheckAuth");
+const checkAdminMiddleware = require("../app/middlewares/CheckAdmin");
+const foodController = require("../app/apis/food.controller");
 
 router.get("/pagination", foodController.pagination);
 router.get("/get/:id", foodController.get);

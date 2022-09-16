@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { faker } = require("@faker-js/faker");
-const checkAuthMiddleware = require("../app/Middlewares/CheckAuth");
-const checkAdminMiddleware = require("../app/Middlewares/CheckAdmin");
-const userController = require("../app/Apis/User/UserController");
+const checkAuthMiddleware = require("../app/middlewares/CheckAuth");
+const checkAdminMiddleware = require("../app/middlewares/CheckAdmin");
+const userController = require("../app/apis/user.controller");
 
 router.get("/admin-list", userController.adminList);
 router.get("/customer-list", userController.customerList);
