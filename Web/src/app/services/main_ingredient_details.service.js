@@ -1,13 +1,13 @@
-class OrderService {
+class MainIngredientDetailService {
     constructor(models) {
-        this.model = models.Orders;
+        this.model = models.MainIngredientDetails;
     }
 
     async create(data) {
         try {
-            let [order, created] = await this.model.findOrCreate({ where: data });
+            let [main_ingredient_detail, created] = await this.model.findOrCreate({ where: data });
             if (created) {
-                return order;
+                return main_ingredient_detail;
             } else {
                 return null;
             }
@@ -18,17 +18,19 @@ class OrderService {
 
     async getById(id) {
         try {
-            let order = await this.model.find({ where: { id: id } });
-            return order;
+            let main_ingredient_detail = await this.model.find({ where: { id: id } });
+            return main_ingredient_detail;
         } catch (err) {
             return null;
         }
     }
 
-    async getByTicketId(ticket_id) {
+    async getByMainIngredientId(main_ingredient_id) {
         try {
-            let order = await this.model.find({ where: { ticket_id: ticket_id } });
-            return order;
+            let main_ingredient_detail = await this.model.find({
+                where: { main_ingredient_id: main_ingredient_id },
+            });
+            return main_ingredient_detail;
         } catch (err) {
             return null;
         }
@@ -36,8 +38,8 @@ class OrderService {
 
     async getByFoodId(food_id) {
         try {
-            let order = await this.model.find({ where: { food_id: food_id } });
-            return order;
+            let main_ingredient_detail = await this.model.find({ where: { food_id: food_id } });
+            return main_ingredient_detail;
         } catch (err) {
             return null;
         }
@@ -87,4 +89,4 @@ class OrderService {
     }
 }
 
-module.exports = OrderService;
+module.exports = MainIngredientDetailService;

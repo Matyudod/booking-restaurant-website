@@ -8,7 +8,7 @@ sequelize db:migrate
 sequelize model:generate --name Users --attributes name:string, username:string, password:string, email:string, birthday:date, is_admin:boolean, status:integer, refreshToken:string
 
 --MainIngredients
-sequelize model:generate --name MainIngredients --attributes name:string
+sequelize model:generate --name MainIngredients --attributes name:string, status:boolean
 
 --Table
 sequelize model:generate --name Tables --attributes name:string, number_of_seat:integer, status:integer
@@ -18,6 +18,10 @@ sequelize model:generate --name TypesOfParty --attributes name:string
 
 --Foods
 sequelize model:generate --name Foods --attributes main_ingredient_id:integer, name:string, price:integer, image_url:string, status:boolean
+
+--MainIngredientDetails
+sequelize model:generate --name MainIngredientDetails --attributes food_id:integer, main_ingredient_id:integer, quantity:integer
+
 
 --Tickets
 sequelize model:generate --name Tickets --attributes customer_id:integer, type_party_id:integer, table_id:integer, received_date:date, payment_date:date, customer_phone:string, customer_address:string
