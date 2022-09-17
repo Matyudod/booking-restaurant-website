@@ -58,4 +58,16 @@ module.exports = {
         price: "number|min:1",
         image: "string|min:1",
     },
+    typeOfPartyCreateValidation: {
+        name: "string|min:1|max:255",
+    },
+    ticketCreateValidation: {
+        customer_id: "number|min:1",
+        type_party_id: "number|min:1",
+        table_id: "number|min:0",
+        received_date: "date",
+        payment_date: "date|optional",
+        customer_phone: "string|min:1|max:255",
+        customer_address: "string|min:1|max:255",
+    },
 };

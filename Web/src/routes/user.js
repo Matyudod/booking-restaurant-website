@@ -3,7 +3,7 @@ const router = express.Router();
 const { faker } = require("@faker-js/faker");
 const checkAuthMiddleware = require("../app/middlewares/authentication");
 const checkAdminMiddleware = require("../app/middlewares/check-admin");
-const userController = require("../app/controllers/user.controller");
+const userController = require("../app/controllers/users.controller");
 
 router.get("/admin-list", userController.adminList);
 router.get("/customer-list", userController.customerList);

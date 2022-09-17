@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
         const v = new Validator();
         let validationResponse = v.validate(pagination, scheme.pageValidation);
         if (validationResponse !== true) {
-            res.status(401).json(errorProvider.authError);
+            res.status(401).json(message.authError);
         } else {
             models.Users.findOne({
                 where: {
@@ -21,17 +21,17 @@ module.exports = (req, res, next) => {
                         if (result.is_admin == true) {
                             next();
                         } else {
-                            res.status(401).json(errorProvider.authError);
+                            res.status(401).json(message.authError);
                         }
                     } else {
-                        res.status(401).json(errorProvider.authError);
+                        res.status(401).json(message.authError);
                     }
                 })
                 .catch((error) => {
-                    res.status(401).json(errorProvider.authError);
+                    res.status(401).json(message.authError);
                 });
         }
     } catch (error) {
-        res.status(401).json(errorProvider.authError);
+        res.status(401).json(message.authError);
     }
 };

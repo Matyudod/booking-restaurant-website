@@ -56,7 +56,7 @@ class TypeOfPartyService {
 
     async delete(id) {
         try {
-            let isRemoved = await this.model.destroy({ where: { id: id } });
+            let isRemoved = await this.model.update({ status: status }, { where: { id: id } });
             if (isRemoved) {
                 return true;
             } else {

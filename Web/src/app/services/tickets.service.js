@@ -25,7 +25,7 @@ class TicketService {
         }
     }
 
-    async getListCustomerID(customer_id, pagination, order) {
+    async getListWithCustomerID(customer_id, pagination, order) {
         try {
             let list = await this.model.findAndCountAll({
                 where: {
@@ -43,14 +43,19 @@ class TicketService {
         }
     }
 
-    async getListPendingOfCustomerID(customer_id) {
+    async getListPendingOfCustomer(customer_id, pagination, order) {
         try {
             let list = await this.model.findAndCountAll({
                 where: {
                     customer_id: customer_id,
                     payment_date: null,
                 },
+                order: [order],
+                limit: pagination.size,
+                offset: (pagination.page - 1) * pagination.size,
             });
+            list.page = pagination.page;
+            list.size = pagination.size;
             return list;
         } catch (err) {
             return null;

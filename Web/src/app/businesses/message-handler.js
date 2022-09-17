@@ -15,7 +15,7 @@ module.exports = {
         message: "Log in completed.",
         type_message: "success_dialog",
     },
-    errorSignupFieldIsNull: {
+    errorFieldIsNull: {
         message: "One or more fields do not exist.",
         type_message: "error_dialog",
     },

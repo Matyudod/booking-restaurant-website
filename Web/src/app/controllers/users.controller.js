@@ -1,5 +1,5 @@
 const models = require("../../../models");
-const errorProvider = require("../businesses/error-handler");
+const message = require("../businesses/message-handler");
 const createToken = require("../businesses/generate-jwt");
 const bcrypt = new require("bcrypt");
 const Validator = require("fastest-validator");
@@ -31,7 +31,7 @@ class UserController {
             const v = new Validator();
             let validationResponse = v.validate(user, scheme.loginValidation);
             if (validationResponse !== true) {
-                res.status(400).json(errorProvider.errorLoginFieldIsNull);
+                res.status(400).json(message.errorLoginFieldIsNull);
             } else {
                 let userId = await userService.getIdByUserLogin(user.username, user.password);
                 if (userId != null) {
@@ -39,25 +39,25 @@ class UserController {
                         refreshToken: await createToken(user.username),
                     };
                     if ((await userService.update(userId, newToken)) == false) {
-                        res.status(500).json(errorProvider.APIErrorServer);
+                        res.status(500).json(message.APIErrorServer);
                     }
                     let userLoginInfo = await userService.getById(userId);
                     if (userLoginInfo == null) {
-                        res.status(500).json(errorProvider.APIErrorServer);
+                        res.status(500).json(message.APIErrorServer);
                     } else {
                         res.status(200).json({
                             data: userLoginInfo,
-                            message: errorProvider.successLoginComplete,
+                            message: message.successLoginComplete,
                         });
                     }
                 } else {
-                    let errorNotFound = errorProvider.errorNotFound;
+                    let errorNotFound = message.errorNotFound;
                     errorNotFound.message = errorNotFound.message.replace("{1}", "User".trim());
                     res.status(200).json(errorNotFound);
                 }
             }
         } catch (err) {
-            res.status(500).json(errorProvider.APIErrorServer);
+            res.status(500).json(message.APIErrorServer);
         }
     }
 
@@ -76,7 +76,7 @@ class UserController {
             const v = new Validator();
             let validationResponse = v.validate(user, scheme.signupValidation);
             if (validationResponse !== true) {
-                res.status(400).json(errorProvider.errorSignupFieldIsNull);
+                res.status(400).json(message.errorFieldIsNull);
             } else {
                 let isHaveUser = await userService.getByUsername(user.username);
                 if (isHaveUser == null) {
@@ -84,118 +84,126 @@ class UserController {
                     if (newUser != null) {
                         res.status(200).json({
                             data: newUser,
-                            message: errorProvider.successSignupComplete,
+                            message: message.successSignupComplete,
                         });
                     } else {
-                        res.status(500).json(errorProvider.APIErrorServer);
+                        res.status(500).json(message.APIErrorServer);
                     }
                 } else {
-                    res.status(200).json(errorProvider.errorSignupUserExisted);
+                    res.status(200).json(message.errorSignupUserExisted);
                 }
             }
         } catch (error) {
-            res.status(500).json(errorProvider.APIErrorServer);
+            res.status(500).json(message.APIErrorServer);
         }
     }
 
     async adminList(req, res) {
-        let params = req.body;
-        let is_admin = true;
-        let pagination = {
-            page: parseInt(params.page) || 1,
-            size: parseInt(params.size) || 10,
-            field: params.field || "id",
-            is_reverse_sort:
-                (params.is_reverse_sort == "true"
-                    ? true
-                    : params.is_reverse_sort == "false"
-                    ? false
-                    : null) || false,
-        };
-        let sorting = pagination.is_reverse_sort ? "DESC" : "ASC";
-        let order = null;
-        if (pagination.field != null) {
-            if (pagination.is_reverse_sort != null) {
-                order = [pagination.field, sorting];
-            } else {
-                order = [pagination.field];
+        try {
+            let params = req.body;
+            let is_admin = true;
+            let pagination = {
+                page: parseInt(params.page) || 1,
+                size: parseInt(params.size) || 10,
+                field: params.field || "id",
+                is_reverse_sort:
+                    (params.is_reverse_sort == "true"
+                        ? true
+                        : params.is_reverse_sort == "false"
+                        ? false
+                        : null) || false,
+            };
+            let sorting = pagination.is_reverse_sort ? "DESC" : "ASC";
+            let order = null;
+            if (pagination.field != null) {
+                if (pagination.is_reverse_sort != null) {
+                    order = [pagination.field, sorting];
+                } else {
+                    order = [pagination.field];
+                }
             }
-        }
 
-        const v = new Validator();
-        let validationResponse = v.validate(pagination, scheme.pageValidation);
-        if (validationResponse !== true) {
-            res.status(400).json(errorProvider.errorSignupFieldIsNull);
-        } else {
-            let adminList = await userService.getList(is_admin, pagination, order);
-            if (adminList != null) {
-                res.status(200).json(adminList);
+            const v = new Validator();
+            let validationResponse = v.validate(pagination, scheme.pageValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorFieldIsNull);
             } else {
-                res.status(500).json(errorProvider.APIErrorServer);
+                let adminList = await userService.getList(is_admin, pagination, order);
+                if (adminList != null) {
+                    res.status(200).json(adminList);
+                } else {
+                    res.status(500).json(message.APIErrorServer);
+                }
             }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
         }
     }
 
     async customerList(req, res) {
-        let params = req.body;
-        let is_admin = false;
-        let pagination = {
-            page: parseInt(params.page) || 1,
-            size: parseInt(params.size) || 10,
-            field: params.field || "id",
-            is_reverse_sort:
-                (params.is_reverse_sort == "true"
-                    ? true
-                    : params.is_reverse_sort == "false"
-                    ? false
-                    : null) || false,
-        };
-        let sorting = pagination.is_reverse_sort ? "DESC" : "ASC";
-        let order = null;
-        if (pagination.field != null) {
-            if (pagination.is_reverse_sort != null) {
-                order = [pagination.field, sorting];
-            } else {
-                order = [pagination.field];
+        try {
+            let params = req.body;
+            let is_admin = false;
+            let pagination = {
+                page: parseInt(params.page) || 1,
+                size: parseInt(params.size) || 10,
+                field: params.field || "id",
+                is_reverse_sort:
+                    (params.is_reverse_sort == "true"
+                        ? true
+                        : params.is_reverse_sort == "false"
+                        ? false
+                        : null) || false,
+            };
+            let sorting = pagination.is_reverse_sort ? "DESC" : "ASC";
+            let order = null;
+            if (pagination.field != null) {
+                if (pagination.is_reverse_sort != null) {
+                    order = [pagination.field, sorting];
+                } else {
+                    order = [pagination.field];
+                }
             }
-        }
 
-        const v = new Validator();
-        let validationResponse = v.validate(pagination, scheme.pageValidation);
-        if (validationResponse !== true) {
-            res.status(400).json(errorProvider.errorSignupFieldIsNull);
-        } else {
-            let customerList = await userService.getList(is_admin, pagination, order);
-            if (customerList != null) {
-                res.status(200).json(customerList);
+            const v = new Validator();
+            let validationResponse = v.validate(pagination, scheme.pageValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorFieldIsNull);
             } else {
-                res.status(500).json(errorProvider.APIErrorServer);
+                let customerList = await userService.getList(is_admin, pagination, order);
+                if (customerList != null) {
+                    res.status(200).json(customerList);
+                } else {
+                    res.status(500).json(message.APIErrorServer);
+                }
             }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
         }
     }
 
     async detail(req, res) {
         try {
-            let id = req.params.id;
+            let id = req.params.id ?? -1;
             let userId = {
                 id: parseInt(id),
             };
             const v = new Validator();
             let validationResponse = v.validate(userId, scheme.idValidation);
             if (validationResponse !== true) {
-                res.status(400).json(errorProvider.errorIdFieldIsNull);
+                res.status(400).json(message.errorIdFieldIsNull);
             } else {
                 let userInfo = await userService.getById(userId.id);
                 if (userInfo != null) {
                     res.status(200).json(userInfo);
                 } else {
-                    let error = errorProvider.errorNotFound;
+                    let error = message.errorNotFound;
                     error.message = error.message.replace("{1}", "User");
-                    res.status(400).json(errorProvider.errorNotFound);
+                    res.status(400).json(message.errorNotFound);
                 }
             }
         } catch (error) {
-            res.status(500).json(errorProvider.APIErrorServer);
+            res.status(500).json(message.APIErrorServer);
         }
     }
 
@@ -211,50 +219,50 @@ class UserController {
             const v = new Validator();
             let validationResponse = v.validate(user, validate);
             if (validationResponse !== true) {
-                res.status(400).json(errorProvider.errorSignupFieldIsNull);
+                res.status(400).json(message.errorFieldIsNull);
             } else {
                 let id = user.id;
                 delete user.id;
                 let isUpdated = await userService.update(id, user);
                 if (!isUpdated) {
-                    let errorNotFound = errorProvider.errorNotFound;
-                    errorNotFound.message = errorNotFound.message.replace("{1}", "user");
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace("{1}", "User");
                     res.status(200).json(errorNotFound);
                 } else {
-                    let updateSuccessful = errorProvider.updateSuccessful;
-                    updateSuccessful.message = updateSuccessful.message.replace("{1}", "user");
+                    let updateSuccessful = message.updateSuccessful;
+                    updateSuccessful.message = updateSuccessful.message.replace("{1}", "User");
                     res.status(200).json(updateSuccessful);
                 }
             }
         } catch (error) {
-            res.status(500).json(errorProvider.APIErrorServer);
+            res.status(500).json(message.APIErrorServer);
         }
     }
 
     async deleteUser(req, res) {
         try {
-            let id = req.params.id;
+            let id = req.params.id ?? -1;
             let userId = {
                 id: parseInt(id),
             };
             const v = new Validator();
             let validationResponse = v.validate(userId, scheme.idValidation);
             if (validationResponse !== true) {
-                res.status(400).json(errorProvider.errorIdFieldIsNull);
+                res.status(400).json(message.errorIdFieldIsNull);
             } else {
                 let isDeleted = await userService.delete(userId.id);
                 if (!isDeleted) {
-                    let errorNotFound = errorProvider.errorNotFound;
+                    let errorNotFound = message.errorNotFound;
                     errorNotFound.message = errorNotFound.message.replace("{1}", "User");
                     res.status(200).json(errorNotFound);
                 } else {
-                    let deleteSuccessful = errorProvider.deleteSuccessful;
+                    let deleteSuccessful = message.deleteSuccessful;
                     deleteSuccessful.message = deleteSuccessful.message.replace("{1}", "User");
                     res.status(200).json(deleteSuccessful);
                 }
             }
         } catch (error) {
-            res.status(500).json(errorProvider.APIErrorServer);
+            res.status(500).json(message.APIErrorServer);
         }
     }
 }
