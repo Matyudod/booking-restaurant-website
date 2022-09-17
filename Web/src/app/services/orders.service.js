@@ -18,7 +18,7 @@ class OrderService {
 
     async getById(id) {
         try {
-            let order = await this.model.find({ where: { id: id } });
+            let order = await this.model.findOne({ where: { id: id } });
             return order;
         } catch (err) {
             return null;
@@ -27,7 +27,7 @@ class OrderService {
 
     async getByTicketId(ticket_id) {
         try {
-            let order = await this.model.find({ where: { ticket_id: ticket_id } });
+            let order = await this.model.findOne({ where: { ticket_id: ticket_id } });
             return order;
         } catch (err) {
             return null;
@@ -36,7 +36,7 @@ class OrderService {
 
     async getByFoodId(food_id) {
         try {
-            let order = await this.model.find({ where: { food_id: food_id } });
+            let order = await this.model.findOne({ where: { food_id: food_id } });
             return order;
         } catch (err) {
             return null;

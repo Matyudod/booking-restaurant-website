@@ -18,7 +18,7 @@ class TableService {
 
     async getById(id) {
         try {
-            let table = await this.model.find({ where: { id: id } });
+            let table = await this.model.findOne({ where: { id: id } });
             return table;
         } catch (err) {
             return null;

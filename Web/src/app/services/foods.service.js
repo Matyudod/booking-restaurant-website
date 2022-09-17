@@ -19,13 +19,13 @@ class FoodService {
     async getById(id) {
         let status = true;
         try {
-            let food = await this.model.find({ where: { id: id , status: status} });
+            let food = await this.model.findOne({ where: { id: id, status: status } });
             return food;
         } catch (err) {
             return null;
         }
     }
-    
+
     async getList(pagination, order) {
         try {
             let status = true;
@@ -61,7 +61,6 @@ class FoodService {
         }
     }
 
-    
     async delete(id) {
         let status = false;
         try {
@@ -75,7 +74,6 @@ class FoodService {
             return false;
         }
     }
-
 
     async clearData() {
         try {

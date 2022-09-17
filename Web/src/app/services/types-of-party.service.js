@@ -18,7 +18,7 @@ class TypeOfPartyService {
 
     async getById(id) {
         try {
-            let type_of_party = await this.model.find({ where: { id: id } });
+            let type_of_party = await this.model.findOne({ where: { id: id } });
             return type_of_party;
         } catch (err) {
             return null;

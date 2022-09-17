@@ -38,5 +38,5 @@ sequelize model:generate --name Bills --attributes bill_number:string, ticket_id
 --Comments
 sequelize model:generate --name Comments --attributes bill_id:integer, content:string, point:integer
 
---Feadbacks
-sequelize model:generate --name Feadbacks --attributes comment_id:integer, admin_id:integer, content:string
+--Feedbacks
+sequelize model:generate --name Feedbacks --attributes comment_id:integer, admin_id:integer, content:string

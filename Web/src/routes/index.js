@@ -2,8 +2,8 @@ const dumyData = require("../../seeders");
 const userRouter = require("./user");
 const tableRouter = require("./table");
 const foodRouter = require("./food");
-const checkAuthMiddleware = require("../app/Middlewares/CheckAuth");
-const checkAdminMiddleware = require("../app/Middlewares/CheckAdmin");
+const authentication = require("../app/middlewares/authentication");
+const checkAdmin = require("../app/middlewares/check-admin");
 function route(app) {
     let urlDefault = "/api/";
     app.use(urlDefault + "user", userRouter);
@@ -12,7 +12,7 @@ function route(app) {
     app.use(urlDefault + "book-a-table", tableRouter);
 
     app.get("/mockup-data", (req, res) => {
-        // dumyData(25);
+        dumyData(25);
         res.send("true");
     });
 }

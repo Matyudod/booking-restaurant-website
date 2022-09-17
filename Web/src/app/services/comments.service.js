@@ -18,7 +18,7 @@ class CommentService {
 
     async getById(id) {
         try {
-            let comment = await this.model.find({ where: { id: id } });
+            let comment = await this.model.findOne({ where: { id: id } });
             return comment;
         } catch (err) {
             return null;
@@ -27,7 +27,7 @@ class CommentService {
 
     async getByBillId(bill_id) {
         try {
-            let comment = await this.model.find({ where: { bill_id: bill_id } });
+            let comment = await this.model.findOne({ where: { bill_id: bill_id } });
             return comment;
         } catch (err) {
             return null;
@@ -78,4 +78,4 @@ class CommentService {
     }
 }
 
-module.exports = Comments;
+module.exports = CommentService;

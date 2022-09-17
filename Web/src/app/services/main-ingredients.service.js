@@ -19,7 +19,7 @@ class MainIngredientService {
     async getById(id) {
         let status = true;
         try {
-            let table = await this.model.find({ where: { id: id, status: status } });
+            let table = await this.model.findOne({ where: { id: id, status: status } });
             return table;
         } catch (err) {
             return null;

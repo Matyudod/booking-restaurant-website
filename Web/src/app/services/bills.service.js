@@ -19,7 +19,7 @@ class BillService {
     async getById(id) {
         let status = true;
         try {
-            let bill = await this.model.find({ where: { id: id, status: status } });
+            let bill = await this.model.findOne({ where: { id: id, status: status } });
             return bill;
         } catch (err) {
             return null;
@@ -27,7 +27,7 @@ class BillService {
     }
     async getByTicketId(ticket_id) {
         try {
-            let bill = await this.model.find({
+            let bill = await this.model.findOne({
                 where: { ticket_id: ticket_id },
             });
             return bill;
@@ -38,16 +38,16 @@ class BillService {
 
     async getByAdminId(admin_id) {
         try {
-            let bill = await this.model.find({ where: { admin_id: admin_id} });
+            let bill = await this.model.findOne({ where: { admin_id: admin_id } });
             return bill;
         } catch (err) {
             return null;
         }
     }
-    
+
     async getByDiscountId(discount_id) {
         try {
-            let bill = await this.model.find({ where: { discount_id: discount_id} });
+            let bill = await this.model.findOne({ where: { discount_id: discount_id } });
             return bill;
         } catch (err) {
             return null;
@@ -100,4 +100,4 @@ class BillService {
     }
 }
 
-module.exports = Bills;
+module.exports = BillService;

@@ -18,7 +18,7 @@ class TicketService {
 
     async getById(id) {
         try {
-            let ticket = await this.model.find({ where: { id: id } });
+            let ticket = await this.model.findOne({ where: { id: id } });
             return ticket;
         } catch (err) {
             return null;

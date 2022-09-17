@@ -18,7 +18,7 @@ class DiscountService {
 
     async getById(id) {
         try {
-            let discount = await this.model.find({ where: { id: id } });
+            let discount = await this.model.findOne({ where: { id: id } });
             return discount;
         } catch (err) {
             return null;
@@ -69,4 +69,4 @@ class DiscountService {
     }
 }
 
-module.exports = Discounts;
+module.exports = DiscountService;

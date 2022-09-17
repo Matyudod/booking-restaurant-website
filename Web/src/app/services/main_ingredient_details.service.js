@@ -18,7 +18,7 @@ class MainIngredientDetailService {
 
     async getById(id) {
         try {
-            let main_ingredient_detail = await this.model.find({ where: { id: id } });
+            let main_ingredient_detail = await this.model.findOne({ where: { id: id } });
             return main_ingredient_detail;
         } catch (err) {
             return null;
@@ -27,7 +27,7 @@ class MainIngredientDetailService {
 
     async getByMainIngredientId(main_ingredient_id) {
         try {
-            let main_ingredient_detail = await this.model.find({
+            let main_ingredient_detail = await this.model.findOne({
                 where: { main_ingredient_id: main_ingredient_id },
             });
             return main_ingredient_detail;
@@ -38,7 +38,7 @@ class MainIngredientDetailService {
 
     async getByFoodId(food_id) {
         try {
-            let main_ingredient_detail = await this.model.find({ where: { food_id: food_id } });
+            let main_ingredient_detail = await this.model.findOne({ where: { food_id: food_id } });
             return main_ingredient_detail;
         } catch (err) {
             return null;

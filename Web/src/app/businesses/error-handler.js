@@ -51,6 +51,10 @@ module.exports = {
         message: "{1} is updated.",
         type_message: "success_dialog",
     },
+    deleteSuccessful: {
+        message: "{1} is deleted.",
+        type_message: "success_dialog",
+    },
     updateStatusSuccessful: {
         message: "{1} status is updated.",
         type_message: "success_dialog",

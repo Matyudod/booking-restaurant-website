@@ -1,6 +1,6 @@
-class FeadbackService {
+class FeedbackService {
     constructor(models) {
-        this.model = models.Feadbacks;
+        this.model = models.Feedbacks;
     }
 
     async create(data) {
@@ -18,7 +18,7 @@ class FeadbackService {
 
     async getById(id) {
         try {
-            let feadback = await this.model.find({ where: { id: id } });
+            let feadback = await this.model.findOne({ where: { id: id } });
             return feadback;
         } catch (err) {
             return null;
@@ -27,7 +27,7 @@ class FeadbackService {
 
     async getByCommentId(comment_id) {
         try {
-            let feadback = await this.model.find({
+            let feadback = await this.model.findOne({
                 where: { comment_id: comment_id },
             });
             return feadback;
@@ -38,7 +38,7 @@ class FeadbackService {
 
     async getByAdminId(admin_id) {
         try {
-            let feadback = await this.model.find({ where: { admin_id: admin_id } });
+            let feadback = await this.model.findOne({ where: { admin_id: admin_id } });
             return feadback;
         } catch (err) {
             return null;
@@ -89,4 +89,4 @@ class FeadbackService {
     }
 }
 
-module.exports = Feadbacks;
+module.exports = FeedbackService;

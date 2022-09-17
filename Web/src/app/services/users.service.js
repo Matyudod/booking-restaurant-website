@@ -19,7 +19,7 @@ class UserService {
 
     async getById(id) {
         try {
-            let user = await this.model.find({ where: { id: id, status: true } });
+            let user = await this.model.findOne({ where: { id: id, status: true } });
             return user;
         } catch (err) {
             return null;
@@ -28,7 +28,7 @@ class UserService {
 
     async getByName(name) {
         try {
-            let user = await this.model.find({ where: { name: name, status: true } });
+            let user = await this.model.findOne({ where: { name: name, status: true } });
             return user;
         } catch (err) {
             return null;
@@ -37,30 +37,30 @@ class UserService {
 
     async getByUsername(username) {
         try {
-            let user = await this.model.find({ where: { username: username, status: true } });
+            let user = await this.model.findOne({ where: { username: username, status: true } });
             return user;
         } catch (err) {
             return null;
         }
     }
 
-    async getByUserLogin(username, password) {
+    async getIdByUserLogin(username, password) {
         try {
-            let user = await this.model.find({
-                where: { username: username, password: password, status: true },
+            let user = await this.model.findOne({
+                where: { username: username, status: true },
             });
             if (user != null) {
                 let isCompare = await bcrypt.compare(password, user.password);
                 if (isCompare) {
-                    return true;
+                    return user.id;
                 } else {
-                    return false;
+                    return null;
                 }
             } else {
-                return false;
+                return null;
             }
         } catch (err) {
-            return false;
+            return null;
         }
     }
 
