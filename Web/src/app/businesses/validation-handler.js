@@ -102,4 +102,9 @@ module.exports = {
     mainIngredientCreateValidation: {
         name: "string|min:1|max:255",
     },
+    billCreateValidation: {
+        ticket_id: "number|min:1",
+        admin_id: "number|min:1",
+        discount_id: "number|min:0",
+    },
 };
