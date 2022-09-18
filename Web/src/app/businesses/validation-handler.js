@@ -70,12 +70,17 @@ module.exports = {
         customer_phone: "string|min:1|max:255",
         customer_address: "string|min:1|max:255",
     },
-    commentCreateValidation:{
-        bill_id:  "number|min:1",
+    commentCreateValidation: {
+        bill_id: "number|min:1",
         content: "string|min:1|max:255",
-        point:  "number|min:1|max:5",
+        point: "number|min:1|max:5",
     },
     billIdValidation: {
         bill_id: "number|min:1|default:0",
+    },
+    orderCreateValidation: {
+        ticket_id: "number|min:1",
+        food_id: "number|min:1",
+        quantity: "number|min:1",
     },
 };
