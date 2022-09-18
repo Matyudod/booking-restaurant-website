@@ -18,5 +18,89 @@ const {
 } = require("../services/index.service");
 
 const discountService = new DiscountService(models);
-class DiscountController {}
+class DiscountController {
+    async create(req, res) {
+        try {
+            let discount = {
+                name: req.body.name,
+                amount: parseInt(req.body.amount),
+                percent: parseInt(req.body.percent),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(discount, scheme.discountCreateValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorFieldIsNull);
+            } else {
+                let newDiscount = await discountService.create(discount);
+                if (newDiscount != null) {
+                    let error = message.createSuccessful;
+                    error.message = error.message.replace("{1}", "Discount");
+                    res.status(200).json(error);
+                } else {
+                    let error = message.errorFieldIsExisted;
+                    error.message = error.message.replace("{1}", "Discount");
+                    res.status(200).json(error);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async update(req, res) {
+        try {
+            let id = req.params.id ?? -1;
+            let discount = {
+                name: req.body.name,
+                amount: parseInt(req.body.amount),
+                percent: parseInt(req.body.percent),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(discount, scheme.discountCreateValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorFieldIsNull);
+            } else {
+                let isUpdated = await discountService.update(id, discount);
+                if (!isUpdated) {
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace("{1}", "Discount");
+                    res.status(200).json(errorNotFound);
+                } else {
+                    let updateSuccessful = message.updateSuccessful;
+                    updateSuccessful.message = updateSuccessful.message.replace("{1}", "Discount");
+                    res.status(200).json(updateSuccessful);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            let id = req.params.id ?? -1;
+            let discountId = {
+                id: parseInt(id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(discountId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let isDeleted = await discountService.delete(discountId.id);
+                if (!isDeleted) {
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace("{1}", "Discount");
+                    res.status(200).json(errorNotFound);
+                } else {
+                    let deleteSuccessful = message.deleteSuccessful;
+                    deleteSuccessful.message = deleteSuccessful.message.replace("{1}", "Discount");
+                    res.status(200).json(deleteSuccessful);
+                }
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+}
 module.exports = new DiscountController();

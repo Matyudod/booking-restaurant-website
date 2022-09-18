@@ -83,4 +83,23 @@ module.exports = {
         food_id: "number|min:1",
         quantity: "number|min:1",
     },
+    discountCreateValidation: {
+        name: "string|min:1|max:255",
+        amount: "number|min:1",
+        percent: "number|min:1",
+    },
+    feedbackCreateValidation: {
+        comment_id: "number|min:1",
+        admin_id: "string|min:1|max:255",
+        content: "number|min:1",
+    },
+    feedbackIdValidation: {
+        comment_id: "number|min:1|default:0",
+    },
+    adminIdValidation: {
+        admin_id: "number|min:1|default:0",
+    },
+    mainIngredientCreateValidation: {
+        name: "string|min:1|max:255",
+    },
 };
