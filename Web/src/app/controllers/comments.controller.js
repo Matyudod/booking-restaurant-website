@@ -22,9 +22,9 @@ class CommentController {
     async create(req, res) {
         try {
             let comment = {
-                bill_id: parseInt(req.body.name),
-                content: req.body.name,
-                point: parseInt(req.body.name),
+                bill_id: parseInt(req.body.bill_id),
+                content: req.body.content,
+                point: parseInt(req.body.point),
             };
             const v = new Validator();
             let validationResponse = v.validate(comment, scheme.commentCreateValidation);
@@ -37,9 +37,7 @@ class CommentController {
                     error.message = error.message.replace("{1}", "Comment");
                     res.status(200).json(error);
                 } else {
-                    let error = message.errorFieldIsExisted;
-                    error.message = error.message.replace("{1}", "Comment");
-                    res.status(200).json(error);
+                    res.status(500).json(message.APIErrorServer);
                 }
             }
         } catch (err) {
@@ -72,7 +70,6 @@ class CommentController {
         }
     }
 
-
     async update(req, res) {
         try {
             let id = req.params.id ?? -1;
@@ -93,10 +90,7 @@ class CommentController {
                     res.status(200).json(errorNotFound);
                 } else {
                     let updateSuccessful = message.updateSuccessful;
-                    updateSuccessful.message = updateSuccessful.message.replace(
-                        "{1}",
-                        "Comment"
-                    );
+                    updateSuccessful.message = updateSuccessful.message.replace("{1}", "Comment");
                     res.status(200).json(updateSuccessful);
                 }
             }

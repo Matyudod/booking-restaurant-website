@@ -25,11 +25,11 @@ class OrderService {
         }
     }
 
-    async getListWithTicketID(customer_id) {
+    async getListWithTicketID(ticket_id) {
         try {
             let list = await this.model.findAndCountAll({
                 where: {
-                    customer_id: customer_id,
+                    ticket_id: ticket_id,
                 },
             });
             return list;
@@ -44,6 +44,19 @@ class OrderService {
                 where: { id: id },
             });
             if (isUpdated) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            return false;
+        }
+    }
+
+    async deleteWithTicketId(ticket_id) {
+        try {
+            let isRemoved = await this.model.destroy({ where: { ticket_id: ticket_id } });
+            if (isRemoved) {
                 return true;
             } else {
                 return false;

@@ -18,6 +18,7 @@ const {
 } = require("../services/index.service");
 
 const ticketService = new TicketService(models);
+const orderService = new OrderService(models);
 class TicketController {
     async create(req, res) {
         try {
@@ -227,7 +228,9 @@ class TicketController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorIdFieldIsNull);
             } else {
-                let isDeleted = await ticketService.delete(ticketId.id);
+                let isDeleted =
+                    (await ticketService.delete(ticketId.id)) &&
+                    (await orderService.deleteWithTicketId(ticketId.id));
                 if (!isDeleted) {
                     let errorNotFound = message.errorNotFound;
                     errorNotFound.message = errorNotFound.message.replace("{1}", "Ticket");
