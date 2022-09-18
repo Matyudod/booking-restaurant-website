@@ -25,19 +25,14 @@ class OrderService {
         }
     }
 
-    async getByTicketId(ticket_id) {
+    async getListWithTicketID(customer_id) {
         try {
-            let order = await this.model.findOne({ where: { ticket_id: ticket_id } });
-            return order;
-        } catch (err) {
-            return null;
-        }
-    }
-
-    async getByFoodId(food_id) {
-        try {
-            let order = await this.model.findOne({ where: { food_id: food_id } });
-            return order;
+            let list = await this.model.findAndCountAll({
+                where: {
+                    customer_id: customer_id,
+                },
+            });
+            return list;
         } catch (err) {
             return null;
         }
