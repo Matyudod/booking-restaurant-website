@@ -3,23 +3,29 @@ const message = require("../businesses/messages");
 const { writeFile } = require("fs");
 require("dotenv").config();
 const path = require("path");
-const { Op } = require("sequelize");
 const Validator = require("fastest-validator");
-const scheme = require("../businesses/ValidationProviders");
-const getList = require("../businesses/GetListSupporter");
-const getOne = require("../businesses/GetOneSupporter");
-const update = require("../businesses/UpdateSupporter");
-const updateStatus = require("../businesses/UpdateStatusSuporter");
+const scheme = require("../businesses/validation-handler");
+
+const {
+    UserService,
+    TypeOfPartyService,
+    TicketService,
+    TableService,
+    OrderService,
+    MainIngredientDetailService,
+    MainIngredientService,
+    FoodService,
+    FeedbackService,
+    DiscountService,
+    CommentService,
+    BillService,
+} = require("../services/index.service");
+const messageHandler = require("../businesses/message-handler");
+
+const foodService = new FoodService(models);
 
 class FoodController {
-    pagination(req, res) {
-        getList(req.body, models.Foods, res);
-    }
-    get(req, res) {
-        let id = req.params.id ?? -1;
-        getOne(id, models.Foods, res, "Food", true);
-    }
-    create(req, res) {
+    async create(req, res) {
         let image_upload = {
             url: req.body.url,
             file_base64: req.body.file_base64,
@@ -66,30 +72,66 @@ class FoodController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
-                models.Foods.findOrCreate({
-                    where: {
-                        name: food.name,
-                    },
-                    default: food,
-                })
-                    .then((result, created) => {
-                        if (created) {
-                            let success_message = message.createSuccessful;
-                            success_message.message.replace("{1}", "Food");
-                            res.status(200).json(success_message);
-                        } else {
-                            let error_message = message.errorNotFound;
-                            error_message.message.replace("{1}", "Food");
-                            res.status(200).json(error_message);
-                        }
-                    })
-                    .catch((err) => {
-                        res.status(500).json(message.APIErrorServer);
-                    });
+                try {
+                    let newFood = await foodService.create(food);
+                    if (newFood != null) {
+                        let success_message = message.createSuccessful;
+                        success_message.message.replace("{1}", "Food");
+                        res.status(200).json(success_message);
+                    } else {
+                        let error_message = message.errorNotFound;
+                        error_message.message.replace("{1}", "Food");
+                        res.status(200).json(error_message);
+                    }
+                } catch (err) {
+                    res.status(500).json(message.APIErrorServer);
+                }
             }
         }
     }
-    update(req, res) {
+
+    async getList(req, res) {
+        try {
+            let params = req.body;
+            let pagination = {
+                page: parseInt(params.page) || 1,
+                size: parseInt(params.size) || 10,
+                field: params.field || "id",
+                is_reverse_sort:
+                    (params.is_reverse_sort == "true"
+                        ? true
+                        : params.is_reverse_sort == "false"
+                        ? false
+                        : null) || false,
+            };
+            let sorting = pagination.is_reverse_sort ? "DESC" : "ASC";
+            let order = null;
+            if (pagination.field != null) {
+                if (pagination.is_reverse_sort != null) {
+                    order = [pagination.field, sorting];
+                } else {
+                    order = [pagination.field];
+                }
+            }
+
+            const v = new Validator();
+            let validationResponse = v.validate(pagination, scheme.pageValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorFieldIsNull);
+            } else {
+                let foodList = await foodService.getList(pagination, order);
+                if (foodList != null) {
+                    res.status(200).json(foodList);
+                } else {
+                    res.status(500).json(message.APIErrorServer);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async update(req, res) {
         let image_upload = {
             url: req.body.url,
             file_base64: req.body.file_base64,
@@ -133,14 +175,58 @@ class FoodController {
                 price: parseInt(req.body.price),
                 image: image_upload.is_url ? image_upload.url : url,
             };
-            update(food, scheme.foodUpdateValidation, models.Foods, res, "Food", true);
+            let validationResponse = v.validate(food, scheme.foodUpdateValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(messageHandler.errorFieldIsNull);
+            } else {
+                try {
+                    let id = food.id;
+                    delete food.id;
+                    let isUpdated = await foodService.update(id, food);
+                    if (!isUpdated) {
+                        let errorNotFound = message.errorNotFound;
+                        errorNotFound.message = errorNotFound.message.replace("{1}", "The order");
+                        res.status(200).json(errorNotFound);
+                    } else {
+                        let updateSuccessful = message.updateSuccessful;
+                        updateSuccessful.message = updateSuccessful.message.replace(
+                            "{1}",
+                            "The order"
+                        );
+                        res.status(200).json(updateSuccessful);
+                    }
+                } catch (err) {
+                    res.status(500).json(message.APIErrorServer);
+                }
+            }
         }
     }
-    delete(req, res) {
-        let food = {
-            id: req.params.id,
-        };
-        updateStatus(food, models.Foods, res, "Food", 0);
+
+    async delete(req, res) {
+        try {
+            let id = req.params.id ?? -1;
+            let foodId = {
+                id: parseInt(id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(foodId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let isDeleted = await foodService.delete(foodId.id);
+                if (!isDeleted) {
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace("{1}", "Food");
+                    res.status(200).json(errorNotFound);
+                } else {
+                    let deleteSuccessful = message.deleteSuccessful;
+                    deleteSuccessful.message = deleteSuccessful.message.replace("{1}", "Food");
+                    res.status(200).json(deleteSuccessful);
+                }
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
     }
 }
 module.exports = new FoodController();

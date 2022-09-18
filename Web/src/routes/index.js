@@ -10,10 +10,5 @@ function route(app) {
     app.use(urlDefault + "table", tableRouter);
     app.use(urlDefault + "food", foodRouter);
     app.use(urlDefault + "book-a-table", tableRouter);
-
-    app.get("/mockup-data", (req, res) => {
-        dumyData(25);
-        res.send("true");
-    });
 }
 module.exports = route;
