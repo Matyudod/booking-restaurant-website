@@ -17,7 +17,6 @@ const {
     users,
 } = require("../app/controllers/index.controller");
 
-router.get("/pagination", mainingredientdetails.getListWithTicketID);
 router.post("/create", mainingredientdetails.create);
 router.put("/update/:id", mainingredientdetails.update);
 router.delete("/delete/:id", mainingredientdetails.delete);
