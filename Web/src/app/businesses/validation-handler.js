@@ -87,6 +87,11 @@ module.exports = {
         food_id: "number|min:1",
         quantity: "number|min:1",
     },
+    mainIngredientDetailCreateValidation: {
+        food_id: "number|min:1",
+        main_ingredient_id: "number|min:1",
+        quantity: "number|min:1",
+    },
     discountCreateValidation: {
         name: "string|min:1|max:255",
         amount: "number|min:1",

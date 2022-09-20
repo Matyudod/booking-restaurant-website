@@ -22,23 +22,28 @@ class MainIngredientDetailController {
     async create(req, res) {
         try {
             let mainIngredientDetail = {
-                ticket_id: parseInt(req.body.ticket_id),
                 food_id: parseInt(req.body.food_id),
+                main_ingredient_id: parseInt(req.body.main_ingredient_id),
                 quantity: parseInt(req.body.quantity),
             };
             const v = new Validator();
-            let validationResponse = v.validate(mainIngredientDetail, scheme.orderCreateValidation);
+            let validationResponse = v.validate(
+                mainIngredientDetail,
+                scheme.mainIngredientDetailCreateValidation
+            );
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
-                let newOrder = await orderService.create(order);
-                if (newOrder != null) {
+                let newMainIngredientDetail = await mainIngredientDetailService.create(
+                    mainIngredientDetail
+                );
+                if (newOnewMainIngredientDetailrder != null) {
                     let error = message.createSuccessful;
-                    error.message = error.message.replace("{1}", "The order");
+                    error.message = error.message.replace("{1}", "The main ingredient detail");
                     res.status(200).json(error);
                 } else {
                     let error = message.errorFieldIsExisted;
-                    error.message = error.message.replace("{1}", "The order");
+                    error.message = error.message.replace("{1}", "The main ingredient detail");
                     res.status(200).json(error);
                 }
             }
@@ -50,24 +55,33 @@ class MainIngredientDetailController {
     async update(req, res) {
         try {
             let id = req.params.id ?? -1;
-            let order = {
-                ticket_id: parseInt(req.body.ticket_id),
+            let mainIngredientDetail = {
                 food_id: parseInt(req.body.food_id),
+                main_ingredient_id: parseInt(req.body.main_ingredient_id),
                 quantity: parseInt(req.body.quantity),
             };
             const v = new Validator();
-            let validationResponse = v.validate(order, scheme.orderCreateValidation);
+            let validationResponse = v.validate(
+                mainIngredientDetail,
+                scheme.mainIngredientDetailCreateValidation
+            );
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
-                let isUpdated = await orderService.update(id, order);
+                let isUpdated = await mainIngredientDetailService.update(id, mainIngredientDetail);
                 if (!isUpdated) {
                     let errorNotFound = message.errorNotFound;
-                    errorNotFound.message = errorNotFound.message.replace("{1}", "The order");
+                    errorNotFound.message = errorNotFound.message.replace(
+                        "{1}",
+                        "The main ingredient detail"
+                    );
                     res.status(200).json(errorNotFound);
                 } else {
                     let updateSuccessful = message.updateSuccessful;
-                    updateSuccessful.message = updateSuccessful.message.replace("{1}", "The order");
+                    updateSuccessful.message = updateSuccessful.message.replace(
+                        "{1}",
+                        "The main ingredient detail"
+                    );
                     res.status(200).json(updateSuccessful);
                 }
             }
@@ -79,22 +93,28 @@ class MainIngredientDetailController {
     async delete(req, res) {
         try {
             let id = req.params.id ?? -1;
-            let orderId = {
+            let mainIngredientDetailId = {
                 id: parseInt(id),
             };
             const v = new Validator();
-            let validationResponse = v.validate(orderId, scheme.idValidation);
+            let validationResponse = v.validate(mainIngredientDetailId, scheme.idValidation);
             if (validationResponse !== true) {
                 res.status(400).json(message.errorIdFieldIsNull);
             } else {
-                let isDeleted = await orderService.delete(orderId.id);
+                let isDeleted = await mainIngredientDetailService.delete(mainIngredientDetailId.id);
                 if (!isDeleted) {
                     let errorNotFound = message.errorNotFound;
-                    errorNotFound.message = errorNotFound.message.replace("{1}", "The order");
+                    errorNotFound.message = errorNotFound.message.replace(
+                        "{1}",
+                        "The main ingredient detail"
+                    );
                     res.status(200).json(errorNotFound);
                 } else {
                     let deleteSuccessful = message.deleteSuccessful;
-                    deleteSuccessful.message = deleteSuccessful.message.replace("{1}", "The order");
+                    deleteSuccessful.message = deleteSuccessful.message.replace(
+                        "{1}",
+                        "The main ingredient detail"
+                    );
                     res.status(200).json(deleteSuccessful);
                 }
             }
