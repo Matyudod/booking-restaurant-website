@@ -47,28 +47,6 @@ class MainIngredientDetailController {
         }
     }
 
-    async getListWithTicketID(req, res) {
-        try {
-            let orderId = {
-                ticket_id: parseInt(req.params.ticket_id),
-            };
-            const v = new Validator();
-            let validationResponse = v.validate(orderId, scheme.idValidation);
-            if (validationResponse !== true) {
-                res.status(400).json(message.errorFieldIsNull);
-            } else {
-                let ticketList = await ticketService.getListWithTicketID(orderId.ticket_id);
-                if (ticketList != null) {
-                    res.status(200).json(ticketList);
-                } else {
-                    res.status(500).json(message.APIErrorServer);
-                }
-            }
-        } catch (err) {
-            res.status(500).json(message.APIErrorServer);
-        }
-    }
-
     async update(req, res) {
         try {
             let id = req.params.id ?? -1;
