@@ -24,7 +24,7 @@ class FeedbackController {
             let feedback = {
                 comment_id: parseInt(req.body.comment_id),
                 admin_id: parseInt(req.body.admin_id),
-                content:  req.body.content,
+                content: req.body.content,
             };
             const v = new Validator();
             let validationResponse = v.validate(feedback, scheme.feedbackCreateValidation);
@@ -49,7 +49,7 @@ class FeedbackController {
 
     async getByCommentId(req, res) {
         try {
-            let comment_id = req.params.id ?? -1;
+            let comment_id = req.params.comment_id ?? -1;
             let feedbackWithCommentId = {
                 comment_id: parseInt(comment_id),
             };
@@ -71,10 +71,10 @@ class FeedbackController {
             res.status(500).json(message.APIErrorServer);
         }
     }
-    
+
     async getByAdminId(req, res) {
         try {
-            let admin_id = req.params.id ?? -1;
+            let admin_id = req.params.admin_id ?? -1;
             let feedbackWithAdminId = {
                 admin_id: parseInt(admin_id),
             };
@@ -97,14 +97,13 @@ class FeedbackController {
         }
     }
 
-
     async update(req, res) {
         try {
             let id = req.params.id ?? -1;
             let feedback = {
                 comment_id: parseInt(req.body.comment_id),
                 admin_id: parseInt(req.body.admin_id),
-                content:  req.body.content,
+                content: req.body.content,
             };
             const v = new Validator();
             let validationResponse = v.validate(feedback, scheme.feedbackCreateValidation);

@@ -1,14 +1,30 @@
-const dumyData = require("../../seeders");
-const userRouter = require("./user");
-const tableRouter = require("./table");
-const foodRouter = require("./food");
+const bils = require("./bils.route");
+const comments = require("./comments.route");
+const discounts = require("./discounts.route");
+const feedbacks = require("./feedbacks.route");
+const foods = require("./foods.route");
+const mainingredientdetails = require("./main-ingredient-details.route");
+const mainingredients = require("./main-ingredients.route");
+const orders = require("./orders.route");
+const tables = require("./tables.route");
+const tickets = require("./tickets.route");
+const typesofparty = require("./types-of-party.route");
+const users = require("./users.route");
 const authentication = require("../app/middlewares/authentication");
 const checkAdmin = require("../app/middlewares/check-admin");
 function route(app) {
     let urlDefault = "/api/";
-    app.use(urlDefault + "user", userRouter);
-    app.use(urlDefault + "table", tableRouter);
-    app.use(urlDefault + "food", foodRouter);
-    app.use(urlDefault + "book-a-table", tableRouter);
+    app.use(urlDefault + "bil", bils);
+    app.use(urlDefault + "comment", comments);
+    app.use(urlDefault + "discount", discounts);
+    app.use(urlDefault + "feedback", feedbacks);
+    app.use(urlDefault + "food", foods);
+    app.use(urlDefault + "mainingredientdetail", mainingredientdetails);
+    app.use(urlDefault + "main-ingredient", mainingredients);
+    app.use(urlDefault + "order", orders);
+    app.use(urlDefault + "table", tables);
+    app.use(urlDefault + "ticket", tickets);
+    app.use(urlDefault + "types-of-party", typesofparty);
+    app.use(urlDefault + "user", users);
 }
 module.exports = route;

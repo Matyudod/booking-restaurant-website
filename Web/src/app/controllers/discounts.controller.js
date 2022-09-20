@@ -47,6 +47,47 @@ class DiscountController {
         }
     }
 
+    async getList(req, res) {
+        try {
+            let params = req.body;
+            let pagination = {
+                page: parseInt(params.page) || 1,
+                size: parseInt(params.size) || 10,
+                field: params.field || "id",
+                is_reverse_sort:
+                    (params.is_reverse_sort == "true"
+                        ? true
+                        : params.is_reverse_sort == "false"
+                        ? false
+                        : null) || false,
+            };
+            let sorting = pagination.is_reverse_sort ? "DESC" : "ASC";
+            let order = null;
+            if (pagination.field != null) {
+                if (pagination.is_reverse_sort != null) {
+                    order = [pagination.field, sorting];
+                } else {
+                    order = [pagination.field];
+                }
+            }
+
+            const v = new Validator();
+            let validationResponse = v.validate(pagination, scheme.pageValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorFieldIsNull);
+            } else {
+                let discountList = await discountService.getList(pagination, order);
+                if (discountList != null) {
+                    res.status(200).json(discountList);
+                } else {
+                    res.status(500).json(message.APIErrorServer);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
     async update(req, res) {
         try {
             let id = req.params.id ?? -1;

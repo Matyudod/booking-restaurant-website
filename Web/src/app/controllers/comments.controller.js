@@ -47,7 +47,7 @@ class CommentController {
 
     async getByBillId(req, res) {
         try {
-            let bill_id = req.params.id ?? -1;
+            let bill_id = req.params.bill_id ?? -1;
             let commentWithBillId = {
                 bill_id: parseInt(bill_id),
             };
