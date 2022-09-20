@@ -17,8 +17,9 @@ class TableService {
     }
 
     async getById(id) {
+        let status = true;
         try {
-            let table = await this.model.findOne({ where: { id: id } });
+            let table = await this.model.findOne({ where: { id: id, status: status } });
             return table;
         } catch (err) {
             return null;
@@ -26,8 +27,12 @@ class TableService {
     }
 
     async getList(pagination, order) {
+        let status = true;
         try {
             let list = await this.model.findAndCountAll({
+                where: {
+                    status: status,
+                },
                 order: [order],
                 limit: pagination.size,
                 offset: (pagination.page - 1) * pagination.size,
@@ -41,9 +46,10 @@ class TableService {
     }
 
     async update(id, data) {
+        let status = true;
         try {
             let isUpdated = await this.model.update(data, {
-                where: { id: id },
+                where: { id: id, status: status },
             });
             if (isUpdated) {
                 return true;
@@ -56,8 +62,9 @@ class TableService {
     }
 
     async delete(id) {
+        let status = false;
         try {
-            let isRemoved = await this.model.destroy({ where: { id: id } });
+            let isRemoved = await this.model.update({ status: status }, { where: { id: id } });
             if (isRemoved) {
                 return true;
             } else {

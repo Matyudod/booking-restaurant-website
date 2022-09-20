@@ -61,6 +61,10 @@ module.exports = {
     typeOfPartyCreateValidation: {
         name: "string|min:1|max:255",
     },
+    tableCreateValidation: {
+        name: "string|min:1|max:255",
+        number_of_seat: "number|min:1",
+    },
     ticketCreateValidation: {
         customer_id: "number|min:1",
         type_party_id: "number|min:1",
@@ -106,5 +110,8 @@ module.exports = {
         ticket_id: "number|min:1",
         admin_id: "number|min:1",
         discount_id: "number|min:0",
+    },
+    customerIdValidation: {
+        customer_id: "number|min:1|default:0",
     },
 };

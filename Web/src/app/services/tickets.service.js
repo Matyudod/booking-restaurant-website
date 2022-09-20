@@ -25,37 +25,27 @@ class TicketService {
         }
     }
 
-    async getListWithCustomerID(customer_id, pagination, order) {
+    async getListWithCustomerID(customer_id) {
         try {
             let list = await this.model.findAndCountAll({
                 where: {
                     customer_id: customer_id,
                 },
-                order: [order],
-                limit: pagination.size,
-                offset: (pagination.page - 1) * pagination.size,
             });
-            list.page = pagination.page;
-            list.size = pagination.size;
             return list;
         } catch (err) {
             return null;
         }
     }
 
-    async getListPendingOfCustomer(customer_id, pagination, order) {
+    async getListPendingOfCustomer(customer_id) {
         try {
             let list = await this.model.findAndCountAll({
                 where: {
                     customer_id: customer_id,
                     payment_date: null,
                 },
-                order: [order],
-                limit: pagination.size,
-                offset: (pagination.page - 1) * pagination.size,
             });
-            list.page = pagination.page;
-            list.size = pagination.size;
             return list;
         } catch (err) {
             return null;
@@ -74,6 +64,23 @@ class TicketService {
             return list;
         } catch (err) {
             return null;
+        }
+    }
+    async payment(id) {
+        try {
+            let data = {
+                payment_date: new Date(),
+            };
+            let isUpdated = await this.model.update(data, {
+                where: { id: id, payment_date: null },
+            });
+            if (isUpdated) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            return false;
         }
     }
 

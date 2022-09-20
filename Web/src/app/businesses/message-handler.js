@@ -63,6 +63,10 @@ module.exports = {
         message: "Image is not found.",
         type_message: "error",
     },
+    paidMessage: {
+        message: "Bill is paid.",
+        type_message: "success_dialog",
+    },
     authError: {
         message: "Invalid or expired token provided.",
         type_message: "error",

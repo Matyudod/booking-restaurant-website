@@ -19,8 +19,8 @@ class MainIngredientService {
     async getById(id) {
         let status = true;
         try {
-            let table = await this.model.findOne({ where: { id: id, status: status } });
-            return table;
+            let result = await this.model.findOne({ where: { id: id, status: status } });
+            return result;
         } catch (err) {
             return null;
         }
