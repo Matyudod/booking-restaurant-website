@@ -1,0 +1,28 @@
+<mat-toolbar>
+    <span>{{title}}</span>
+    <span class="spacer" id="spacer"></span>
+    <button mat-button [matMenuTriggerFor]="orders">Ordered</button>
+    <mat-menu #orders="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="bookTable">Book Tables</button>
+    <mat-menu #bookTable="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="account">Account</button>
+    <mat-menu #account="matMenu">
+        <div mat-menu-item style="display: flex;">
+            <div id="user-avatar">
+                <mat-icon>person</mat-icon>
+            </div>
+            <div id="user-name">
+                Nguyen Tran Trung Quan
+            </div>
+        </div>
+        <button mat-menu-item>User Infomation</button>
+        <button mat-menu-item>Change Password</button>
+        <button mat-menu-item>Log out</button>
+    </mat-menu>
+</mat-toolbar>
