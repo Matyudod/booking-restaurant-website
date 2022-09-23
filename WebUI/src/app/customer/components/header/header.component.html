@@ -18,11 +18,11 @@
                 <mat-icon>person</mat-icon>
             </div>
             <div id="user-name">
-                Nguyen Tran Trung Quan
+                {{userInfo?.name}}
             </div>
         </div>
         <button mat-menu-item>User Infomation</button>
         <button mat-menu-item>Change Password</button>
-        <button mat-menu-item>Log out</button>
+        <button mat-menu-item routerLink="/login">Log out</button>
     </mat-menu>
 </mat-toolbar>
