@@ -74,12 +74,12 @@ class CommentController {
         try {
             let id = req.params.id ?? -1;
             let comment = {
-                bill_id: parseInt(req.body.name),
-                content: req.body.name,
-                point: parseInt(req.body.name),
+                bill_id: parseInt(req.body.bill_id),
+                content: req.body.content,
+                point: parseInt(req.body.point),
             };
             const v = new Validator();
-            let validationResponse = v.validate(comment, scheme.typeOfPartyCreateValidation);
+            let validationResponse = v.validate(comment, scheme.commentCreateValidation);
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
