@@ -4,6 +4,9 @@ sequelize model:generate --name <table_name> --attributes <column_1> : <type_col
 sequelize db:migrate 
 --make Migrate and Model
 
+--Seeder Data
+sequelize db:seed:all  
+
 --Users
 sequelize model:generate --name Users --attributes name:string, username:string, password:string, email:string, birthday:date, is_admin:boolean, status:integer, refreshToken:string
 
@@ -20,7 +23,7 @@ sequelize model:generate --name TypesOfParty --attributes name:string
 sequelize model:generate --name Foods --attributes  name:string, price:integer, image_url:string, status:boolean
 
 --MainIngredientDetails
-sequelize model:generate --name MainIngredientDetails --attributes food_id:integer, main_ingredient_id:integer, quantity:integer
+sequelize model:generate --name MainIngredientDetails --attributes food_id:integer, main_ingredient_id:integer, quantity:integer, unit:string
 
 
 --Tickets

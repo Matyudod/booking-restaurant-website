@@ -1,12 +1,18 @@
 <mat-toolbar>
-    <span>{{title}}</span>
+    <div class="title" routerLink="/customer"><img src="/assets/images/logo.png" class="logo">{{title}}</div>
     <span class="spacer" id="spacer"></span>
-    <button mat-button [matMenuTriggerFor]="orders">Ordered</button>
-    <mat-menu #orders="matMenu">
-        <button mat-menu-item>Item 1</button>
-        <button mat-menu-item>Item 2</button>
+    <button mat-button routerLink="/customer/menu">Menu</button>
+    <button mat-button [matMenuTriggerFor]="ordered">Cart</button>
+    <mat-menu #ordered="matMenu">
+        <button mat-menu-item routerLink="/customer/cart">
+            Cart
+            <span class="order-label" *ngIf="orderingCount > 0" [matBadge]="orderingCount">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+        </button>
+        <button mat-menu-item><span class="order-label">Order history</span></button>
     </mat-menu>
-    <button mat-button [matMenuTriggerFor]="bookTable">Book Tables</button>
+    <button mat-button [matMenuTriggerFor]="bookTable">Reserved Tables</button>
     <mat-menu #bookTable="matMenu">
         <button mat-menu-item>Item 1</button>
         <button mat-menu-item>Item 2</button>
@@ -23,6 +29,6 @@
         </div>
         <button mat-menu-item>User Infomation</button>
         <button mat-menu-item>Change Password</button>
-        <button mat-menu-item routerLink="/login">Log out</button>
+        <button mat-menu-item (click)="logout()">Log out</button>
     </mat-menu>
 </mat-toolbar>

@@ -38,15 +38,22 @@ class TicketService {
         }
     }
 
-    async getListPendingOfCustomer(customer_id) {
+    async getPendingOfCustomer(customer_id) {
         try {
-            let list = await this.model.findAndCountAll({
+            let ticket = await this.model.findOrCreate({
                 where: {
                     customer_id: customer_id,
                     payment_date: null,
                 },
+                defaults: {
+                    type_party_id: 0,
+                    table_id: 0,
+                    received_date: new Date(),
+                    customer_phone: "",
+                    customer_address: "",
+                },
             });
-            return list;
+            return ticket[0];
         } catch (err) {
             return null;
         }

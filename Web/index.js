@@ -8,7 +8,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, "src", "public")));
+//public file routers
+app.use(express.static("src/public/src"));
+
 app.use(
     express.urlencoded({
         limit: "50mb",

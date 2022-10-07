@@ -18,6 +18,7 @@ const {
 } = require("../services/index.service");
 
 const mainIngredientDetailService = new MainIngredientDetailService(models);
+const mainIngredientService = new MainIngredientService(models);
 class MainIngredientDetailController {
     async create(req, res) {
         try {
@@ -51,7 +52,47 @@ class MainIngredientDetailController {
             res.status(500).json(message.APIErrorServer);
         }
     }
-
+    async getListWithFoodID(req, res) {
+        try {
+            var data = [];
+            let foodId = {
+                id: parseInt(req.params.food_id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(foodId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let mainIngredientDetailOfFood = await mainIngredientDetailService.getByFoodId(
+                    foodId.id
+                );
+                if (mainIngredientDetailOfFood != null) {
+                    for (let element of mainIngredientDetailOfFood) {
+                        let detail = {
+                            quantity: element.quantity,
+                            unit: element.unit,
+                        };
+                        await mainIngredientService
+                            .getById(element.main_ingredient_id)
+                            .then((value) => {
+                                detail.name = value.name;
+                                data.push(detail);
+                            });
+                    }
+                    res.status(200).json(data);
+                } else {
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace(
+                        "{1}",
+                        "Main ingredient detail"
+                    );
+                    res.status(200).json(errorNotFound);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
     async update(req, res) {
         try {
             let id = req.params.id ?? -1;

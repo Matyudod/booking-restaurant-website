@@ -18,5 +18,12 @@ export class UserService {
   signup(user: IUserSignUp): Observable<IUserLoginResponse | IMessage> {
     return this.http.post<IUserLoginResponse | IMessage>(this.url + '/signup', user)
   }
+
+  getIdByToken(refreshToken: String): Observable<Number | IMessage> {
+    let token = {
+      refreshToken: refreshToken
+    }
+    return this.http.post<Number | IMessage>(this.url + '/get-id', token)
+  }
 }
 

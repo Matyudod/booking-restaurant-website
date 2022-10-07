@@ -16,6 +16,7 @@ export class CustomerComponent implements OnInit {
     this.userInfo = JSON.parse(<string>localStorage.getItem('userInfo')) as IUser;
     this.title = <string>localStorage.getItem('title') as String;
     localStorage.clear()
+    localStorage.setItem("SessionID", this.userInfo.refreshToken);
     if (this.userInfo == null) {
       this.router.navigate(['/login']);
     }

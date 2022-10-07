@@ -57,9 +57,9 @@ class OrderController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
-                let ticketList = await ticketService.getListWithTicketID(orderId.ticket_id);
-                if (ticketList != null) {
-                    res.status(200).json(ticketList);
+                let orderList = await orderService.getListWithTicketID(orderId.ticket_id);
+                if (orderList != null) {
+                    res.status(200).json(orderList);
                 } else {
                     res.status(500).json(message.APIErrorServer);
                 }

@@ -17,38 +17,56 @@ import { LoadingPanel } from 'src/app/services/loading/loading-panel';
   styleUrls: ['./login-view.component.scss']
 })
 export class LoginViewComponent implements OnInit {
-  title : any;
+  title: any;
 
-  username = new FormControl('',[
+  username = new FormControl('', [
     Validators.required,
   ]);
-  password = new FormControl('',[
+  password = new FormControl('', [
     Validators.required,
   ]);
   loginForm = new FormGroup({
     username: this.username,
     password: this.password,
   },);
-  private userService : UserService;
-  private loadingPanel : LoadingPanel;
-  private dialogService : DialogSevice;
-  constructor(http: HttpClient,dialog : MatDialog, private router: Router) { 
+  private userService: UserService;
+  private loadingPanel: LoadingPanel;
+  private dialogService: DialogSevice;
+  constructor(http: HttpClient, dialog: MatDialog, private router: Router) {
     this.userService = new UserService(http);
     this.loadingPanel = new LoadingPanel(dialog);
     this.dialogService = new DialogSevice(dialog);
   }
   ngOnInit(): void {
-    this.title = "Matuyd Restaurant";
+    this.title = localStorage.getItem('title');
+
+    let user = {
+      birthday: "1997-09-05T00:00:00.000Z",
+      createdAt: "2022-09-21T06:33:57.000Z",
+      email: "era@gmail.com",
+      id: 101,
+      is_admin: false,
+      name: "era",
+      password: "$2b$10$0a8j4Vw8tVWPG/HjFmhMOuOOhqLDJf84zAuyQFGxLmoVTbriN/oPm",
+      refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVyYXRvciIsImlhdCI6MTY2NDY3NDYyNiwiZXhwIjoxNjY0NzYxMDI2fQ.43ayBwG6s6tqbvdq9289AEwtJ4B1lRTSGEWukHeEM2g",
+      status: true,
+      updatedAt: "2022-09-25T22:46:11.000Z",
+      username: "erator"
+    }
+    localStorage.setItem('title', "Matuyd Restaurant");
+    localStorage.setItem('userInfo', JSON.stringify(user));
+    this.router.navigate(['/customer']);
+
   }
 
   onSubmit() {
     this.loadingPanel.show();
-    this.userService.login(<IUserLogin> this.loginForm.value).subscribe((user : IUserLoginResponse| IMessage | any)=>{
+    this.userService.login(<IUserLogin>this.loginForm.value).subscribe((user: IUserLoginResponse | IMessage | any) => {
       this.loadingPanel.hide();
-      if(user?.data){
+      if (user?.data) {
         this.dialogService.show(user?.message);
         localStorage.setItem('userInfo', JSON.stringify(user?.data));
-        if(user?.data.is_admin){
+        if (user?.data.is_admin) {
           this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/customer']);
@@ -58,5 +76,5 @@ export class LoginViewComponent implements OnInit {
       }
     });
   }
-  
+
 }

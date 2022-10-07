@@ -21,6 +21,7 @@ router.get("/admin-list", users.adminList);
 router.get("/customer-list", users.customerList);
 router.get("/detail/:id", users.detail);
 router.post("/login", users.loginHandler);
+router.post("/get-id", users.getIdByToken);
 router.post("/signup", users.signupHandler);
 router.put("/update_user_info", users.updateUserInfo);
 router.delete("/delete/:id", users.deleteUser);

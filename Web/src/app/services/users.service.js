@@ -44,6 +44,17 @@ class UserService {
         }
     }
 
+    async getByToken(refreshToken) {
+        try {
+            let user = await this.model.findOne({
+                where: { refreshToken: refreshToken, status: true },
+            });
+            return user;
+        } catch (err) {
+            return null;
+        }
+    }
+
     async getIdByUserLogin(username, password) {
         try {
             let user = await this.model.findOne({

@@ -1,0 +1,6 @@
+<h1 mat-dialog-title *ngIf="message == 'confirm_delete'">Do you want delete it?</h1>
+<h1 mat-dialog-title *ngIf="message == 'confirm_logout'">Do you want log out?</h1>
+<div mat-dialog-content class="dialog-content">
+    <button mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" mat-dialog-close="true">Yes</button>
+</div>

@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { SignUpViewComponent } from './views/sign-up-view/sign-up-view.component';
+import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
+import { FoodInfomationDailogComponent } from './components/food-infomation-dailog/food-infomation-dailog.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { SignUpViewComponent } from './views/sign-up-view/sign-up-view.component
     LoadingPanelComponent,
     LoginViewComponent,
     DialogComponent,
-    SignUpViewComponent
+    SignUpViewComponent,
+    DialogConfirmComponent,
+    FoodInfomationDailogComponent
   ],
   imports: [
     BrowserModule,

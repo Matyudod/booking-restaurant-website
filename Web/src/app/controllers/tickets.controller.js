@@ -51,6 +51,30 @@ class TicketController {
         }
     }
 
+    async getListPendingOfCustomer(req, res) {
+        try {
+            let customerId = {
+                id: parseInt(req.params.customer_id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(customerId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let ticket = await ticketService.getPendingOfCustomer(customerId.id);
+                if (ticket != null) {
+                    res.status(200).json(ticket);
+                } else {
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace("{1}", "Ticket");
+                    res.status(200).json(errorNotFound);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
     async getList(req, res) {
         try {
             let params = req.body;

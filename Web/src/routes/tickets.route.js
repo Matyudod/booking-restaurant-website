@@ -18,6 +18,7 @@ const {
 } = require("../app/controllers/index.controller");
 
 router.get("/pagination", tickets.getList);
+router.get("/get-pending/:customer_id", tickets.getListPendingOfCustomer);
 router.post("/create", tickets.create);
 router.put("/update/:id", tickets.update);
 router.delete("/delete/:id", tickets.delete);

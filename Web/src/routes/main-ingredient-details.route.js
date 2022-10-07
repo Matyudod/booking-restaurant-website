@@ -18,6 +18,7 @@ const {
 } = require("../app/controllers/index.controller");
 
 router.post("/create", mainingredientdetails.create);
+router.get("/get-list/:food_id", mainingredientdetails.getListWithFoodID);
 router.put("/update/:id", mainingredientdetails.update);
 router.delete("/delete/:id", mainingredientdetails.delete);
 
