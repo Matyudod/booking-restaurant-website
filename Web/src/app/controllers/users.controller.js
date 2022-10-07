@@ -142,7 +142,7 @@ class UserController {
 
     async customerList(req, res) {
         try {
-            let params = req.body;
+            let params = req.query;
             let is_admin = false;
             let pagination = {
                 page: parseInt(params.page) || 1,
