@@ -24,6 +24,19 @@ class OrderService {
             return null;
         }
     }
+    async getByTicketIDAndFoodID(orders) {
+        try {
+            let order = await this.model.findOne({
+                where: {
+                    food_id: orders.food_id,
+                    ticket_id: orders.ticket_id,
+                },
+            });
+            return order;
+        } catch (err) {
+            return null;
+        }
+    }
 
     async getListWithTicketID(ticket_id) {
         try {

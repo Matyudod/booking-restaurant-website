@@ -58,7 +58,6 @@ export class FoodInfomationDailogComponent implements OnInit {
     this.loadingPanel.show();
     this.orderService.order(<IOrder>this.orderForm.value).subscribe((result) => {
       this.loadingPanel.hide();
-      console.log(result);
     })
   }
 }

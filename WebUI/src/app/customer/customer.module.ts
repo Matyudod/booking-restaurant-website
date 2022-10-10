@@ -14,6 +14,7 @@ import { GridImageComponent } from './components/grid-image/grid-image.component
 import { GridContentComponent } from './components/grid-content/grid-content.component';
 import { MenuPageComponent } from './views/menu-page/menu-page.component';
 import { CartPageComponent } from './views/cart-page/cart-page.component';
+import { CartHistoryPageComponent } from './views/cart-history-page/cart-history-page.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { CartPageComponent } from './views/cart-page/cart-page.component';
     GridContentComponent,
     MenuPageComponent,
     CartPageComponent,
+    CartHistoryPageComponent,
   ],
   imports: [
     CommonModule,

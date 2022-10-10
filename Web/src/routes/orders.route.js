@@ -18,6 +18,7 @@ const {
 } = require("../app/controllers/index.controller");
 
 router.get("/get-order/:ticket_id", orders.getListWithTicketID);
+router.get("/get-order-deteail", orders.getDetail);
 router.post("/create", orders.create);
 router.put("/update/:id", orders.update);
 router.delete("/delete/:id", orders.delete);

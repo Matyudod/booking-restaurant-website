@@ -10,12 +10,13 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
         </button>
-        <button mat-menu-item><span class="order-label">Order history</span></button>
+        <button mat-menu-item routerLink="/customer/cart-history"><span class="order-label">Order
+                history</span></button>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="bookTable">Reserved Tables</button>
     <mat-menu #bookTable="matMenu">
-        <button mat-menu-item>Item 1</button>
-        <button mat-menu-item>Item 2</button>
+        <button mat-menu-item>Reserve a Table</button>
+        <button mat-menu-item>Reserved Tables</button>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="account">Account</button>
     <mat-menu #account="matMenu">

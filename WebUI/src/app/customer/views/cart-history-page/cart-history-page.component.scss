@@ -1,0 +1,34 @@
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .cart-container {
+    width: 95%;
+    min-height: 800px;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: palegoldenrod;
+    h1 {
+      margin: 50px auto;
+      font-size: 40px;
+      font-weight: 500;
+    }
+    .cart-infomation {
+      display: flex;
+      width: 90%;
+      padding: 2.5%;
+      background: whitesmoke;
+      .order-1 {
+        min-width: 910px;
+        flex-grow: 1;
+        mat-list {
+          padding: 10px 20px;
+          border: 2px solid palegoldenrod;
+        }
+      }
+    }
+  }
+}

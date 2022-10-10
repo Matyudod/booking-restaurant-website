@@ -14,6 +14,7 @@ import { UserService } from 'src/app/services/http/user.service';
 import { DialogSevice } from 'src/app/services/loading/dialog';
 import { FoodDialogSevice } from 'src/app/services/loading/food_dialog';
 import { LoadingPanel } from 'src/app/services/loading/loading-panel';
+import { CustomerComponent } from '../../customer.component';
 
 @Component({
   selector: 'app-menu-page',
@@ -52,8 +53,13 @@ export class MenuPageComponent implements OnInit {
   selectItem(food: any) {
     this.mainIngredientDetailService.getList(food.id).subscribe((data) => {
       this.foodDetail = data;
-      this.userService.getIdByToken(this.userToken).subscribe((userID) => {
-        this.foodDialogSevice.show(food, this.foodDetail, parseInt(userID.toString()))
+      this.userService.getIdByToken(this.userToken).subscribe(async (userID) => {
+        let value = await this.foodDialogSevice.show(food, this.foodDetail, parseInt(userID.toString()));
+        value.subscribe((result: any) => {
+          if (result) {
+
+          }
+        });
       })
     });
   }

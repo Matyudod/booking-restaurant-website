@@ -18,6 +18,23 @@ export class OrderService {
     return this.http.get<any>(this.url + '/get-order/' + ticket_id);
   }
 
+  getOrderWithTicketAndFodd(ticket_id: Number, food_id: Number): Observable<IOrder | any> {
+    let params = new HttpParams();
+    params = params.append("ticket_id", <number>ticket_id);
+    params = params.append("food_id", <number>food_id);
+    return this.http.get<IOrder>(this.url + '/get-order-deteail/', { params: params });
+  }
+  updateOrder(order_id: Number, quantity: Number, ticket_id: Number, food_id: Number) {
+    let orderUpdate = {
+      ticket_id: ticket_id,
+      food_id: food_id,
+      quantity: quantity
+    }
+    return this.http.put<IMessage>(this.url + '/update/' + order_id, orderUpdate);
+  }
+  deteleFoodNotOrder(order_id: Number): Observable<IMessage | any> {
+    return this.http.delete<IMessage>(this.url + '/delete/' + order_id);
+  }
 
 }
 

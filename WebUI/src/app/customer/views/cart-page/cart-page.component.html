@@ -15,7 +15,7 @@
                             <mat-icon>close</mat-icon>
                             <h2>
                                 <input type="number" name="quantity" id="quantity" [value]="foodItem.quantity" min="1"
-                                    max="100">
+                                    max="100" (change)="changeQuantity($event, foodItem.food.id)">
                             </h2>
                         </div>
                         <h2 class="total">
@@ -24,6 +24,7 @@
                         <mat-checkbox [checked]="foodChecked[i] ? 'true' : 'false'"
                             (change)="foodChecked[i] = !foodChecked[i]">
                         </mat-checkbox>
+                        <mat-icon (click)="deleteIteminCart(foodItem.food.id)">delete</mat-icon>
                     </div>
                 </div>
             </div>
@@ -70,7 +71,8 @@
                             </mat-form-field>
                             <div class="button-fields">
                                 <button mat-raised-button color="accent">Reserve a Table</button>
-                                <button mat-raised-button type="submit" color="primary" [disabled]="!orderForm.valid">
+                                <button mat-raised-button type="submit" color="primary"
+                                    [disabled]="!orderForm.valid && foodChecked.length > 0">
                                     Deliver to home
                                 </button>
                             </div>

@@ -13,6 +13,12 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { PublicFileService } from 'src/app/services/http/public-file.service';
 import { ICity } from 'src/app/models/city';
 import { IDistrict } from 'src/app/models/district';
+import { ITicketCreate } from 'src/app/models/ticket-create';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogSevice } from 'src/app/services/loading/dialog';
+import { LoadingPanel } from 'src/app/services/loading/loading-panel';
+import { Router } from '@angular/router';
+import { DialogConfirmSevice } from 'src/app/services/loading/dialog_confirm';
 
 @Component({
   selector: 'app-cart-page',
@@ -59,7 +65,13 @@ export class CartPageComponent implements OnInit {
     countAll: 0,
     rows: []
   };
-  constructor(http: HttpClient) {
+  private dialogService: DialogSevice;
+  private loadingPanel: LoadingPanel;
+  private confirmDialog: DialogConfirmSevice;
+  constructor(http: HttpClient, dialog: MatDialog, private router: Router) {
+    this.dialogService = new DialogSevice(dialog);
+    this.loadingPanel = new LoadingPanel(dialog);
+    this.confirmDialog = new DialogConfirmSevice(dialog);
     this.foodService = new FoodService(http);
     this.orderService = new OrderService(http);
     this.publicFileService = new PublicFileService(http);
@@ -69,6 +81,10 @@ export class CartPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.foodList = {
+      countAll: 0,
+      rows: []
+    };
     this.userService.getIdByToken(this.userToken).subscribe((userID) => {
       this.userId = userID;
       this.getListOrdering();
@@ -98,7 +114,6 @@ export class CartPageComponent implements OnInit {
       });
     });
 
-    console.log(this.orderForm);
   }
 
   formatNumber(price: Number, quantity: Number) {
@@ -118,18 +133,70 @@ export class CartPageComponent implements OnInit {
     })
   }
 
+
+  async deleteIteminCart(food_id: Number) {
+    let isConfirm = await this.confirmDialog.show("confirm_delete");
+    isConfirm.subscribe((result: any) => {
+      if (result) {
+        this.loadingPanel.show();
+        let ticket_id = this.foodList.rows[0].ticket_id ?? 0;
+        this.orderService.getOrderWithTicketAndFodd(ticket_id, food_id).subscribe((orderItem) => {
+          this.orderService.deteleFoodNotOrder(orderItem.id).subscribe(() => {
+            this.ngOnInit();
+            this.loadingPanel.hide();
+          });
+        });
+      }
+    });
+  }
+
+  changeQuantity($event: any, food_id: Number) {
+    if ($event.target.value > 0) {
+      this.loadingPanel.show();
+      let ticket_id = this.foodList.rows[0].ticket_id ?? 0;
+      this.orderService.getOrderWithTicketAndFodd(ticket_id, food_id).subscribe((orderItem) => {
+        this.orderService.updateOrder(orderItem.id, $event.target.value, ticket_id, food_id).subscribe(() => {
+          this.ngOnInit();
+          this.loadingPanel.hide();
+        });
+      });
+    }
+
+  }
   onSubmit() {
-    console.log(this.orderForm.value);
+    this.loadingPanel.show();
     let ticket_id = this.foodList.rows[0].ticket_id;
-    let ticket = {
+    let ticket: ITicketCreate = {
       customer_id: this.userId,
       type_party_id: 0,
       table_id: 0,
       received_date: new Date(),
       payment_date: new Date(),
-      customer_phone: this.orderForm.value.phone,
+      customer_phone: <String>this.orderForm.value.phone,
       customer_address: this.orderForm.value.address + ", " + this.orderForm.value.ward,
     }
+    let foodNotOrderList: Number[] = [];
+    this.foodChecked.forEach((element, index) => {
+      if (!element) {
+        foodNotOrderList.push(this.foodList.rows[index].food.id);
+      }
+    });
+    foodNotOrderList.forEach((food) => {
+      this.orderService.getOrderWithTicketAndFodd(ticket_id, food).subscribe((order) => {
+        if (order != null)
+          this.orderService.deteleFoodNotOrder(order.id).subscribe();
+      });
+
+    });
+    this.ticketService.order(ticket_id, ticket).subscribe(async (ticketRes) => {
+      this.loadingPanel.hide();
+      let closed = await this.dialogService.show(ticketRes);
+      closed.subscribe((value: any) => {
+        this.ngOnInit();
+      })
+    });
+
+
   }
 
 }

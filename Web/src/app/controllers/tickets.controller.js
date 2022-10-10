@@ -74,7 +74,29 @@ class TicketController {
             res.status(500).json(message.APIErrorServer);
         }
     }
-
+    async getListOrderdOfCustomer(req, res) {
+        try {
+            let customerId = {
+                id: parseInt(req.params.customer_id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(customerId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let ticket = await ticketService.getListWithCustomerID(customerId.id);
+                if (ticket != null) {
+                    res.status(200).json(ticket);
+                } else {
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace("{1}", "Ticket");
+                    res.status(200).json(errorNotFound);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
     async getList(req, res) {
         try {
             let params = req.body;
@@ -124,7 +146,8 @@ class TicketController {
                 type_party_id: parseInt(req.body.type_party_id),
                 table_id: parseInt(req.body.table_id),
                 received_date: new Date(req.body.received_date),
-                payment_date: req.body.payment_date ?? new Date(req.body.payment_date),
+                payment_date:
+                    req.body.payment_date != null ? new Date(req.body.payment_date) : null,
                 customer_phone: req.body.customer_phone,
                 customer_address: req.body.customer_address,
             };

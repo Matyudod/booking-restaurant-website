@@ -67,7 +67,7 @@ module.exports = {
     },
     ticketCreateValidation: {
         customer_id: "number|min:1",
-        type_party_id: "number|min:1",
+        type_party_id: "number|min:0",
         table_id: "number|min:0",
         received_date: "date",
         payment_date: "date|optional",

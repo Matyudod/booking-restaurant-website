@@ -25,7 +25,8 @@
                         <input matInput type="number" min="1" max="20" formControlName="quantity">
                         <mat-hint *ngIf="!quantity.valid">Quantity is required!</mat-hint>
                     </mat-form-field>
-                    <button mat-raised-button color="primary" [disabled]="!orderForm.valid" type="submit">Add to
+                    <button mat-raised-button color="primary" [disabled]="!orderForm.valid" type="submit"
+                        mat-dialog-close="true">Add to
                         cart</button>
                 </form>
             </div>

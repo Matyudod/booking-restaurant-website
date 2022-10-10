@@ -1,3 +1,5 @@
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 class TicketService {
     constructor(models) {
         this.model = models.Tickets;
@@ -30,6 +32,9 @@ class TicketService {
             let list = await this.model.findAndCountAll({
                 where: {
                     customer_id: customer_id,
+                    payment_date: {
+                        [Op.not]: null,
+                    },
                 },
             });
             return list;

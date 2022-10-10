@@ -68,6 +68,19 @@ class OrderController {
             res.status(500).json(message.APIErrorServer);
         }
     }
+    async getDetail(req, res) {
+        try {
+            let detailOrder = {
+                ticket_id: req.query.ticket_id != null ? parseInt(req.query.ticket_id) : -1,
+                food_id: req.query.food_id != null ? parseInt(req.query.food_id) : -1,
+            };
+
+            let order = await orderService.getByTicketIDAndFoodID(detailOrder);
+            res.status(200).json(order);
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
 
     async update(req, res) {
         try {
