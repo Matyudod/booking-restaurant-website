@@ -24,7 +24,7 @@ module.exports = {
         is_reverse_sort: "boolean|optional|default:false",
     },
     idValidation: {
-        id: "number|min:1|default:0",
+        id: "number|min:0|default:0",
     },
     statusValidation: {
         status: "number|min:-1|max:5",

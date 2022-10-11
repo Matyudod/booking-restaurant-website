@@ -7,6 +7,7 @@ import { ICartItem } from 'src/app/models/cart-item';
 import { ICity } from 'src/app/models/city';
 import { IFood } from 'src/app/models/food';
 import { IOrder } from 'src/app/models/order';
+import { ITicket } from 'src/app/models/ticket';
 import { ITicketCreate } from 'src/app/models/ticket-create';
 import { ITicketOrderdList } from 'src/app/models/ticket-ordered-list';
 import { FoodService } from 'src/app/services/http/food.service';
@@ -17,6 +18,9 @@ import { UserService } from 'src/app/services/http/user.service';
 import { DialogSevice } from 'src/app/services/loading/dialog';
 import { DialogConfirmSevice } from 'src/app/services/loading/dialog_confirm';
 import { LoadingPanel } from 'src/app/services/loading/loading-panel';
+import { IUser } from '../../../models/user';
+import { TableService } from '../../../services/http/table.service';
+import { TypePartyService } from '../../../services/http/type-of-party.service';
 
 @Component({
   selector: 'app-cart-history-page',
@@ -28,8 +32,10 @@ export class CartHistoryPageComponent implements OnInit {
   private userId: Number | any;
   private userToken: String;
   private foodService: FoodService;
+  private typePartyService: TypePartyService;
   private userService: UserService;
   private orderService: OrderService;
+  private tableService: TableService;
   private publicFileService: PublicFileService;
   private ticketService: TicketService;
 
@@ -45,8 +51,10 @@ export class CartHistoryPageComponent implements OnInit {
     this.dialogService = new DialogSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
+    this.typePartyService = new TypePartyService(http);
     this.foodService = new FoodService(http);
     this.orderService = new OrderService(http);
+    this.tableService = new TableService(http);
     this.publicFileService = new PublicFileService(http);
     this.ticketService = new TicketService(http);
     this.userService = new UserService(http);
@@ -66,10 +74,26 @@ export class CartHistoryPageComponent implements OnInit {
 
   getOderedList() {
     this.ticketService.getGetOrderedTicket(this.userId).subscribe((ticketOrderedList) => {
-      ticketOrderedList.forEach((ticketOrderedItem: void, index: number) => {
-
+      let promise = new Promise((resolveOuter) => {
+        ticketOrderedList.rows.forEach((ticketOrdered: any, index: Number) => {
+          resolveOuter(this.userService.getInfo(ticketOrdered.customer_id).subscribe((user: any) => {
+            ticketOrderedList.rows[<number>index].customer = user;
+            delete ticketOrderedList.rows[<number>index].customer_id;
+            resolveOuter(this.tableService.getTableInfo(ticketOrdered.table_id).subscribe(table => {
+              ticketOrderedList.rows[<number>index].table = table;
+              delete ticketOrderedList.rows[<number>index].table_id;
+              resolveOuter(this.typePartyService.getTableInfo(ticketOrdered.type_party_id).subscribe((type_party) => {
+                ticketOrderedList.rows[<number>index].type_party = type_party;
+                delete ticketOrderedList.rows[<number>index].type_party_id;
+              }))
+            }));
+          }));
+        });
       });
-      this.orderedList = ticketOrderedList;
+      promise.then(() => {
+        this.orderedList = ticketOrderedList;
+
+      })
     })
   }
 

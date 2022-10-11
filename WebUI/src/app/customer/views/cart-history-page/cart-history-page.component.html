@@ -6,7 +6,11 @@
                 <h1>Shoping cart</h1>
                 <mat-list role="list">
                     <mat-list-item role="listitem" *ngFor="let orderedItem of orderedList.rows; let i = index">
-                        Test
+                        <div class="table">{{orderedItem.table.name}}</div>
+                        <div class="type-party">{{orderedItem.type_party?.name}}</div>
+                        <div class="received-date">{{orderedItem.received_date}}</div>
+                        <div class="phone">{{orderedItem.customer_phone}}</div>
+                        <div class="address">{{orderedItem.customer_address}}</div>
                     </mat-list-item>
                 </mat-list>
             </div>

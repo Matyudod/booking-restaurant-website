@@ -18,6 +18,7 @@ const {
 } = require("../app/controllers/index.controller");
 
 router.get("/pagination", typesofparty.getList);
+router.get("/detail/:id", typesofparty.getDetail);
 router.post("/create", typesofparty.create);
 router.put("/update/:id", typesofparty.update);
 router.delete("/delete/:id", typesofparty.delete);

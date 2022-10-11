@@ -1,5 +1,5 @@
-import { ITicket } from './ticket';
+import { ITicketInfo } from './ticket-info';
 export interface ITicketOrderdList {
     count: Number,
-    rows: ITicket[]
+    rows: ITicketInfo[]
 }

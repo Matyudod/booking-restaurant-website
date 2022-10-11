@@ -19,8 +19,8 @@ export class TicketService {
     return this.http.put<ITicket | IMessage>(this.url + '/update/' + id, ticket);
   }
 
-  getGetOrderedTicket(userId: Number): Observable<ITicketOrderdList | IMessage | any> {
-    return this.http.get<ITicketOrderdList | IMessage>(this.url + '/get-orderd/' + userId);
+  getGetOrderedTicket(userId: Number): Observable<IMessage | any> {
+    return this.http.get<IMessage | any>(this.url + '/get-orderd/' + userId);
   }
 }
 

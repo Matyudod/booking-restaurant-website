@@ -25,7 +25,7 @@ function route(app) {
     app.use(urlDefault + "order", orders);
     app.use(urlDefault + "table", tables);
     app.use(urlDefault + "ticket", tickets);
-    app.use(urlDefault + "types-of-party", typesofparty);
+    app.use(urlDefault + "type-of-party", typesofparty);
     app.use(urlDefault + "user", users);
 }
 module.exports = route;

@@ -18,6 +18,7 @@ const {
 } = require("../app/controllers/index.controller");
 
 router.get("/pagination", tables.getList);
+router.get("/detail/:id", tables.getDetail);
 router.post("/create", tables.create);
 router.put("/update/:id", tables.update);
 router.delete("/delete/:id", tables.delete);

@@ -6,6 +6,7 @@ import { Observable, throwError } from 'rxjs';
 import { ConfigService } from "src/app/configs/config.service";
 import { IMessage } from 'src/app/models/message';
 import { IUserSignUp } from 'src/app/models/user-signup';
+import { IUser } from '../../models/user';
 @Injectable()
 export class UserService {
   constructor(private http: HttpClient) { }
@@ -24,6 +25,10 @@ export class UserService {
       refreshToken: refreshToken
     }
     return this.http.post<Number | IMessage>(this.url + '/get-id', token)
+  }
+
+  getInfo(user_id: Number): Observable<IUser | IMessage> {
+    return this.http.get<IUser | IMessage>(this.url + '/detail/' + user_id);
   }
 }
 

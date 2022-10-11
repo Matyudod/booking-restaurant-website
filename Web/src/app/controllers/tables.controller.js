@@ -47,6 +47,30 @@ class TableController {
         }
     }
 
+    async getDetail(req, res) {
+        try {
+            let id = req.params.id ?? -1;
+            let tableId = {
+                id: parseInt(id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(tableId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let tableInfo = await tableService.getById(tableId.id);
+                if (tableInfo != null) {
+                    res.status(200).json(tableInfo);
+                } else {
+                    let error = message.errorNotFound;
+                    error.message = error.message.replace("{1}", "Table");
+                    res.status(400).json(message.errorNotFound);
+                }
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
     async getList(req, res) {
         try {
             let params = req.body;

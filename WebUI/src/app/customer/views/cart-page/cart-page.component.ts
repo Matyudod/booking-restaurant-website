@@ -163,6 +163,13 @@ export class CartPageComponent implements OnInit {
     }
 
   }
+  countFoodCheck() {
+    let count = 0;
+    this.foodChecked.forEach((value: Boolean) => {
+      if (!value) count++;
+    });
+    return count == this.foodChecked.length;
+  }
   onSubmit() {
     this.loadingPanel.show();
     let ticket_id = this.foodList.rows[0].ticket_id;
