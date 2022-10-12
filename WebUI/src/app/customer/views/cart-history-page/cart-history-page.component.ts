@@ -7,6 +7,7 @@ import { ICartItem } from 'src/app/models/cart-item';
 import { ICity } from 'src/app/models/city';
 import { IFood } from 'src/app/models/food';
 import { IOrder } from 'src/app/models/order';
+import { ITable } from 'src/app/models/table';
 import { ITicket } from 'src/app/models/ticket';
 import { ITicketCreate } from 'src/app/models/ticket-create';
 import { ITicketOrderdList } from 'src/app/models/ticket-ordered-list';
@@ -79,7 +80,7 @@ export class CartHistoryPageComponent implements OnInit {
           resolveOuter(this.userService.getInfo(ticketOrdered.customer_id).subscribe((user: any) => {
             ticketOrderedList.rows[<number>index].customer = user;
             delete ticketOrderedList.rows[<number>index].customer_id;
-            resolveOuter(this.tableService.getTableInfo(ticketOrdered.table_id).subscribe(table => {
+            resolveOuter(this.tableService.getTableInfo(ticketOrdered.table_id).subscribe((table: ITable) => {
               ticketOrderedList.rows[<number>index].table = table;
               delete ticketOrderedList.rows[<number>index].table_id;
               resolveOuter(this.typePartyService.getTableInfo(ticketOrdered.type_party_id).subscribe((type_party) => {

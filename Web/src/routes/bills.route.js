@@ -19,6 +19,7 @@ const {
 
 router.get("/get-with-customer/:customer_id", bills.getListWithCustomerId);
 router.get("/get-pending-of-customer/:customer_id", bills.getListPendingOfCustomer);
+router.get("/is-paid/:id", bills.isPaid);
 router.get("/detail/:id", bills.detail);
 router.post("/create", bills.create);
 router.put("/payment/:id", bills.payment);

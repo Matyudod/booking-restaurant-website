@@ -32,6 +32,7 @@ class TicketService {
             let list = await this.model.findAndCountAll({
                 where: {
                     customer_id: customer_id,
+                    table_id: 0,
                     payment_date: {
                         [Op.not]: null,
                     },
@@ -48,6 +49,7 @@ class TicketService {
             let ticket = await this.model.findOrCreate({
                 where: {
                     customer_id: customer_id,
+                    table_id: 0,
                     payment_date: null,
                 },
                 defaults: {
@@ -64,9 +66,15 @@ class TicketService {
         }
     }
 
-    async getList(pagination, order) {
+    async getListOrder(pagination, order) {
         try {
             let list = await this.model.findAndCountAll({
+                where: {
+                    table_id: 0,
+                    payment_date: {
+                        [Op.not]: null,
+                    },
+                },
                 order: [order],
                 limit: pagination.size,
                 offset: (pagination.page - 1) * pagination.size,
@@ -78,6 +86,30 @@ class TicketService {
             return null;
         }
     }
+
+    async getListReserveTable(pagination, order) {
+        try {
+            let list = await this.model.findAndCountAll({
+                where: {
+                    table_id: {
+                        [Op.ne]: 0,
+                    },
+                    payment_date: {
+                        [Op.not]: null,
+                    },
+                },
+                order: [order],
+                limit: pagination.size,
+                offset: (pagination.page - 1) * pagination.size,
+            });
+            list.page = pagination.page;
+            list.size = pagination.size;
+            return list;
+        } catch (err) {
+            return null;
+        }
+    }
+
     async payment(id) {
         try {
             let data = {

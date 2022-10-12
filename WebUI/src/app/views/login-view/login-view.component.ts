@@ -40,22 +40,22 @@ export class LoginViewComponent implements OnInit {
   ngOnInit(): void {
     this.title = localStorage.getItem('title');
 
-    let user = {
-      birthday: "1997-09-05T00:00:00.000Z",
-      createdAt: "2022-09-21T06:33:57.000Z",
-      email: "era@gmail.com",
-      id: 101,
-      is_admin: false,
-      name: "era",
-      password: "$2b$10$0a8j4Vw8tVWPG/HjFmhMOuOOhqLDJf84zAuyQFGxLmoVTbriN/oPm",
-      refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVyYXRvciIsImlhdCI6MTY2NDY3NDYyNiwiZXhwIjoxNjY0NzYxMDI2fQ.43ayBwG6s6tqbvdq9289AEwtJ4B1lRTSGEWukHeEM2g",
-      status: true,
-      updatedAt: "2022-09-25T22:46:11.000Z",
-      username: "erator"
-    }
+    // let user = {
+    //   birthday: "1997-09-05T00:00:00.000Z",
+    //   createdAt: "2022-09-21T06:33:57.000Z",
+    //   email: "era@gmail.com",
+    //   id: 101,
+    //   is_admin: false,
+    //   name: "era",
+    //   password: "$2b$10$0a8j4Vw8tVWPG/HjFmhMOuOOhqLDJf84zAuyQFGxLmoVTbriN/oPm",
+    //   refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVyYXRvciIsImlhdCI6MTY2NDY3NDYyNiwiZXhwIjoxNjY0NzYxMDI2fQ.43ayBwG6s6tqbvdq9289AEwtJ4B1lRTSGEWukHeEM2g",
+    //   status: true,
+    //   updatedAt: "2022-09-25T22:46:11.000Z",
+    //   username: "erator"
+    // }
     localStorage.setItem('title', "Matuyd Restaurant");
-    localStorage.setItem('userInfo', JSON.stringify(user));
-    this.router.navigate(['/customer']);
+    // localStorage.setItem('userInfo', JSON.stringify(user));
+    // this.router.navigate(['/customer']);
 
   }
 
