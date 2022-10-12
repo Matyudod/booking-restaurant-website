@@ -5,6 +5,7 @@ export interface ITicketInfo {
     customer_address: String,
     customer: IUser,
     customer_phone: String,
+    status: Number,
     id: Number,
     payment_date: Date | any,
     received_date: Date

@@ -22,6 +22,7 @@ import { LoadingPanel } from 'src/app/services/loading/loading-panel';
 import { IUser } from '../../../models/user';
 import { TableService } from '../../../services/http/table.service';
 import { TypePartyService } from '../../../services/http/type-of-party.service';
+import { BillService } from '../../../services/http/bill.service';
 
 @Component({
   selector: 'app-cart-history-page',
@@ -37,6 +38,7 @@ export class CartHistoryPageComponent implements OnInit {
   private userService: UserService;
   private orderService: OrderService;
   private tableService: TableService;
+  private billService: BillService;
   private publicFileService: PublicFileService;
   private ticketService: TicketService;
 
@@ -55,8 +57,10 @@ export class CartHistoryPageComponent implements OnInit {
     this.typePartyService = new TypePartyService(http);
     this.foodService = new FoodService(http);
     this.orderService = new OrderService(http);
+    this.orderService = new OrderService(http);
     this.tableService = new TableService(http);
     this.publicFileService = new PublicFileService(http);
+    this.billService = new BillService(http);
     this.ticketService = new TicketService(http);
     this.userService = new UserService(http);
     this.userToken = <string>localStorage.getItem('SessionID') as string;
@@ -86,6 +90,19 @@ export class CartHistoryPageComponent implements OnInit {
               resolveOuter(this.typePartyService.getTableInfo(ticketOrdered.type_party_id).subscribe((type_party) => {
                 ticketOrderedList.rows[<number>index].type_party = type_party;
                 delete ticketOrderedList.rows[<number>index].type_party_id;
+                resolveOuter(
+                  this.billService.getByTicketId(ticketOrdered.id).subscribe((bill: any) => {
+                    if (bill == null) {
+                      ticketOrderedList.rows[<number>index].status = 0;
+                    } else {
+                      if (bill.status) {
+                        ticketOrderedList.rows[<number>index].status = 1;
+                      } else {
+                        ticketOrderedList.rows[<number>index].status = 0;
+                      }
+                    }
+                  })
+                )
               }))
             }));
           }));
@@ -93,7 +110,6 @@ export class CartHistoryPageComponent implements OnInit {
       });
       promise.then(() => {
         this.orderedList = ticketOrderedList;
-
       })
     })
   }

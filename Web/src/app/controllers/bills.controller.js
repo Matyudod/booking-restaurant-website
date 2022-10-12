@@ -141,15 +141,15 @@ class BillController {
     async isPaid(req, res) {
         try {
             let id = req.params.id ?? -1;
-            let billId = {
+            let ticketId = {
                 id: parseInt(id),
             };
             const v = new Validator();
-            let validationResponse = v.validate(billId, scheme.idValidation);
+            let validationResponse = v.validate(ticketId, scheme.idValidation);
             if (validationResponse !== true) {
                 res.status(400).json(message.errorIdFieldIsNull);
             } else {
-                let bill = await billService.getById(billId.id);
+                let bill = await billService.getByTicketId(ticketId.id);
                 res.status(200).json(bill);
             }
         } catch (err) {
