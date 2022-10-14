@@ -20,6 +20,7 @@ section {
       display: flex;
       width: 90%;
       padding: 2.5%;
+      margin: 100px;
       background: whitesmoke;
       .order-1 {
         min-width: 910px;
@@ -27,6 +28,38 @@ section {
         mat-list {
           padding: 10px 20px;
           border: 2px solid palegoldenrod;
+          .list-item-header {
+            font-weight: 500;
+          }
+          mat-list-item {
+            border-bottom: 1px solid palegoldenrod;
+            .table {
+              min-width: 10%;
+            }
+            .type-party {
+              min-width: 15%;
+            }
+            .received-date {
+              min-width: 10%;
+            }
+            .phone {
+              min-width: 10%;
+            }
+            .address {
+              flex-grow: 1;
+            }
+            .status {
+              min-width: 10%;
+            }
+            .action {
+              min-width: 5%;
+              text-align: center;
+              mat-icon {
+                color: red;
+                cursor: pointer;
+              }
+            }
+          }
         }
       }
     }

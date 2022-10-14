@@ -19,6 +19,7 @@ import { DialogSevice } from 'src/app/services/loading/dialog';
 import { LoadingPanel } from 'src/app/services/loading/loading-panel';
 import { Router } from '@angular/router';
 import { DialogConfirmSevice } from 'src/app/services/loading/dialog_confirm';
+import { ITicket } from '../../../models/ticket';
 
 @Component({
   selector: 'app-cart-page',
@@ -97,14 +98,14 @@ export class CartPageComponent implements OnInit {
     })
   }
   getListOrdering() {
-    this.ticketService.getGetPendingTicket(this.userId).subscribe((ticket) => {
+    this.ticketService.getGetPendingTicket(this.userId).subscribe((ticket: ITicket) => {
       this.orderService.getListWithTicketId(ticket.id).subscribe((orderingList) => {
         orderingList.rows.forEach((orderingItem: IOrder, index: number) => {
           this.foodService.getById(orderingItem.food_id).subscribe((food) => {
             this.foodList.countAll = orderingList.count;
             let foodItem: ICartItem = {
               quantity: orderingItem.quantity,
-              ticket_id: orderingItem.ticket_id,
+              ticket: ticket,
               food: <IFood>food
             }
             this.foodChecked.push(false);
@@ -139,7 +140,7 @@ export class CartPageComponent implements OnInit {
     isConfirm.subscribe((result: any) => {
       if (result) {
         this.loadingPanel.show();
-        let ticket_id = this.foodList.rows[0].ticket_id ?? 0;
+        let ticket_id = this.foodList.rows[0].ticket.id ?? 0;
         this.orderService.getOrderWithTicketAndFodd(ticket_id, food_id).subscribe((orderItem) => {
           this.orderService.deteleFoodNotOrder(orderItem.id).subscribe(() => {
             this.ngOnInit();
@@ -153,7 +154,7 @@ export class CartPageComponent implements OnInit {
   changeQuantity($event: any, food_id: Number) {
     if ($event.target.value > 0) {
       this.loadingPanel.show();
-      let ticket_id = this.foodList.rows[0].ticket_id ?? 0;
+      let ticket_id = this.foodList.rows[0].ticket.id ?? 0;
       this.orderService.getOrderWithTicketAndFodd(ticket_id, food_id).subscribe((orderItem) => {
         this.orderService.updateOrder(orderItem.id, $event.target.value, ticket_id, food_id).subscribe(() => {
           this.ngOnInit();
@@ -166,13 +167,13 @@ export class CartPageComponent implements OnInit {
   countFoodCheck() {
     let count = 0;
     this.foodChecked.forEach((value: Boolean) => {
-      if (!value) count++;
+      if (value) count++;
     });
-    return count == this.foodChecked.length;
+    return count == 0;
   }
   onSubmit() {
     this.loadingPanel.show();
-    let ticket_id = this.foodList.rows[0].ticket_id;
+    let ticket_id = this.foodList.rows[0].ticket.id;
     let ticket: ITicketCreate = {
       customer_id: this.userId,
       type_party_id: 0,

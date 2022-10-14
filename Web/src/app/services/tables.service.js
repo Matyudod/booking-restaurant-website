@@ -1,3 +1,5 @@
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 class TableService {
     constructor(models) {
         this.model = models.Tables;
@@ -32,6 +34,9 @@ class TableService {
             let list = await this.model.findAndCountAll({
                 where: {
                     status: status,
+                    id: {
+                        [Op.ne]: 0,
+                    },
                 },
                 order: [order],
                 limit: pagination.size,

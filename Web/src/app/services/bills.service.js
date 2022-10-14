@@ -9,7 +9,7 @@ class BillService {
             if (created) {
                 return bill;
             } else {
-                return null;
+                return bill;
             }
         } catch (err) {
             return null;
@@ -73,7 +73,10 @@ class BillService {
     async delete(id) {
         let status = false;
         try {
-            let isRemoved = await this.model.destroy({ where: { id: id, status: status } });
+            let isRemoved = await this.model.update(
+                { status: status },
+                { where: { id: id, status: true } }
+            );
             if (isRemoved) {
                 return true;
             } else {

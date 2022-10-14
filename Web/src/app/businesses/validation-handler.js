@@ -71,8 +71,8 @@ module.exports = {
         table_id: "number|min:0",
         received_date: "date",
         payment_date: "date|optional",
-        customer_phone: "string|min:1|max:255",
-        customer_address: "string|min:1|max:255",
+        customer_phone: "string|min:0|max:255",
+        customer_address: "string|min:0|max:255",
     },
     commentCreateValidation: {
         bill_id: "number|min:1",
@@ -113,7 +113,7 @@ module.exports = {
     },
     billCreateValidation: {
         ticket_id: "number|min:1",
-        admin_id: "number|min:1",
+        admin_id: "number|min:0",
         discount_id: "number|min:0",
     },
     customerIdValidation: {

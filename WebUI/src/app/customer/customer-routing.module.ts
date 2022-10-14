@@ -5,6 +5,8 @@ import { CartHistoryPageComponent } from './views/cart-history-page/cart-history
 import { CartPageComponent } from './views/cart-page/cart-page.component';
 import { HomePageComponent } from './views/home-page/home-page.component';
 import { MenuPageComponent } from './views/menu-page/menu-page.component';
+import { ReserveTableViewComponent } from './views/reserve-table-view/reserve-table-view.component';
+import { UserInfomationPageComponent } from './views/user-infomation-page/user-infomation-page.component';
 
 const routes: Routes = [
   {
@@ -14,6 +16,14 @@ const routes: Routes = [
       {
         path: 'menu',
         component: MenuPageComponent
+      },
+      {
+        path: 'user-infomation',
+        component: UserInfomationPageComponent
+      },
+      {
+        path: 'reserse-table',
+        component: ReserveTableViewComponent
       },
       {
         path: 'cart-history',

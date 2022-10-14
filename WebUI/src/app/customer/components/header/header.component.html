@@ -15,7 +15,7 @@
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="bookTable">Reserved Tables</button>
     <mat-menu #bookTable="matMenu">
-        <button mat-menu-item>Reserve a Table</button>
+        <button mat-menu-item routerLink="/customer/reserse-table">Reserve a Table</button>
         <button mat-menu-item>Reserved Tables</button>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="account">Account</button>
@@ -28,7 +28,7 @@
                 {{userInfo?.name}}
             </div>
         </div>
-        <button mat-menu-item>User Infomation</button>
+        <button mat-menu-item routerLink="/customer/user-infomation">User Infomation</button>
         <button mat-menu-item>Change Password</button>
         <button mat-menu-item (click)="logout()">Log out</button>
     </mat-menu>

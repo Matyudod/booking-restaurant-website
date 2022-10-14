@@ -41,31 +41,16 @@ class BillController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
-                let detailBill = await orderService.getListWithTicketID(bill.ticket_id);
-                if (detailBill != null && detailBill.length > 0) {
-                    let sum_total = 0;
-                    let food;
-                    await detailBill.forEach(async (detail) => {
-                        food = await foodService.getById(detail.food_id);
-                        if (food != null) {
-                            sum_total += food.price * detail.quatity;
-                        } else {
-                            res.status(500).json(message.APIErrorServer);
-                            return;
-                        }
+                let detailBill = await orderService.getSumTotalOfTicket(bill.ticket_id);
+                bill.sum_total = parseInt(detailBill[0].sum_total);
+                let newBill = await billService.create(bill);
+                if (newBill != null) {
+                    let error = message.createSuccessful;
+                    error.message = error.message.replace("{1}", "Bill");
+                    res.status(200).json({
+                        data: newBill,
+                        message: error,
                     });
-                    bill.sum_total = sum_total;
-                    let newBill = await billService.create(bill);
-                    if (newBill != null) {
-                        let error = message.createSuccessful;
-                        error.message = error.message.replace("{1}", "Bill");
-                        res.status(200).json({
-                            data: newBill,
-                            message: error,
-                        });
-                    } else {
-                        res.status(500).json(message.APIErrorServer);
-                    }
                 } else {
                     res.status(500).json(message.APIErrorServer);
                 }

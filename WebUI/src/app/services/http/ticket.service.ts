@@ -22,5 +22,16 @@ export class TicketService {
   getGetOrderedTicket(userId: Number): Observable<IMessage | any> {
     return this.http.get<IMessage | any>(this.url + '/get-orderd/' + userId);
   }
+
+  reserveTable(ticket: any): Observable<IMessage | any> {
+
+    let tiket_id = ticket.id;
+    delete ticket.id;
+    delete ticket.createdAt;
+    delete ticket.updatedAt;
+    delete ticket.payment_date;
+    ticket.received_date = new Date();
+    return this.http.put<IMessage | any>(this.url + '/update/' + tiket_id, ticket);
+  }
 }
 

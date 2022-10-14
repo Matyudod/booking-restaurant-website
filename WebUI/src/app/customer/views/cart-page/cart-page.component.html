@@ -3,7 +3,8 @@
         <h1>Cart</h1>
         <div class="cart-infomation">
             <div class="order-1">
-                <h1>Shoping cart</h1>
+                <h1 *ngIf="foodList.rows.length && foodList.rows[0].ticket.table_id == 0">Shoping cart</h1>
+                <h1 *ngIf="!(foodList.rows.length && foodList.rows[0].ticket.table_id == 0)">Order for table</h1>
                 <div class="list" *ngFor="let foodItem of foodList.rows; let i = index">
                     <div class="infomation">
                         <img [src]="foodItem.food.image_url" [alt]="foodItem.food.name">
@@ -28,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="order-2">
+            <div class="order-2" *ngIf="foodList.rows.length && foodList.rows[0].ticket.table_id == 0">
                 <div class="delivery-container">
                     <h2 class="delivery-header">
                         Deliver to home
@@ -70,9 +71,10 @@
                                 <mat-hint *ngIf="!address.valid">Address is required!</mat-hint>
                             </mat-form-field>
                             <div class="button-fields">
-                                <button mat-raised-button color="accent">Reserve a Table</button>
+                                <button mat-raised-button type="button" color="accent"
+                                    routerLink="/customer/reserse-table">Reserve a Table</button>
                                 <button mat-raised-button type="submit" color="primary"
-                                    [disabled]="!orderForm.valid && foodChecked.length > 0">
+                                    [disabled]="!orderForm.valid && countFoodCheck()">
                                     Deliver to home
                                 </button>
                             </div>

@@ -1,3 +1,5 @@
+const { QueryTypes } = require("sequelize");
+const { sequelize } = require("../../../models");
 class OrderService {
     constructor(models) {
         this.model = models.Orders;
@@ -45,6 +47,19 @@ class OrderService {
                     ticket_id: ticket_id,
                 },
             });
+            return list;
+        } catch (err) {
+            return null;
+        }
+    }
+
+    async getSumTotalOfTicket(ticket_id) {
+        try {
+            let list = await sequelize.query(
+                "SELECT SUM(f.price * o.quantity) sum_total FROM Orders o JOIN Foods f ON (f.id = o.food_id) WHERE o.ticket_id = " +
+                    ticket_id,
+                { type: QueryTypes.SELECT }
+            );
             return list;
         } catch (err) {
             return null;

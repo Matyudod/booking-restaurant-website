@@ -49,7 +49,6 @@ class TicketService {
             let ticket = await this.model.findOrCreate({
                 where: {
                     customer_id: customer_id,
-                    table_id: 0,
                     payment_date: null,
                 },
                 defaults: {

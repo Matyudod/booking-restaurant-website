@@ -23,6 +23,7 @@ import { IUser } from '../../../models/user';
 import { TableService } from '../../../services/http/table.service';
 import { TypePartyService } from '../../../services/http/type-of-party.service';
 import { BillService } from '../../../services/http/bill.service';
+import { IBillResponse } from 'src/app/models/bill-response';
 
 @Component({
   selector: 'app-cart-history-page',
@@ -98,7 +99,7 @@ export class CartHistoryPageComponent implements OnInit {
                       if (bill.status) {
                         ticketOrderedList.rows[<number>index].status = 1;
                       } else {
-                        ticketOrderedList.rows[<number>index].status = 0;
+                        ticketOrderedList.rows[<number>index].status = -1;
                       }
                     }
                   })
@@ -113,5 +114,34 @@ export class CartHistoryPageComponent implements OnInit {
       })
     })
   }
-
+  renderStatus(status: Number) {
+    if (status == 0) {
+      return "Pending";
+    } else if (status == 1) {
+      return "Completed";
+    } else {
+      return "Canceled";
+    }
+  }
+  renderDate(date: String | any) {
+    if (date != undefined) {
+      let datetime = new Date(date);
+      return datetime.toLocaleDateString()
+    }
+    else return '';
+  }
+  renderTime(date: String | any) {
+    if (date != undefined) {
+      let datetime = new Date(date);
+      return datetime.toLocaleTimeString()
+    }
+    else return '';
+  }
+  cancelTicket(ticket_id: Number) {
+    this.billService.createBill(ticket_id).subscribe((bill: IBillResponse) => {
+      this.billService.cancel(bill.data.id).subscribe(() => {
+        this.getOderedList();
+      });
+    })
+  }
 }
