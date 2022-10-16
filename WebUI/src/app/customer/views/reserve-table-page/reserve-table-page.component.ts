@@ -16,15 +16,13 @@ import { TableService } from '../../../services/http/table.service';
 import { ITableList } from '../../../models/table-list';
 import { ICartItem } from 'src/app/models/cart-item';
 import { ITicket } from '../../../models/ticket';
-import { async } from '@angular/core/testing';
 import { IMessage } from '../../../models/message';
-
 @Component({
-  selector: 'app-reserve-table-view',
-  templateUrl: './reserve-table-view.component.html',
-  styleUrls: ['./reserve-table-view.component.scss']
+  selector: 'app-reserve-table-page',
+  templateUrl: './reserve-table-page.component.html',
+  styleUrls: ['./reserve-table-page.component.scss']
 })
-export class ReserveTableViewComponent implements OnInit {
+export class ReserveTablePageComponent implements OnInit {
 
   tableId = new FormControl('', [
     Validators.required,
@@ -100,6 +98,8 @@ export class ReserveTableViewComponent implements OnInit {
     });
 
   }
+
+
   async onSubmit() {
     let message: String = 'confirm_reserve';
     let isClose = await this.confirmDialog.show(message);
@@ -115,5 +115,6 @@ export class ReserveTableViewComponent implements OnInit {
       }
     })
   }
+
 
 }

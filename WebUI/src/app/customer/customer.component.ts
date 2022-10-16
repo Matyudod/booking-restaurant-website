@@ -4,6 +4,7 @@ import { IUser } from '../models/user';
 import { OrderService } from 'src/app/services/http/order.service';
 import { TicketService } from 'src/app/services/http/ticket.service';
 import { HttpClient } from '@angular/common/http';
+import { UserService } from '../services/http/user.service';
 
 @Component({
   selector: 'app-customer',
@@ -19,10 +20,12 @@ export class CustomerComponent implements OnInit {
   title: any = "";
   private ticketService: TicketService;
   private orderService: OrderService;
+  private userService: UserService;
   constructor(private router: Router, http: HttpClient) {
 
     this.orderService = new OrderService(http);
     this.ticketService = new TicketService(http);
+    this.userService = new UserService(http);
     this.userInfo = JSON.parse(<string>localStorage.getItem('userInfo')) as IUser;
     this.title = <string>localStorage.getItem('title') as String;
     localStorage.clear()
@@ -34,12 +37,16 @@ export class CustomerComponent implements OnInit {
       // see also 
       if (val instanceof NavigationEnd) {
         this.getQuantityOfFoodsOrdering();
+        this.getUserInfo();
       }
     });
   }
-  changeComponent(value: any) {
-    // this.getQuantityOfFoodsOrdering();
-    console.log("a");
+  getUserInfo() {
+    this.userService.getIdByToken(this.userInfo.refreshToken).subscribe((userID: any) => {
+      this.userService.getInfo(userID).subscribe((userDetail: IUser | any) => {
+        this.userInfo = userDetail;
+      })
+    })
   }
   ngOnInit(): void {
   }

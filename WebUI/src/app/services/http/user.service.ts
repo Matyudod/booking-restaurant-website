@@ -30,5 +30,8 @@ export class UserService {
   getInfo(user_id: Number): Observable<IUser | IMessage> {
     return this.http.get<IUser | IMessage>(this.url + '/detail/' + user_id);
   }
+  updateInfo(userData: any): Observable<IMessage> {
+    return this.http.put<IMessage>(this.url + '/update_user_info', userData);
+  }
 }
 

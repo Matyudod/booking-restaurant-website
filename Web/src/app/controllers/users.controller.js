@@ -232,7 +232,7 @@ class UserController {
             };
 
             const v = new Validator();
-            let validationResponse = v.validate(user, validate);
+            let validationResponse = v.validate(user, scheme.userUpdateValidation);
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {

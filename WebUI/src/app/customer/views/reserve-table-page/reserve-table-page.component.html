@@ -7,7 +7,7 @@
             }"></ng-image-slider>
         </div>
         <form [formGroup]="reserveForm" (ngSubmit)="onSubmit()" class="reserve-form">
-            <div class="form-body" *ngIf="ticket.table_id == 0">
+            <div class="form-body" *ngIf="ticket?.table_id == 0">
                 <mat-form-field appearance="fill">
                     <mat-label>Chose seater table</mat-label>
                     <mat-select formControlName="table_id">
@@ -24,10 +24,10 @@
                     <mat-datepicker #picker2 color="primary"></mat-datepicker>
                 </mat-form-field>
             </div>
-            <h1 *ngIf="ticket.table_id != 0">Go to Menu now! </h1>
+            <h1 *ngIf="ticket?.table_id != 0">Go to Menu now! </h1>
             <div class="button-fields">
                 <button mat-raised-button type="button" color="accent" routerLink="/customer/menu">Order Now</button>
-                <button mat-raised-button type="submit" color="primary" *ngIf="ticket.table_id == 0"
+                <button mat-raised-button type="submit" color="primary" *ngIf="ticket?.table_id == 0"
                     [disabled]="!reserveForm.valid">
                     Reserve a Table
                 </button>

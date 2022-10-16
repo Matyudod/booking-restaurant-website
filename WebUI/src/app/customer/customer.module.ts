@@ -15,9 +15,9 @@ import { GridContentComponent } from './components/grid-content/grid-content.com
 import { MenuPageComponent } from './views/menu-page/menu-page.component';
 import { CartPageComponent } from './views/cart-page/cart-page.component';
 import { CartHistoryPageComponent } from './views/cart-history-page/cart-history-page.component';
-import { ReserveTableViewComponent } from './views/reserve-table-view/reserve-table-view.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { UserInfomationPageComponent } from './views/user-infomation-page/user-infomation-page.component';
+import { ReserveTablePageComponent } from './views/reserve-table-page/reserve-table-page.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +31,8 @@ import { UserInfomationPageComponent } from './views/user-infomation-page/user-i
     MenuPageComponent,
     CartPageComponent,
     CartHistoryPageComponent,
-    ReserveTableViewComponent,
     UserInfomationPageComponent,
+    ReserveTablePageComponent,
   ],
   imports: [
     CommonModule,
