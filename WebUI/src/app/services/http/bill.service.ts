@@ -4,13 +4,14 @@ import { Observable, throwError } from 'rxjs';
 import { ConfigService } from "src/app/configs/config.service";
 import { IMessage } from 'src/app/models/message';
 import { IBillResponse } from 'src/app/models/bill-response';
+import { IBill } from 'src/app/models/bill';
 @Injectable()
 export class BillService {
   constructor(private http: HttpClient) { }
   url = new ConfigService().url + '/api/bill';
 
-  getByTicketId(ticket_id: Number): Observable<IMessage | any> {
-    return this.http.get<IMessage>(this.url + '/is-paid/' + ticket_id);
+  getByTicketId(ticket_id: Number): Observable<IBill | IMessage | any> {
+    return this.http.get<IBill | IMessage>(this.url + '/is-paid/' + ticket_id);
   }
 
   createBill(ticket_id: Number): Observable<IBillResponse | IMessage | any> {

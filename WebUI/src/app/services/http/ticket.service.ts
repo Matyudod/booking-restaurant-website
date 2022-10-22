@@ -23,15 +23,25 @@ export class TicketService {
     return this.http.get<IMessage | any>(this.url + '/get-orderd/' + userId);
   }
 
-  reserveTable(ticket: any): Observable<IMessage | any> {
+  getGetReservedTicket(userId: Number): Observable<IMessage | any> {
+    return this.http.get<IMessage | any>(this.url + '/get-reserved/' + userId);
+  }
 
+  reserveTable(ticket: any): Observable<IMessage | any> {
     let tiket_id = ticket.id;
     delete ticket.id;
     delete ticket.createdAt;
     delete ticket.updatedAt;
     delete ticket.payment_date;
-    ticket.received_date = new Date();
     return this.http.put<IMessage | any>(this.url + '/update/' + tiket_id, ticket);
+  }
+
+  paid(ticketId: Number): Observable<IMessage | any> {
+    return this.http.put<IMessage | any>(this.url + '/update-payment-date/' + ticketId, {});
+  }
+
+  getByTicketId(ticketId: Number): Observable<ITicket | IMessage | any> {
+    return this.http.get<ITicket | IMessage | any>(this.url + '/get/' + ticketId);
   }
 }
 

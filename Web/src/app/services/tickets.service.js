@@ -27,7 +27,7 @@ class TicketService {
         }
     }
 
-    async getListWithCustomerID(customer_id) {
+    async getListOrderWithCustomerID(customer_id) {
         try {
             let list = await this.model.findAndCountAll({
                 where: {
@@ -35,6 +35,22 @@ class TicketService {
                     table_id: 0,
                     payment_date: {
                         [Op.not]: null,
+                    },
+                },
+            });
+            return list;
+        } catch (err) {
+            return null;
+        }
+    }
+
+    async getListReservedWithCustomerID(customer_id) {
+        try {
+            let list = await this.model.findAndCountAll({
+                where: {
+                    customer_id: customer_id,
+                    table_id: {
+                        [Op.ne]: 0,
                     },
                 },
             });

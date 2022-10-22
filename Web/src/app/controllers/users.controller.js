@@ -100,7 +100,7 @@ class UserController {
 
     async adminList(req, res) {
         try {
-            let params = req.body;
+            let params = req.query;
             let is_admin = true;
             let pagination = {
                 page: parseInt(params.page) || 1,
@@ -222,6 +222,28 @@ class UserController {
             res.status(500).json(message.APIErrorServer);
         }
     }
+
+    async updatePassword(req, res) {
+        try {
+            let id = parseInt(req.body.id);
+            let user = {
+                password: bcrypt.hashSync(req.body.password, 10),
+            };
+            let isUpdated = await userService.update(id, user);
+            if (!isUpdated) {
+                let errorNotFound = message.errorNotFound;
+                errorNotFound.message = errorNotFound.message.replace("{1}", "User");
+                res.status(200).json(errorNotFound);
+            } else {
+                let updateSuccessful = message.updateSuccessful;
+                updateSuccessful.message = updateSuccessful.message.replace("{1}", "User");
+                res.status(200).json(updateSuccessful);
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
     async updateUserInfo(req, res) {
         try {
             let user = {

@@ -41,21 +41,20 @@ export class LoginViewComponent implements OnInit {
     this.title = localStorage.getItem('title');
 
     let user = {
-      birthday: "1997-09-05T00:00:00.000Z",
-      createdAt: "2022-09-21T06:33:57.000Z",
-      email: "era@gmail.com",
-      id: 101,
-      is_admin: false,
-      name: "era",
-      password: "$2b$10$0a8j4Vw8tVWPG/HjFmhMOuOOhqLDJf84zAuyQFGxLmoVTbriN/oPm",
-      refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVyYXRvciIsImlhdCI6MTY2NTU3MDQ0NSwiZXhwIjoxNjY1NjU2ODQ1fQ.K_wW6arGtbm2eCDmybwLiiO9isPS3_bnem16vJ50gtU",
+      birthday: "1997-09-03T00:00:00.000Z",
+      createdAt: "2022-10-21T13:55:50.000Z",
+      email: "administrator@matyud.com",
+      id: 103,
+      is_admin: true,
+      name: "Administrator",
+      password: "$2b$10$A/SPPv35pIiE0xavEr8yWeeTixxoKHbvwuwdjIdUMwiMnptCEDyJu",
+      refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluaXN0cmF0b3IiLCJpYXQiOjE2NjYzNjE2MjAsImV4cCI6MTY2NjQ0ODAyMH0.l3brHDoFNxoceYC8NCeOLqxWjN81oMrXZlVtF7Nj3lA",
       status: true,
-      updatedAt: "2022-09-25T22:46:11.000Z",
-      username: "erator"
+      updatedAt: "2022-10-21T13:57:24.000Z",
+      username: "administrator",
     }
-    localStorage.setItem('title', "Matuyd Restaurant");
     localStorage.setItem('userInfo', JSON.stringify(user));
-    this.router.navigate(['/customer']);
+    this.router.navigate(['/admin']);
 
   }
 
@@ -65,8 +64,8 @@ export class LoginViewComponent implements OnInit {
       this.loadingPanel.hide();
       if (user?.data) {
         this.dialogService.show(user?.message);
-        localStorage.setItem('userInfo', JSON.stringify(user?.data));
-        if (user?.data.is_admin) {
+        localStorage.setItem('userInfo', JSON.stringify(user.data));
+        if (user.data.is_admin) {
           this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/customer']);

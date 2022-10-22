@@ -18,6 +18,9 @@ import { CartHistoryPageComponent } from './views/cart-history-page/cart-history
 import { NgImageSliderModule } from 'ng-image-slider';
 import { UserInfomationPageComponent } from './views/user-infomation-page/user-infomation-page.component';
 import { ReserveTablePageComponent } from './views/reserve-table-page/reserve-table-page.component';
+import { ReserveHistoryPageComponent } from './views/reserve-history-page/reserve-history-page.component';
+import { CommentDialogComponent } from './components/comment-dialog/comment-dialog.component';
+import { ChangePasswordPageComponent } from './views/change-password-page/change-password-page.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { ReserveTablePageComponent } from './views/reserve-table-page/reserve-ta
     CartHistoryPageComponent,
     UserInfomationPageComponent,
     ReserveTablePageComponent,
+    ReserveHistoryPageComponent,
+    CommentDialogComponent,
+    ChangePasswordPageComponent,
   ],
   imports: [
     CommonModule,

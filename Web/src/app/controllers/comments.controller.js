@@ -56,13 +56,13 @@ class CommentController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorIdFieldIsNull);
             } else {
-                let comment = await commentService.getByBillId(commentWithBillId.id);
+                let comment = await commentService.getByBillId(commentWithBillId.bill_id);
                 if (comment != null) {
                     res.status(200).json(comment);
                 } else {
                     let error = message.errorNotFound;
                     error.message = error.message.replace("{1}", "Comment");
-                    res.status(400).json(message.errorNotFound);
+                    res.status(200).json(message.errorNotFound);
                 }
             }
         } catch (error) {

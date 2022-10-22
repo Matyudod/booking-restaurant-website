@@ -27,6 +27,9 @@ export class FoodService {
   getById(id: Number): Observable<IFood | IMessage> {
     return this.http.get<IFood | IMessage>(this.url + '/detail/' + id);
   }
+  delete(foodId: Number): Observable<IMessage> {
+    return this.http.delete<IMessage>(this.url + '/delete/' + foodId, {});
+  }
 
 }
 

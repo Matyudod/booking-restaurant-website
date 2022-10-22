@@ -12,6 +12,9 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { SignUpViewComponent } from './views/sign-up-view/sign-up-view.component';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 import { FoodInfomationDailogComponent } from './components/food-infomation-dailog/food-infomation-dailog.component';
+import { DetailTicketDialogComponent } from './components/detail-ticket-dialog/detail-ticket-dialog.component';
+import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+import { FoodDialogComponent } from './components/food-dialog/food-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { FoodInfomationDailogComponent } from './components/food-infomation-dail
     DialogComponent,
     SignUpViewComponent,
     DialogConfirmComponent,
-    FoodInfomationDailogComponent
+    FoodInfomationDailogComponent,
+    DetailTicketDialogComponent,
+    PageNotFoundComponent,
+    FoodDialogComponent
   ],
   imports: [
     BrowserModule,

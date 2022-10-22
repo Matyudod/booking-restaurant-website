@@ -24,6 +24,13 @@ import { TableService } from '../../../services/http/table.service';
 import { TypePartyService } from '../../../services/http/type-of-party.service';
 import { BillService } from '../../../services/http/bill.service';
 import { IBillResponse } from 'src/app/models/bill-response';
+import { CommentService } from '../../../services/http/comment.service';
+import { IComment } from '../../../models/comment';
+import { IMessage } from '../../../models/message';
+import { DialogCommentSevice } from '../../../services/loading/dialog_comment';
+import { async } from '@angular/core/testing';
+import { IBill } from 'src/app/models/bill';
+import { DialogFoodDetailSevice } from 'src/app/services/loading/dialog_detail_ticket';
 
 @Component({
   selector: 'app-cart-history-page',
@@ -35,6 +42,7 @@ export class CartHistoryPageComponent implements OnInit {
   private userId: Number | any;
   private userToken: String;
   private foodService: FoodService;
+  private commentService: CommentService;
   private typePartyService: TypePartyService;
   private userService: UserService;
   private orderService: OrderService;
@@ -51,13 +59,17 @@ export class CartHistoryPageComponent implements OnInit {
   private dialogService: DialogSevice;
   private loadingPanel: LoadingPanel;
   private confirmDialog: DialogConfirmSevice;
+  private foodDetailDialog: DialogFoodDetailSevice;
+  private commentDialog: DialogCommentSevice;
   constructor(http: HttpClient, dialog: MatDialog, private router: Router) {
     this.dialogService = new DialogSevice(dialog);
+    this.foodDetailDialog = new DialogFoodDetailSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
+    this.commentDialog = new DialogCommentSevice(dialog);
     this.typePartyService = new TypePartyService(http);
     this.foodService = new FoodService(http);
-    this.orderService = new OrderService(http);
+    this.commentService = new CommentService(http);
     this.orderService = new OrderService(http);
     this.tableService = new TableService(http);
     this.publicFileService = new PublicFileService(http);
@@ -92,16 +104,34 @@ export class CartHistoryPageComponent implements OnInit {
                 ticketOrderedList.rows[<number>index].type_party = type_party;
                 delete ticketOrderedList.rows[<number>index].type_party_id;
                 resolveOuter(
-                  this.billService.getByTicketId(ticketOrdered.id).subscribe((bill: any) => {
+                  this.billService.getByTicketId(ticketOrdered.id).subscribe((bill: IBill) => {
+                    ticketOrderedList.rows[<number>index].bill = bill;
                     if (bill == null) {
                       ticketOrderedList.rows[<number>index].status = 0;
+                      ticketOrderedList.rows[<number>index].comment = null;
                     } else {
                       if (bill.status) {
                         ticketOrderedList.rows[<number>index].status = 1;
+                        this.commentService.getCommentWithBillId(bill.id).subscribe((comment: IComment | IMessage | any) => {
+                          if (comment.message != undefined) {
+                            ticketOrderedList.rows[<number>index].comment = {
+                              id: 0,
+                              bill_id: 0,
+                              content: '',
+                              point: 0,
+                              createdAt: new Date(),
+                              updatedAt: new Date()
+                            };
+                          } else {
+                            ticketOrderedList.rows[<number>index].comment = comment;
+                          }
+                        })
                       } else {
                         ticketOrderedList.rows[<number>index].status = -1;
+                        ticketOrderedList.rows[<number>index].comment = null;
                       }
                     }
+
                   })
                 )
               }))
@@ -137,11 +167,30 @@ export class CartHistoryPageComponent implements OnInit {
     }
     else return '';
   }
+  renderScore(comment: IComment | any) {
+    return comment != null ? 'Score: ' + comment.point : '';
+  }
+  renderComment(comment: IComment | any) {
+    return comment != null ? comment.content : '';
+  }
   cancelTicket(ticket_id: Number) {
     this.billService.createBill(ticket_id).subscribe((bill: IBillResponse) => {
       this.billService.cancel(bill.data.id).subscribe(() => {
         this.getOderedList();
       });
     })
+  }
+  showCommentDialog(ticket_id: Number) {
+    this.billService.getByTicketId(ticket_id).subscribe((bill: IBill) => {
+      console.log(bill);
+      this.commentDialog.show(bill.id).then((value) => {
+        value.subscribe(() => {
+          this.ngOnInit();
+        })
+      })
+    })
+  }
+  openDetail(ticketId: Number) {
+    this.foodDetailDialog.show(ticketId);
   }
 }

@@ -51,7 +51,31 @@ class TicketController {
         }
     }
 
-    async getListPendingOfCustomer(req, res) {
+    async getById(req, res) {
+        try {
+            let ticketId = {
+                id: parseInt(req.params.id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(ticketId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let ticket = await ticketService.getById(ticketId.id);
+                if (ticket != null) {
+                    res.status(200).json(ticket);
+                } else {
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace("{1}", "Ticket");
+                    res.status(200).json(errorNotFound);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async getPendingOfCustomer(req, res) {
         try {
             let customerId = {
                 id: parseInt(req.params.customer_id),
@@ -84,7 +108,31 @@ class TicketController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorIdFieldIsNull);
             } else {
-                let ticket = await ticketService.getListWithCustomerID(customerId.id);
+                let ticket = await ticketService.getListOrderWithCustomerID(customerId.id);
+                if (ticket != null) {
+                    res.status(200).json(ticket);
+                } else {
+                    let errorNotFound = message.errorNotFound;
+                    errorNotFound.message = errorNotFound.message.replace("{1}", "Ticket");
+                    res.status(200).json(errorNotFound);
+                }
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async getListReservedOfCustomer(req, res) {
+        try {
+            let customerId = {
+                id: parseInt(req.params.customer_id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(customerId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let ticket = await ticketService.getListReservedWithCustomerID(customerId.id);
                 if (ticket != null) {
                     res.status(200).json(ticket);
                 } else {
@@ -211,7 +259,26 @@ class TicketController {
             res.status(500).json(message.APIErrorServer);
         }
     }
-
+    async updatePaymentDate(req, res) {
+        try {
+            let id = req.params.id ?? -1;
+            let ticket = {
+                payment_date: new Date(),
+            };
+            let isUpdated = await ticketService.update(id, ticket);
+            if (!isUpdated) {
+                let errorNotFound = message.errorNotFound;
+                errorNotFound.message = errorNotFound.message.replace("{1}", "Ticket");
+                res.status(200).json(errorNotFound);
+            } else {
+                let updateSuccessful = message.updateSuccessful;
+                updateSuccessful.message = updateSuccessful.message.replace("{1}", "Ticket");
+                res.status(200).json(updateSuccessful);
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
     async delete(req, res) {
         try {
             let id = req.params.id ?? -1;

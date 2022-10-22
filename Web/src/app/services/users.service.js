@@ -1,4 +1,5 @@
 const bcrypt = new require("bcrypt");
+const { Op } = require("sequelize");
 class UserService {
     constructor(models) {
         this.model = models.Users;
@@ -82,6 +83,7 @@ class UserService {
                 where: {
                     is_admin: is_admin,
                     status: status,
+                    id: { [Op.gt]: 0 },
                 },
                 order: [order],
                 limit: pagination.size,

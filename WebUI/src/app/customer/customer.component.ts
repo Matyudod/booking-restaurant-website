@@ -26,11 +26,18 @@ export class CustomerComponent implements OnInit {
     this.orderService = new OrderService(http);
     this.ticketService = new TicketService(http);
     this.userService = new UserService(http);
-    this.userInfo = JSON.parse(<string>localStorage.getItem('userInfo')) as IUser;
-    this.title = <string>localStorage.getItem('title') as String;
+    if (localStorage.getItem('userInfo') !== null)
+      this.userInfo = JSON.parse(<string>localStorage.getItem('userInfo')) as IUser;
+    this.title = "Matuyd Restaurant";
     localStorage.clear()
-    localStorage.setItem("SessionID", this.userInfo.refreshToken);
-    if (this.userInfo == null) {
+    if (this.userInfo !== null) {
+      if (!this.userInfo.is_admin) {
+        localStorage.setItem("SessionID", this.userInfo.refreshToken);
+      } else {
+        this.router.navigate(['/login']);
+      }
+    }
+    else {
       this.router.navigate(['/login']);
     }
     router.events.subscribe((val) => {
@@ -42,11 +49,12 @@ export class CustomerComponent implements OnInit {
     });
   }
   getUserInfo() {
-    this.userService.getIdByToken(this.userInfo.refreshToken).subscribe((userID: any) => {
-      this.userService.getInfo(userID).subscribe((userDetail: IUser | any) => {
-        this.userInfo = userDetail;
+    if (this.userInfo !== null)
+      this.userService.getIdByToken(this.userInfo.refreshToken).subscribe((userID: any) => {
+        this.userService.getInfo(userID).subscribe((userDetail: IUser | any) => {
+          this.userInfo = userDetail;
+        })
       })
-    })
   }
   ngOnInit(): void {
   }

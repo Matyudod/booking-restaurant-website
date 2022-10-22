@@ -24,6 +24,7 @@ router.post("/login", users.loginHandler);
 router.post("/get-id", users.getIdByToken);
 router.post("/signup", users.signupHandler);
 router.put("/update_user_info", users.updateUserInfo);
+router.put("/change-password", users.updatePassword);
 router.delete("/delete/:id", users.deleteUser);
 
 module.exports = router;

@@ -9,7 +9,7 @@ export class MainIngredientDetailService {
   constructor(private http: HttpClient) { }
   url = new ConfigService().url + '/api/main-ingredient-detail';
 
-  getList(food_id: number) {
+  getList(food_id: number | Number) {
     return this.http.get<IMainIngredientDetail[] | IMessage>(this.url + '/get-list/' + food_id);
   }
 
