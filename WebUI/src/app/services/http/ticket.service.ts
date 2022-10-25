@@ -6,6 +6,7 @@ import { IMessage } from 'src/app/models/message';
 import { ITicket } from 'src/app/models/ticket';
 import { ITicketCreate } from 'src/app/models/ticket-create';
 import { ITicketOrderdList } from 'src/app/models/ticket-ordered-list';
+import { IPagination } from 'src/app/models/pagination';
 @Injectable()
 export class TicketService {
   constructor(private http: HttpClient) { }
@@ -25,6 +26,32 @@ export class TicketService {
 
   getGetReservedTicket(userId: Number): Observable<IMessage | any> {
     return this.http.get<IMessage | any>(this.url + '/get-reserved/' + userId);
+  }
+
+  getGetOrderedListForAdmin(pagination: IPagination): Observable<IMessage | any> {
+    let params = new HttpParams();
+    if (pagination.page != null)
+      params = params.append("page", pagination.page);
+    if (pagination.size != null)
+      params = params.append("size", pagination.size);
+    if (pagination.field != null)
+      params = params.append("field", pagination.field);
+    if (pagination.is_reverse_sort != null)
+      params = params.append("is_reverse_sort", pagination.is_reverse_sort);
+    return this.http.get<IMessage | any>(this.url + '/pagination', { params: params });
+  }
+
+  getGetReservedListForAdmin(pagination: IPagination): Observable<IMessage | any> {
+    let params = new HttpParams();
+    if (pagination.page != null)
+      params = params.append("page", pagination.page);
+    if (pagination.size != null)
+      params = params.append("size", pagination.size);
+    if (pagination.field != null)
+      params = params.append("field", pagination.field);
+    if (pagination.is_reverse_sort != null)
+      params = params.append("is_reverse_sort", pagination.is_reverse_sort);
+    return this.http.get<IMessage | any>(this.url + '/pagination-reserve', { params: params });
   }
 
   reserveTable(ticket: any): Observable<IMessage | any> {

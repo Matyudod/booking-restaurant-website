@@ -26,7 +26,10 @@ class MainIngredientController {
                 status: true,
             };
             const v = new Validator();
-            let validationResponse = v.validate(mainIngredient, scheme.mainIngredientCreateValidation);
+            let validationResponse = v.validate(
+                mainIngredient,
+                scheme.mainIngredientCreateValidation
+            );
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
@@ -86,15 +89,29 @@ class MainIngredientController {
             res.status(500).json(message.APIErrorServer);
         }
     }
-
+    async getAll(req, res) {
+        try {
+            let mainIngredientList = await mainIngredientService.getAll();
+            if (mainIngredientList != null) {
+                res.status(200).json(mainIngredientList);
+            } else {
+                res.status(500).json(message.APIErrorServer);
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
     async update(req, res) {
         try {
             let id = req.params.id ?? -1;
             let mainIngredient = {
-                name: req.body.name
+                name: req.body.name,
             };
             const v = new Validator();
-            let validationResponse = v.validate(mainIngredient, scheme.mainIngredientCreateValidation);
+            let validationResponse = v.validate(
+                mainIngredient,
+                scheme.mainIngredientCreateValidation
+            );
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
@@ -146,6 +163,5 @@ class MainIngredientController {
             res.status(500).json(message.APIErrorServer);
         }
     }
-
 }
 module.exports = new MainIngredientController();

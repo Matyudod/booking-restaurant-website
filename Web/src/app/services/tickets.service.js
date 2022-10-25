@@ -109,9 +109,6 @@ class TicketService {
                     table_id: {
                         [Op.ne]: 0,
                     },
-                    payment_date: {
-                        [Op.not]: null,
-                    },
                 },
                 order: [order],
                 limit: pagination.size,

@@ -14,6 +14,18 @@
         align-items: center;
         justify-content: flex-end;
         margin-right: 30px;
+        button {
+          padding: 5px 20px;
+          mat-icon {
+            display: none;
+          }
+        }
+
+        button:hover {
+          mat-icon {
+            display: inline;
+          }
+        }
       }
     }
     table {

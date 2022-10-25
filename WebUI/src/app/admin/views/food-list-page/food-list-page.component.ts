@@ -17,6 +17,7 @@ import { MainIngredientDetailService } from 'src/app/services/http/main-ingredie
 import { IFood } from '../../../models/food';
 import { FoodInfoDialogSevice } from '../../../services/loading/food_info_dialog';
 import { IMainIngredientDetail } from 'src/app/models/main-ingredient-detail';
+import { DialogFoodFormAddOrCreateSevice } from 'src/app/services/loading/dialog_food_form_add_or_create';
 
 @Component({
   selector: 'app-food-list-page',
@@ -30,10 +31,11 @@ export class FoodListPageComponent implements OnInit {
   public pagination: IPagination;
   private confirmDialog: DialogConfirmSevice;
   private foodDialog: FoodInfoDialogSevice;
+  private foodCreateOrUpdateDialog: DialogFoodFormAddOrCreateSevice;
   private dialog: DialogSevice;
   private loadingPanel: LoadingPanel;
   private foodService: FoodService;
-  displayedColumns: string[] = ['id', 'name', 'price', 'detail', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'price', 'detail', 'edit', 'action'];
   public listFoods: IFoodList | any;
   dataSource = new MatTableDataSource([])
   private mainIngredientDetailService: MainIngredientDetailService;
@@ -41,6 +43,7 @@ export class FoodListPageComponent implements OnInit {
     this.mainIngredientDetailService = new MainIngredientDetailService(http);
     this.foodService = new FoodService(http);
     this.confirmDialog = new DialogConfirmSevice(dialog);
+    this.foodCreateOrUpdateDialog = new DialogFoodFormAddOrCreateSevice(dialog);
     this.foodDialog = new FoodInfoDialogSevice(dialog);
     this.dialog = new DialogSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
@@ -110,4 +113,10 @@ export class FoodListPageComponent implements OnInit {
     this.ngOnInit();
   }
 
+  addFood() {
+    this.foodCreateOrUpdateDialog.show(0);
+  }
+  updateFood(foodId: Number) {
+    this.foodCreateOrUpdateDialog.show(foodId);
+  }
 }

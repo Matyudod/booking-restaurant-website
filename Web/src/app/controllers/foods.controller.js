@@ -62,8 +62,6 @@ class FoodController {
             }
 
             let food = {
-                cooking_method_id: parseInt(req.body.cooking_method_id),
-                food_group_id: parseInt(req.body.food_group_id),
                 name: req.body.name,
                 price: parseInt(req.body.price),
                 image: image_upload.is_url ? image_upload.url : url,
@@ -186,7 +184,7 @@ class FoodController {
                     } else {
                         url = image_name.replace(
                             "src/public",
-                            process.env.DEV_BACKEND_URL || "http://localhost/"
+                            process.env.DEV_BACKEND_URL || "http://localhost"
                         );
                     }
                 });
@@ -194,8 +192,6 @@ class FoodController {
 
             let food = {
                 id: parseInt(req.params.id),
-                cooking_method_id: parseInt(req.body.cooking_method_id),
-                food_group_id: parseInt(req.body.food_group_id),
                 name: req.body.name,
                 price: parseInt(req.body.price),
                 image: image_upload.is_url ? image_upload.url : url,

@@ -45,6 +45,20 @@ class MainIngredientService {
         }
     }
 
+    async getAll() {
+        let status = true;
+        try {
+            let list = await this.model.findAll({
+                where: {
+                    status: status,
+                },
+            });
+            return list;
+        } catch (err) {
+            return null;
+        }
+    }
+
     async update(id, data) {
         let status = true;
         try {

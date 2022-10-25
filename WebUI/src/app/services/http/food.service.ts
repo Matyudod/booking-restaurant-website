@@ -6,6 +6,7 @@ import { IMessage } from 'src/app/models/message';
 import { IPagination } from '../../models/pagination';
 import { IFoodList } from '../../models/food-list';
 import { IFood } from 'src/app/models/food';
+import { IFoodCreate } from 'src/app/models/food-create';
 @Injectable()
 export class FoodService {
   constructor(private http: HttpClient) { }
@@ -24,9 +25,18 @@ export class FoodService {
     return this.http.get<IFoodList | IMessage>(this.url + '/pagination', { params: params })
   }
 
+  createFood(food: IFoodCreate) {
+    return this.http.post<IFood | IMessage>(this.url + '/create', food);
+  }
+
+  updateFood(id: Number, food: IFoodCreate) {
+    return this.http.post<IFood | IMessage>(this.url + '/update/' + id, food);
+  }
+
   getById(id: Number): Observable<IFood | IMessage> {
     return this.http.get<IFood | IMessage>(this.url + '/detail/' + id);
   }
+
   delete(foodId: Number): Observable<IMessage> {
     return this.http.delete<IMessage>(this.url + '/delete/' + foodId, {});
   }
