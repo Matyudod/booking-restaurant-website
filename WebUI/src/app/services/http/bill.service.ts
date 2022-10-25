@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { ConfigService } from "src/app/configs/config.service";
+import { ConfigService } from 'src/app/configs/config.service';
 import { IMessage } from 'src/app/models/message';
 import { IBillResponse } from 'src/app/models/bill-response';
 import { IBill } from 'src/app/models/bill';
 @Injectable()
 export class BillService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   url = new ConfigService().url + '/api/bill';
 
   getByTicketId(ticket_id: Number): Observable<IBill | IMessage | any> {
@@ -18,14 +18,15 @@ export class BillService {
     let bill = {
       ticket_id: ticket_id,
       admin_id: 0,
-      discount_id: 0
-    }
-    return this.http.post<IBillResponse | IMessage>(this.url + '/create/', bill);
+      discount_id: 0,
+    };
+    return this.http.post<IBillResponse | IMessage>(
+      this.url + '/create/',
+      bill
+    );
   }
 
   cancel(bill_id: Number): Observable<IMessage | any> {
     return this.http.delete<IMessage>(this.url + '/delete/' + bill_id);
   }
-
 }
-
