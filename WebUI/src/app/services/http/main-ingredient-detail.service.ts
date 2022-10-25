@@ -19,17 +19,17 @@ export class MainIngredientDetailService {
     return this.http.post<IMessage>(this.url + '/create', mainIngredientDetail);
   }
 
-  updateMainingredientdetails(
+  updateMainIngredientDetail(
     id: Number,
-    Mainingredientdetails: IMainIngredientDetailCreate
-  ) {
-    return this.http.post<IMainIngredientDetail | IMessage>(
+    mainIngredientDetail: IMainIngredientDetailCreate
+  ) : Observable<IMainIngredientDetail | IMessage | any>{
+    return this.http.put<IMainIngredientDetail | IMessage>(
       this.url + '/update/' + id,
-      Mainingredientdetails
+      mainIngredientDetail
     );
   }
 
-  deteleMainingredientdetails(
+  deteleMainIngredientdDetail(
     main_ingredient_detail_id: Number
   ): Observable<IMessage | any> {
     return this.http.delete<IMessage>(

@@ -5,12 +5,13 @@ import { ConfigService } from 'src/app/configs/config.service';
 import { IMessage } from 'src/app/models/message';
 import { ITable } from 'src/app/models/table';
 import { ITableList } from 'src/app/models/table-list';
+import { ITableCreate } from 'src/app/models/table-create';
 @Injectable()
 export class TableService {
   constructor(private http: HttpClient) {}
   url = new ConfigService().url + '/api/table';
 
-  addTable(table: any): Observable<IMessage | any> {
+  addTable(table: ITableCreate): Observable<IMessage | any> {
     return this.http.post<IMessage>(this.url + '/create', table);
   }
 
@@ -27,12 +28,8 @@ export class TableService {
     });
   }
 
-  updateTable(table_id: Number, name: String, number_of_seat: Number) {
-    let tableUpdate = {
-      name: name,
-      number_of_seat: number_of_seat,
-    };
-    return this.http.put<IMessage>(
+  updateTable(table_id: Number,tableUpdate: ITableCreate) : Observable<ITable | IMessage | any>{
+   return this.http.put<ITable | IMessage>(
       this.url + '/update/' + table_id,
       tableUpdate
     );

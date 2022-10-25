@@ -34,8 +34,8 @@ export class TypePartyService {
     );
   }
 
-  updateTypeParty(id: Number, typeParty: ITypePartyCreate) {
-    return this.http.post<ITypeParty | IMessage>(
+  updateTypeParty(id: Number, typeParty: ITypePartyCreate) : Observable<ITypeParty |IMessage | any>  {
+    return this.http.put<ITypeParty | IMessage>(
       this.url + '/update/' + id,
       typeParty
     );

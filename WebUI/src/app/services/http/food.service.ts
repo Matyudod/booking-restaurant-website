@@ -30,7 +30,7 @@ export class FoodService {
   }
 
   updateFood(id: Number, food: IFoodCreate) {
-    return this.http.post<IFood | IMessage>(this.url + '/update/' + id, food);
+    return this.http.put<IFood | IMessage>(this.url + '/update/' + id, food);
   }
 
   getById(id: Number): Observable<IFood | IMessage> {

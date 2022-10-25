@@ -25,6 +25,10 @@ export class BillService {
       bill
     );
   }
+  
+  billDetail(bill_id: Number): Observable<any> {
+    return this.http.get<any>(this.url + '/detail/' + bill_id);
+  }
 
   cancel(bill_id: Number): Observable<IMessage | any> {
     return this.http.delete<IMessage>(this.url + '/delete/' + bill_id);
