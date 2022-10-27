@@ -11,10 +11,10 @@ const routes: Routes = [{
   path: '',
   component: AdminComponent,
   children: [
-    {
-      path: 'test',
-      component: AddFoodDialogComponent
-    },
+    // {
+    //   path: 'test',
+    //   component: AddFoodDialogComponent
+    // },
     {
       path: 'order-list',
       component: OrderListPageComponent

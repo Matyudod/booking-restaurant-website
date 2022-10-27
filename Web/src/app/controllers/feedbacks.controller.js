@@ -56,15 +56,15 @@ class FeedbackController {
             const v = new Validator();
             let validationResponse = v.validate(feedbackWithCommentId, scheme.feedbackIdValidation);
             if (validationResponse !== true) {
-                res.status(400).json(message.errorIdFieldIsNull);
+                res.status(200).json(message.errorIdFieldIsNull);
             } else {
-                let feedback = await commentService.getByCommentId(feedbackWithCommentId.id);
+                let feedback = await feedbackService.getByCommentId(feedbackWithCommentId.id);
                 if (feedback != null) {
                     res.status(200).json(feedback);
                 } else {
                     let error = message.errorNotFound;
                     error.message = error.message.replace("{1}", "Feedback");
-                    res.status(400).json(message.errorNotFound);
+                    res.status(200).json(message.errorNotFound);
                 }
             }
         } catch (error) {
@@ -83,7 +83,7 @@ class FeedbackController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorIdFieldIsNull);
             } else {
-                let feedback = await commentService.getByAdminId(feedbackWithAdminId.id);
+                let feedback = await feedbackService.getByAdminId(feedbackWithAdminId.id);
                 if (feedback != null) {
                     res.status(200).json(feedback);
                 } else {

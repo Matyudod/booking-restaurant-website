@@ -30,6 +30,26 @@
     }
     table {
       width: 95%;
+      th,
+      td {
+        text-align: center;
+      }
+      td:nth-child(2),
+      td:nth-child(5) {
+        text-align: left;
+      }
+      .mat-sort-header-container {
+        justify-content: center;
+      }
+      th:first-of-type,
+      td:first-of-type {
+        padding-left: 0;
+      }
+
+      th:last-of-type,
+      td:last-of-type {
+        padding-right: 0;
+      }
     }
   }
 }

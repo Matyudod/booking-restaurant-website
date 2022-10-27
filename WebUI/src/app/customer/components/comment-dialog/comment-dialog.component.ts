@@ -7,6 +7,7 @@ import { CommentService } from '../../../services/http/comment.service';
 import { IMessage } from '../../../models/message';
 import { DialogSevice } from 'src/app/services/loading/dialog';
 import { MatButton } from '@angular/material/button';
+import { ICommentCreate } from 'src/app/models/comment-create';
 
 @Component({
   selector: 'app-comment-dialog',
@@ -69,7 +70,7 @@ export class CommentDialogComponent implements OnInit {
       content = content.split('..').join(".").split(',.').join(".");
       this.commentForm.patchValue({ content: <string>content });
       this.loadingPanel.show();
-      this.commentService.createNewComment(this.commentForm.value).subscribe((message: IMessage) => {
+      this.commentService.createNewComment(<ICommentCreate>this.commentForm.value).subscribe((message: IMessage) => {
         this.loadingPanel.hide();
         this.dialogService.show(message);
         button._elementRef.nativeElement.click();

@@ -37,11 +37,12 @@ import { IUser } from 'src/app/models/user';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
-  selector: 'app-order-list-page',
-  templateUrl: './order-list-page.component.html',
-  styleUrls: ['./order-list-page.component.scss']
+  selector: 'app-reversed-list-page',
+  templateUrl: './reversed-list-page.component.html',
+  styleUrls: ['./reversed-list-page.component.scss']
 })
-export class OrderListPageComponent implements OnInit {
+export class ReversedListPageComponent implements OnInit {
+
 
   @ViewChild(MatSort) sort!: MatSort;
   private userService: UserService;
@@ -208,10 +209,10 @@ export class OrderListPageComponent implements OnInit {
     else return '';
   }
   renderScore(comment: IComment | any) {
-    return comment != null && comment.id > 0 ? 'Score: ' + comment.point : '';
+    return comment != null ? 'Score: ' + comment.point : 'Comment is not found';
   }
   renderComment(comment: IComment | any) {
-    return comment != null && comment.id > 0 ? comment.content : '';
+    return comment != null ? comment.content : '';
   }
   renderAdmin(admin: IUser | any) {
     return admin != null ? admin.name : '';
@@ -253,8 +254,6 @@ export class OrderListPageComponent implements OnInit {
     this.foodDetailDialog.show(ticketId);
   }
   sendFeedback(ticketId: Number) {
-
-    let content = (this.document.getElementById('feedback-' + ticketId) as HTMLInputElement).value;
-    console.log(content);
+    let content = this.document.getElementById('feedback-' + ticketId)?.nodeValue;
   }
 }

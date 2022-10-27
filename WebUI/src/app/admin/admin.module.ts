@@ -15,6 +15,7 @@ import { OrderListPageComponent } from './views/order-list-page/order-list-page.
 import { EmployeeListPageComponent } from './views/employee-list-page/employee-list-page.component';
 import { FoodListPageComponent } from './views/food-list-page/food-list-page.component';
 import { AddFoodDialogComponent } from './components/add-food-dialog/add-food-dialog.component';
+import { ReversedListPageComponent } from './views/reversed-list-page/reversed-list-page.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { AddFoodDialogComponent } from './components/add-food-dialog/add-food-di
     OrderListPageComponent,
     EmployeeListPageComponent,
     FoodListPageComponent,
-    AddFoodDialogComponent
+    AddFoodDialogComponent,
+    ReversedListPageComponent
   ],
   imports: [
     CommonModule,
