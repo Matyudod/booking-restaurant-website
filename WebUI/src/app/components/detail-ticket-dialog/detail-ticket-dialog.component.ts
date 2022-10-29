@@ -25,6 +25,8 @@ import { DialogSevice } from 'src/app/services/loading/dialog';
 import { DialogCommentSevice } from 'src/app/services/loading/dialog_comment';
 import { DialogConfirmSevice } from 'src/app/services/loading/dialog_confirm';
 import { LoadingPanel } from 'src/app/services/loading/loading-panel';
+import { DiscountService } from '../../services/http/discount.service';
+import { IDiscount } from '../../models/discount';
 
 @Component({
   selector: 'app-detail-ticket-dialog',
@@ -45,8 +47,9 @@ export class DetailTicketDialogComponent implements OnInit {
   private loadingPanel: LoadingPanel;
   private confirmDialog: DialogConfirmSevice;
   private commentDialog: DialogCommentSevice;
+  private discountService: DiscountService;
   protected ticketInfo: ITicketInfo | any;
-
+  protected discount: IDiscount | null = null;
   protected foodList: ICart = {
     countAll: 0,
     rows: []
@@ -56,6 +59,7 @@ export class DetailTicketDialogComponent implements OnInit {
     this.loadingPanel = new LoadingPanel(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
     this.commentDialog = new DialogCommentSevice(dialog);
+    this.discountService = new DiscountService(http);
     this.typePartyService = new TypePartyService(http);
     this.foodService = new FoodService(http);
     this.commentService = new CommentService(http);
@@ -80,7 +84,7 @@ export class DetailTicketDialogComponent implements OnInit {
           this.tableService.getTableInfo(ticketInfo.table_id).subscribe((table: ITable) => {
             ticketInfo.table = table;
             delete ticketInfo.table_id;
-            this.typePartyService.getTableInfo(ticketInfo.type_party_id).subscribe((type_party) => {
+            this.typePartyService.getTypePartyInfo(ticketInfo.type_party_id).subscribe((type_party) => {
               ticketInfo.type_party = type_party;
               delete ticketInfo.type_party_id;
               this.billService.getByTicketId(ticketInfo.id).subscribe((bill: IBill) => {
@@ -89,6 +93,7 @@ export class DetailTicketDialogComponent implements OnInit {
                   ticketInfo.status = 0;
                   ticketInfo.comment = null;
                 } else {
+                  this.getDiscount(bill.discount_id);
                   if (bill.status) {
                     ticketInfo.status = 1;
                     this.commentService.getCommentWithBillId(bill.id).subscribe((comment: IComment | IMessage | any) => {
@@ -121,6 +126,11 @@ export class DetailTicketDialogComponent implements OnInit {
         console.log(this.ticketInfo);
 
       })
+    })
+  }
+  getDiscount(discount_id: Number) {
+    this.discountService.getById(discount_id).subscribe((discount: any) => {
+      this.discount = discount;
     })
   }
   getListOrdering(ticket: ITicket) {
@@ -171,11 +181,32 @@ export class DetailTicketDialogComponent implements OnInit {
   renderComment(comment: IComment | any) {
     return comment != null ? comment.content : '';
   }
+  renderDiscount(cartlist: ICartItem[]) {
+    let total = 0;
+    cartlist.forEach(foodItem => {
+      total += <number>foodItem.food.price * <number>foodItem.quantity;
+    });
+    if (this.discount != null) {
+      if (this.discount.amount != null) {
+        total = <number>this.discount.amount;
+      } else {
+        total = total * <number>this.discount.percent / 100;
+      }
+    }
+    return this.formatNumber(total * -1);
+  }
   sumTotal(cartlist: ICartItem[]) {
     let total = 0;
     cartlist.forEach(foodItem => {
       total += <number>foodItem.food.price * <number>foodItem.quantity;
     });
+    if (this.discount != null) {
+      if (this.discount.amount != null) {
+        total -= <number>this.discount.amount;
+      } else {
+        total = total - total * <number>this.discount.percent / 100;
+      }
+    }
     return this.formatNumber(total);
   }
 }

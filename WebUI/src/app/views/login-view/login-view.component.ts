@@ -39,22 +39,22 @@ export class LoginViewComponent implements OnInit {
   }
   ngOnInit(): void {
     this.title = localStorage.getItem('title');
-
-    let user = {
-      birthday: "1997-09-03T00:00:00.000Z",
-      createdAt: "2022-10-21T13:55:50.000Z",
-      email: "administrator@matyud.com",
-      id: 103,
-      is_admin: true,
-      name: "Administrator",
-      password: "$2b$10$A/SPPv35pIiE0xavEr8yWeeTixxoKHbvwuwdjIdUMwiMnptCEDyJu",
-      refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluaXN0cmF0b3IiLCJpYXQiOjE2NjYzNjE2MjAsImV4cCI6MTY2NjQ0ODAyMH0.l3brHDoFNxoceYC8NCeOLqxWjN81oMrXZlVtF7Nj3lA",
-      status: true,
-      updatedAt: "2022-10-21T13:57:24.000Z",
-      username: "administrator",
-    }
-    localStorage.setItem('userInfo', JSON.stringify(user));
-    this.router.navigate(['/admin']);
+    localStorage.removeItem("SessionID");
+    // let user = {
+    //   birthday: "1997-09-03T00:00:00.000Z",
+    //   createdAt: "2022-10-21T13:55:50.000Z",
+    //   email: "administrator@matyud.com",
+    //   id: 103,
+    //   is_admin: true,
+    //   name: "Administrator",
+    //   password: "$2b$10$A/SPPv35pIiE0xavEr8yWeeTixxoKHbvwuwdjIdUMwiMnptCEDyJu",
+    //   refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluaXN0cmF0b3IiLCJpYXQiOjE2NjcwMDEzMDIsImV4cCI6MTY2NzA4NzcwMn0.shYZN0TJapXGJuClorlqKVcxNAkTPMfj5GnfA0iGD0w",
+    //   status: true,
+    //   updatedAt: "2022-10-21T13:57:24.000Z",
+    //   username: "administrator",
+    // }
+    // localStorage.setItem('userInfo', JSON.stringify(user));
+    // this.router.navigate(['/admin']);
 
   }
 

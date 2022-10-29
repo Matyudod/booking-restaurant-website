@@ -9,7 +9,7 @@ import { IPagination } from 'src/app/models/pagination';
 import { IMainIngredientList } from 'src/app/models/main-ingredient-list';
 @Injectable()
 export class MainIngredientService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   url = new ConfigService().url + '/api/main-ingredient';
 
   createMainIngredient(mainIngredient: IMainIngredientCreate) {
@@ -23,6 +23,9 @@ export class MainIngredientService {
     return this.http.get<IMainIngredient[] | IMessage>(this.url + '/get-all');
   }
 
+  getById(mainIngredientId: Number): Observable<IMainIngredient | IMessage | any> {
+    return this.http.get<IMainIngredient | IMessage>(this.url + '/get/' + mainIngredientId);
+  }
   getList(pagination: IPagination): Observable<IMainIngredientList | IMessage | any> {
     let params = new HttpParams();
     if (pagination.page != null)
@@ -37,7 +40,7 @@ export class MainIngredientService {
       params: params,
     });
   }
-  updateMainIngredient(id: Number, mainIngredient: IMainIngredientCreate) : Observable<IMainIngredient | IMessage | any> {
+  updateMainIngredient(id: Number, mainIngredient: IMainIngredientCreate): Observable<IMainIngredient | IMessage | any> {
     return this.http.put<IMainIngredient | IMessage>(
       this.url + '/update/' + id,
       mainIngredient

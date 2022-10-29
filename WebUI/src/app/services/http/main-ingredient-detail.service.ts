@@ -7,7 +7,7 @@ import { IMainIngredientDetail } from 'src/app/models/main-ingredient-detail';
 import { IMainIngredientDetailCreate } from '../../models/main-ingredient-detail-create';
 @Injectable()
 export class MainIngredientDetailService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   url = new ConfigService().url + '/api/main-ingredient-detail';
 
   getList(food_id: number | Number) {
@@ -22,18 +22,18 @@ export class MainIngredientDetailService {
   updateMainIngredientDetail(
     id: Number,
     mainIngredientDetail: IMainIngredientDetailCreate
-  ) : Observable<IMainIngredientDetail | IMessage | any>{
+  ): Observable<IMainIngredientDetail | IMessage | any> {
     return this.http.put<IMainIngredientDetail | IMessage>(
       this.url + '/update/' + id,
       mainIngredientDetail
     );
   }
 
-  deteleMainIngredientdDetail(
-    main_ingredient_detail_id: Number
+  deteleAllMainIngredientdDetailOfFood(
+    foodId: Number
   ): Observable<IMessage | any> {
     return this.http.delete<IMessage>(
-      this.url + '/delete/' + main_ingredient_detail_id
+      this.url + '/delete/' + foodId
     );
   }
 }

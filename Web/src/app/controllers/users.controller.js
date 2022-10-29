@@ -98,6 +98,40 @@ class UserController {
         }
     }
 
+    async createStaff(req, res) {
+        try {
+            let user = {
+                name: req.body.name,
+                email: req.body.email,
+                username: req.body.username,
+                password: bcrypt.hashSync(req.body.password, 10),
+                birthday: new Date(req.body.birthday),
+                is_admin: true,
+                status: true,
+                refreshToken: await createToken(req.body.username),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(user, scheme.signupValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorFieldIsNull);
+            } else {
+                let isHaveUser = await userService.getByUsername(user.username);
+                if (isHaveUser == null) {
+                    let newUser = await userService.create(user);
+                    if (newUser != null) {
+                        res.status(200).json(newUser);
+                    } else {
+                        res.status(500).json(message.APIErrorServer);
+                    }
+                } else {
+                    res.status(200).json(message.errorSignupUserExisted);
+                }
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
     async adminList(req, res) {
         try {
             let params = req.query;

@@ -6,6 +6,8 @@ import { OrderListPageComponent } from './views/order-list-page/order-list-page.
 import { EmployeeListPageComponent } from './views/employee-list-page/employee-list-page.component';
 import { FoodListPageComponent } from './views/food-list-page/food-list-page.component';
 import { AddFoodDialogComponent } from './components/add-food-dialog/add-food-dialog.component';
+import { ReversedListPageComponent } from './views/reversed-list-page/reversed-list-page.component';
+import { IngredientListPageComponent } from './views/ingredient-list-page/ingredient-list-page.component';
 
 const routes: Routes = [{
   path: '',
@@ -15,6 +17,14 @@ const routes: Routes = [{
     //   path: 'test',
     //   component: AddFoodDialogComponent
     // },
+    {
+      path: 'ingredient-list',
+      component: IngredientListPageComponent
+    },
+    {
+      path: 'reserve-list',
+      component: ReversedListPageComponent
+    },
     {
       path: 'order-list',
       component: OrderListPageComponent

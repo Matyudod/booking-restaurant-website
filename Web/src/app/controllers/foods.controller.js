@@ -32,22 +32,22 @@ class FoodController {
             is_url: req.body.is_url.toLowerCase() == "true",
         };
         let checkScheme = scheme.imageUploadValidation;
-        if (image_upload.is_url) {
-            checkScheme.file_base64 = checkScheme.file_base64 + "|optional";
+        if (!image_upload.is_url) {
+            checkScheme.file_base64 = checkScheme.file_base64 + "|min:1";
         } else {
-            checkScheme.url = checkScheme.url + "|optional";
+            checkScheme.url = checkScheme.url + "|min:1";
         }
         const v = new Validator();
         let validationResponse = v.validate(image_upload, checkScheme);
         if (validationResponse !== true) {
             res.status(400).json(message.imageUploadError);
         } else {
+            let url = "";
             if (!image_upload.is_url) {
                 image_upload.file_base64 = image_upload.file_base64.replace(
                     /^data:image\/(png|gif|jpeg);base64,/,
                     ""
                 );
-                let url = "";
                 let image_name = "src/public/src/images/foods/" + req.body.name + ".png";
                 writeFile(image_name, image_upload.file_base64, "base64", function (err) {
                     if (err) {
@@ -64,18 +64,17 @@ class FoodController {
             let food = {
                 name: req.body.name,
                 price: parseInt(req.body.price),
-                image: image_upload.is_url ? image_upload.url : url,
+                image_url: image_upload.is_url ? image_upload.url : url,
+                status: true,
             };
-            let validationResponse = v.validate(food, scheme.foodUpdateValidation);
+            let validationResponse = v.validate(food, scheme.foodCreateValidation);
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
                 try {
                     let newFood = await foodService.create(food);
                     if (newFood != null) {
-                        let success_message = message.createSuccessful;
-                        success_message.message.replace("{1}", "Food");
-                        res.status(200).json(success_message);
+                        res.status(200).json(newFood);
                     } else {
                         let error_message = message.errorNotFound;
                         error_message.message.replace("{1}", "Food");
@@ -161,22 +160,22 @@ class FoodController {
             is_url: req.body.is_url.toLowerCase() == "true",
         };
         let checkScheme = scheme.imageUploadValidation;
-        if (image_upload.is_url) {
-            checkScheme.file_base64 = checkScheme.file_base64 + "|optional";
+        if (!image_upload.is_url) {
+            checkScheme.file_base64 = checkScheme.file_base64 + "|min:1";
         } else {
-            checkScheme.url = checkScheme.url + "|optional";
+            checkScheme.url = checkScheme.url + "|min:1";
         }
         const v = new Validator();
         let validationResponse = v.validate(image_upload, checkScheme);
         if (validationResponse !== true) {
             res.status(400).json(message.imageUploadError);
         } else {
+            let url = "";
             if (!image_upload.is_url) {
                 image_upload.file_base64 = image_upload.file_base64.replace(
                     /^data:image\/(png|gif|jpeg);base64,/,
                     ""
                 );
-                let url = "";
                 let image_name = "src/public/src/images/foods/" + req.body.name + ".png";
                 writeFile(image_name, image_upload.file_base64, "base64", function (err) {
                     if (err) {
@@ -194,7 +193,8 @@ class FoodController {
                 id: parseInt(req.params.id),
                 name: req.body.name,
                 price: parseInt(req.body.price),
-                image: image_upload.is_url ? image_upload.url : url,
+                image_url: image_upload.is_url ? image_upload.url : url,
+                status: true,
             };
             let validationResponse = v.validate(food, scheme.foodUpdateValidation);
             if (validationResponse !== true) {

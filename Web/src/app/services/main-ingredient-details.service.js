@@ -62,7 +62,7 @@ class MainIngredientDetailService {
 
     async delete(id) {
         try {
-            let isRemoved = await this.model.destroy({ where: { id: id } });
+            let isRemoved = await this.model.destroy({ where: { food_id: id } });
             if (isRemoved) {
                 return true;
             } else {

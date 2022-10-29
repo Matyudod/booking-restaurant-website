@@ -7,25 +7,25 @@ import { IBillResponse } from 'src/app/models/bill-response';
 import { IBill } from 'src/app/models/bill';
 @Injectable()
 export class BillService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   url = new ConfigService().url + '/api/bill';
 
   getByTicketId(ticket_id: Number): Observable<IBill | IMessage | any> {
     return this.http.get<IBill | IMessage>(this.url + '/is-paid/' + ticket_id);
   }
 
-  createBill(ticket_id: Number): Observable<IBillResponse | IMessage | any> {
+  createBill(ticket_id: Number, admin_id: Number = 0, discount_id: Number = 0): Observable<IBillResponse | IMessage | any> {
     let bill = {
       ticket_id: ticket_id,
-      admin_id: 0,
-      discount_id: 0,
+      admin_id: admin_id,
+      discount_id: discount_id,
     };
     return this.http.post<IBillResponse | IMessage>(
       this.url + '/create/',
       bill
     );
   }
-  
+
   billDetail(bill_id: Number): Observable<any> {
     return this.http.get<any>(this.url + '/detail/' + bill_id);
   }

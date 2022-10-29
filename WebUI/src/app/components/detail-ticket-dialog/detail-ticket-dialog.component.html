@@ -26,6 +26,10 @@
         </table>
         <table>
             <tr>
+                <td>Discount:</td>
+                <td>{{discount!= null ? discount.name : ''}}</td>
+            </tr>
+            <tr>
                 <td>Type Table:</td>
                 <td>{{ticketInfo!= null && ticketInfo.table != null ? ticketInfo.table.name : ''}}</td>
             </tr>
@@ -66,6 +70,10 @@
                 <td>{{formatNumber(foodItem.food.price)}}</td>
                 <td>{{foodItem.quantity}}</td>
                 <td>{{formatNumber(foodItem.food.price,foodItem.quantity)}}</td>
+            </tr>
+            <tr>
+                <th colspan="4" style="border-top:3px">Discount</th>
+                <th style="text-align: center; border-top:3px">{{renderDiscount(foodList.rows)}}</th>
             </tr>
             <tr>
                 <th colspan="4" style="border-top:3px">Total</th>

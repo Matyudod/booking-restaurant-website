@@ -1,3 +1,5 @@
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 class DiscountService {
     constructor(models) {
         this.model = models.Discounts;
@@ -20,6 +22,26 @@ class DiscountService {
         try {
             let discount = await this.model.findOne({ where: { id: id } });
             return discount;
+        } catch (err) {
+            return null;
+        }
+    }
+
+    async getList(pagination, order) {
+        try {
+            let list = await this.model.findAndCountAll({
+                where: {
+                    id: {
+                        [Op.ne]: 0,
+                    },
+                },
+                order: [order],
+                limit: pagination.size,
+                offset: (pagination.page - 1) * pagination.size,
+            });
+            list.page = pagination.page;
+            list.size = pagination.size;
+            return list;
         } catch (err) {
             return null;
         }

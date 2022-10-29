@@ -19,6 +19,7 @@ const {
 
 router.get("/pagination", mainingredient.getList);
 router.get("/get-all", mainingredient.getAll);
+router.get("/get/:id", mainingredient.getById);
 router.post("/create", mainingredient.create);
 router.put("/update/:id", mainingredient.update);
 router.delete("/delete/:id", mainingredient.delete);

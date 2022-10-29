@@ -35,6 +35,7 @@ import { FeedbackService } from 'src/app/services/http/feedback.service';
 import { IFeedback } from 'src/app/models/feedback';
 import { IUser } from 'src/app/models/user';
 import { DOCUMENT } from '@angular/common';
+import { DialogApprovalDeliverSevice } from 'src/app/services/loading/dialog_approval_delivery';
 
 @Component({
   selector: 'app-order-list-page',
@@ -67,6 +68,7 @@ export class OrderListPageComponent implements OnInit {
   private confirmDialog: DialogConfirmSevice;
   private foodDetailDialog: DialogFoodDetailSevice;
   private commentDialog: DialogCommentSevice;
+  private approvalDeliverDialog: DialogApprovalDeliverSevice;
   displayedColumns: string[] = ['id', 'customer-name', 'received-date', 'phone', 'address', 'status', 'comment', 'feedback', 'detail', 'action'];
   dataSource = new MatTableDataSource([])
   private mainIngredientDetailService: MainIngredientDetailService;
@@ -75,6 +77,7 @@ export class OrderListPageComponent implements OnInit {
     this.foodDetailDialog = new DialogFoodDetailSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
+    this.approvalDeliverDialog = new DialogApprovalDeliverSevice(dialog);
     this.commentDialog = new DialogCommentSevice(dialog);
     this.feedbackService = new FeedbackService(http);
     this.typePartyService = new TypePartyService(http);
@@ -110,7 +113,7 @@ export class OrderListPageComponent implements OnInit {
             resolveOuter(this.tableService.getTableInfo(ticketOrdered.table_id).subscribe((table: ITable) => {
               ticketOrderedList.rows[<number>index].table = table;
               delete ticketOrderedList.rows[<number>index].table_id;
-              resolveOuter(this.typePartyService.getTableInfo(ticketOrdered.type_party_id).subscribe((type_party) => {
+              resolveOuter(this.typePartyService.getTypePartyInfo(ticketOrdered.type_party_id).subscribe((type_party) => {
                 ticketOrderedList.rows[<number>index].type_party = type_party;
                 delete ticketOrderedList.rows[<number>index].type_party_id;
                 resolveOuter(
@@ -256,5 +259,11 @@ export class OrderListPageComponent implements OnInit {
 
     let content = (this.document.getElementById('feedback-' + ticketId) as HTMLInputElement).value;
     console.log(content);
+  }
+  async updateStatus(ticketId: Number) {
+    let isConfirm = await this.approvalDeliverDialog.show(ticketId);
+    isConfirm.subscribe((result: any) => {
+      this.ngOnInit();
+    });
   }
 }

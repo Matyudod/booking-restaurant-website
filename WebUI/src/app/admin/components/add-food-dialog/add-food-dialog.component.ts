@@ -14,6 +14,10 @@ import { FoodService } from '../../../services/http/food.service';
 import { IFood } from 'src/app/models/food';
 import { MainIngredientDetailService } from 'src/app/services/http/main-ingredient-detail.service';
 import { IMainIngredientDetail } from '../../../models/main-ingredient-detail';
+import { ThisReceiver } from '@angular/compiler';
+import { IFoodCreate } from '../../../models/food-create';
+import { MatButton } from '@angular/material/button';
+import { IMessage } from '../../../models/message';
 
 @Component({
   selector: 'app-add-food-dialog',
@@ -89,8 +93,7 @@ export class AddFoodDialogComponent implements OnInit {
       })
     })
   }
-  onSubmit() {
-    console.log(this.addFoodForm.value);
+  onSubmit(exitButton: MatButton) {
     let drawValue = this.mainIngredientForm.value;
     let valueList = Object.values(drawValue);
     let mainIngredientList: IMainIngredientDetailCreate[] = [];
@@ -103,7 +106,64 @@ export class AddFoodDialogComponent implements OnInit {
       }
       mainIngredientList.push(mainIngredient);
     }
-    console.log(mainIngredientList);
+    if (this.foodId == 0) {
+      let data = this.addFoodForm.value;
+      let food: IFoodCreate = {
+        name: <string>data.name,
+        price: <Number>parseInt(<string>data.price),
+        url: <string>data.url,
+        file_base64: <string>data.file_base64,
+        is_url: data.is_url ? "true" : "false",
+      }
+      let promise = new Promise((resolveOuter) => {
+        this.foodService.createFood(food).subscribe((food: IFood | any) => {
+          mainIngredientList.forEach((mainIngredientiitem: IMainIngredientDetailCreate) => {
+            mainIngredientiitem.food_id = food.id;
+            resolveOuter(
+              this.mainIngredientDetailService.addMainIngredientDetail(mainIngredientiitem).subscribe()
+            );
+          });
+        });
+      });
+
+      promise.then(() => {
+        let message: IMessage = {
+          message: "Food is created!",
+          type_message: "success_dialog"
+        }
+        this.dialogService.show(message);
+        exitButton._elementRef.nativeElement.click();
+      });
+    } else {
+      let data = this.addFoodForm.value;
+      let food: IFoodCreate = {
+        name: <string>data.name,
+        price: <Number>parseInt(<string>data.price),
+        url: <string>data.url,
+        file_base64: <string>data.file_base64,
+        is_url: data.is_url ? "true" : "false",
+      }
+      let promise = new Promise((resolveOuter) => {
+        this.foodService.updateFood(this.foodId, food).subscribe();
+        this.mainIngredientDetailService.deteleAllMainIngredientdDetailOfFood(this.foodId).subscribe((result: any) => {
+          mainIngredientList.forEach((mainIngredientiitem: IMainIngredientDetailCreate) => {
+            resolveOuter(
+              this.mainIngredientDetailService.addMainIngredientDetail(mainIngredientiitem).subscribe()
+            );
+          });
+        });
+      });
+      promise.then(() => {
+        let message: IMessage = {
+          message: "Food is updated!",
+          type_message: "success_dialog"
+        }
+        this.dialogService.show(message);
+        exitButton._elementRef.nativeElement.click();
+      });
+
+    }
+
   }
   focusInputFile(fileTag: any) {
     fileTag.click();

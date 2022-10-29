@@ -17,6 +17,7 @@ const {
     users,
 } = require("../app/controllers/index.controller");
 
+router.get("/get/:id", discounts.getById);
 router.get("/pagination", discounts.getList);
 router.post("/create", discounts.create);
 router.put("/update/:id", discounts.update);

@@ -11,6 +11,7 @@ import { LoadingPanel } from 'src/app/services/loading/loading-panel';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSevice } from '../../../services/loading/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
+import { DialogCreateStaffSevice } from '../../../services/loading/dialog_create_new_staff';
 @Component({
   selector: 'app-employee-list-page',
   templateUrl: './employee-list-page.component.html',
@@ -22,12 +23,14 @@ export class EmployeeListPageComponent implements OnInit {
   private userService: UserService;
   public pagination: IPagination;
   private confirmDialog: DialogConfirmSevice;
+  private createStaffDialog: DialogCreateStaffSevice;
   private dialog: DialogSevice;
   private loadingPanel: LoadingPanel;
   displayedColumns: string[] = ['id', 'name', 'username', 'email', 'birthday', 'action'];
   public employeeList: IUserList | any;
   dataSource = new MatTableDataSource([])
   constructor(dialog: MatDialog, private router: Router, http: HttpClient) {
+    this.createStaffDialog = new DialogCreateStaffSevice(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
     this.dialog = new DialogSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
@@ -90,5 +93,11 @@ export class EmployeeListPageComponent implements OnInit {
 
     this.getEmployeeList();
   }
+  async addEmployee() {
 
+    let isConfirm = await this.createStaffDialog.show();
+    isConfirm.subscribe((result: any) => {
+      this.ngOnInit();
+    });
+  }
 }

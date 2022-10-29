@@ -49,6 +49,30 @@ class MainIngredientController {
         }
     }
 
+    async getById(req, res) {
+        try {
+            let id = req.params.id ?? -1;
+            let mainIngredientId = {
+                id: parseInt(id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(mainIngredientId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let mainIngredientInfo = await mainIngredientService.getById(mainIngredientId.id);
+                if (mainIngredientInfo != null) {
+                    res.status(200).json(mainIngredientInfo);
+                } else {
+                    let error = message.errorNotFound;
+                    error.message = error.message.replace("{1}", "Food");
+                    res.status(400).json(message.errorNotFound);
+                }
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
     async getList(req, res) {
         try {
             let params = req.body;

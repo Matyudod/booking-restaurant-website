@@ -26,6 +26,7 @@ class MainIngredientDetailController {
                 food_id: parseInt(req.body.food_id),
                 main_ingredient_id: parseInt(req.body.main_ingredient_id),
                 quantity: parseInt(req.body.quantity),
+                unit: req.body.unit,
             };
             const v = new Validator();
             let validationResponse = v.validate(
@@ -38,7 +39,7 @@ class MainIngredientDetailController {
                 let newMainIngredientDetail = await mainIngredientDetailService.create(
                     mainIngredientDetail
                 );
-                if (newOnewMainIngredientDetailrder != null) {
+                if (newMainIngredientDetail != null) {
                     let error = message.createSuccessful;
                     error.message = error.message.replace("{1}", "The main ingredient detail");
                     res.status(200).json(error);
@@ -100,6 +101,7 @@ class MainIngredientDetailController {
                 food_id: parseInt(req.body.food_id),
                 main_ingredient_id: parseInt(req.body.main_ingredient_id),
                 quantity: parseInt(req.body.quantity),
+                unit: req.body.unit,
             };
             const v = new Validator();
             let validationResponse = v.validate(

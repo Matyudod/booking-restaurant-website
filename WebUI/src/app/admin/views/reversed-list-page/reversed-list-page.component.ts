@@ -35,6 +35,7 @@ import { FeedbackService } from 'src/app/services/http/feedback.service';
 import { IFeedback } from 'src/app/models/feedback';
 import { IUser } from 'src/app/models/user';
 import { DOCUMENT } from '@angular/common';
+import { DialogApprovalDeliverSevice } from 'src/app/services/loading/dialog_approval_delivery';
 
 @Component({
   selector: 'app-reversed-list-page',
@@ -42,8 +43,6 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./reversed-list-page.component.scss']
 })
 export class ReversedListPageComponent implements OnInit {
-
-
   @ViewChild(MatSort) sort!: MatSort;
   private userService: UserService;
   public pagination: IPagination;
@@ -68,7 +67,8 @@ export class ReversedListPageComponent implements OnInit {
   private confirmDialog: DialogConfirmSevice;
   private foodDetailDialog: DialogFoodDetailSevice;
   private commentDialog: DialogCommentSevice;
-  displayedColumns: string[] = ['id', 'customer-name', 'received-date', 'phone', 'address', 'status', 'comment', 'feedback', 'detail', 'action'];
+  private approvalDeliverDialog: DialogApprovalDeliverSevice;
+  displayedColumns: string[] = ['id', 'customer-name', 'received-date', 'type-table', 'type-party', 'status', 'comment', 'feedback', 'detail', 'action'];
   dataSource = new MatTableDataSource([])
   private mainIngredientDetailService: MainIngredientDetailService;
   constructor(dialog: MatDialog, private router: Router, http: HttpClient, @Inject(DOCUMENT) public document: Document) {
@@ -76,6 +76,7 @@ export class ReversedListPageComponent implements OnInit {
     this.foodDetailDialog = new DialogFoodDetailSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
+    this.approvalDeliverDialog = new DialogApprovalDeliverSevice(dialog);
     this.commentDialog = new DialogCommentSevice(dialog);
     this.feedbackService = new FeedbackService(http);
     this.typePartyService = new TypePartyService(http);
@@ -102,7 +103,7 @@ export class ReversedListPageComponent implements OnInit {
     this.getOderedList();
   }
   getOderedList() {
-    this.ticketService.getGetOrderedListForAdmin(this.pagination).subscribe((ticketOrderedList) => {
+    this.ticketService.getGetReservedListForAdmin(this.pagination).subscribe((ticketOrderedList) => {
       let promise = new Promise((resolveOuter) => {
         ticketOrderedList.rows.forEach((ticketOrdered: any, index: Number) => {
           resolveOuter(this.userService.getInfo(ticketOrdered.customer_id).subscribe((user: any) => {
@@ -111,7 +112,7 @@ export class ReversedListPageComponent implements OnInit {
             resolveOuter(this.tableService.getTableInfo(ticketOrdered.table_id).subscribe((table: ITable) => {
               ticketOrderedList.rows[<number>index].table = table;
               delete ticketOrderedList.rows[<number>index].table_id;
-              resolveOuter(this.typePartyService.getTableInfo(ticketOrdered.type_party_id).subscribe((type_party) => {
+              resolveOuter(this.typePartyService.getTypePartyInfo(ticketOrdered.type_party_id).subscribe((type_party) => {
                 ticketOrderedList.rows[<number>index].type_party = type_party;
                 delete ticketOrderedList.rows[<number>index].type_party_id;
                 resolveOuter(
@@ -209,10 +210,10 @@ export class ReversedListPageComponent implements OnInit {
     else return '';
   }
   renderScore(comment: IComment | any) {
-    return comment != null ? 'Score: ' + comment.point : 'Comment is not found';
+    return comment != null && comment.id > 0 ? 'Score: ' + comment.point : '';
   }
   renderComment(comment: IComment | any) {
-    return comment != null ? comment.content : '';
+    return comment != null && comment.id > 0 ? comment.content : '';
   }
   renderAdmin(admin: IUser | any) {
     return admin != null ? admin.name : '';
@@ -254,6 +255,14 @@ export class ReversedListPageComponent implements OnInit {
     this.foodDetailDialog.show(ticketId);
   }
   sendFeedback(ticketId: Number) {
-    let content = this.document.getElementById('feedback-' + ticketId)?.nodeValue;
+
+    let content = (this.document.getElementById('feedback-' + ticketId) as HTMLInputElement).value;
+    console.log(content);
+  }
+  async updateStatus(ticketId: Number) {
+    let isConfirm = await this.approvalDeliverDialog.show(ticketId);
+    isConfirm.subscribe((result: any) => {
+      this.ngOnInit();
+    });
   }
 }

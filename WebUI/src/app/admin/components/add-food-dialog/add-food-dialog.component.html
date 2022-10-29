@@ -2,7 +2,7 @@
 <h1 mat-dialog-title class="title" *ngIf="!isCreate">Update Food</h1>
 <div mat-dialog-content class="dialog-content">
     <div class="screen">
-        <form [formGroup]="addFoodForm" (ngSubmit)="onSubmit()" class="login-form">
+        <form [formGroup]="addFoodForm" (ngSubmit)="onSubmit(closeButton)" class="login-form">
             <mat-form-field appearance="fill">
                 <mat-label>Name</mat-label>
                 <input matInput type="text" formControlName="name">
@@ -39,7 +39,7 @@
                 </mat-select>
             </mat-form-field>
             <div class="button-fields">
-                <button mat-raised-button color="accent">Cancle</button>
+                <button mat-raised-button color="accent" #closeButton mat-dialog-close>Cancle</button>
                 <button mat-raised-button color="primary"
                     [disabled]="!addFoodForm.valid || !mainIngredientForm.valid || ((file_base64.value == '' && is_url.value == false) || (url.value == '' && is_url.value == true))">
                     {{isCreate ? 'Create Food' : 'Update Food'}}

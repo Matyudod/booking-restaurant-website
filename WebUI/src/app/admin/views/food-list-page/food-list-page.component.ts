@@ -113,6 +113,10 @@ export class FoodListPageComponent implements OnInit {
     this.ngOnInit();
   }
 
+  formatNumber(price: Number) {
+    let number = <number>price;
+    return new Intl.NumberFormat('vi', { style: "currency", currency: "VND" }).format(number);
+  }
   addFood() {
     this.foodCreateOrUpdateDialog.show(0);
   }

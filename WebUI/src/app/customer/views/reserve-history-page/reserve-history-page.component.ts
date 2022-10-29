@@ -90,7 +90,7 @@ export class ReserveHistoryPageComponent implements OnInit {
             resolveOuter(this.tableService.getTableInfo(ticketOrdered.table_id).subscribe((table: ITable) => {
               ticketOrderedList.rows[<number>index].table = table;
               delete ticketOrderedList.rows[<number>index].table_id;
-              resolveOuter(this.typePartyService.getTableInfo(ticketOrdered.type_party_id).subscribe((type_party) => {
+              resolveOuter(this.typePartyService.getTypePartyInfo(ticketOrdered.type_party_id).subscribe((type_party) => {
                 ticketOrderedList.rows[<number>index].type_party = type_party;
                 delete ticketOrderedList.rows[<number>index].type_party_id;
                 resolveOuter(

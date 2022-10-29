@@ -17,6 +17,10 @@ import { ITableList } from '../../../models/table-list';
 import { ICartItem } from 'src/app/models/cart-item';
 import { ITicket } from '../../../models/ticket';
 import { IMessage } from '../../../models/message';
+import { TypePartyService } from 'src/app/services/http/type-of-party.service';
+import { IPagination } from '../../../models/pagination';
+import { ITypeParty } from '../../../models/type-party';
+import { ITypePartyList } from 'src/app/models/type-party-list';
 @Component({
   selector: 'app-reserve-table-page',
   templateUrl: './reserve-table-page.component.html',
@@ -30,12 +34,17 @@ export class ReserveTablePageComponent implements OnInit {
   receivedDate = new FormControl('', [
     Validators.required
   ]);
+  typePartyId = new FormControl('', [
+    Validators.required
+  ]);
   reserveForm = new FormGroup({
     table_id: this.tableId,
     received_date: this.receivedDate,
+    type_party_id: this.typePartyId,
   },);
   protected ticket: ITicket | any;
   public tablesList: ITable[] = [];
+  public typePartyList: ITypeParty[] = [];
   public imageObject: Array<object> = [
     {
       image: '/assets/images/panel3.png',
@@ -61,6 +70,7 @@ export class ReserveTablePageComponent implements OnInit {
   private publicFileService: PublicFileService;
   private ticketService: TicketService;
   private tableService: TableService;
+  private typePartyService: TypePartyService;
   private dialogService: DialogSevice;
   private loadingPanel: LoadingPanel;
   private confirmDialog: DialogConfirmSevice;
@@ -70,6 +80,7 @@ export class ReserveTablePageComponent implements OnInit {
     this.loadingPanel = new LoadingPanel(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
     this.foodService = new FoodService(http);
+    this.typePartyService = new TypePartyService(http);
     this.tableService = new TableService(http);
     this.orderService = new OrderService(http);
     this.publicFileService = new PublicFileService(http);
@@ -92,6 +103,17 @@ export class ReserveTablePageComponent implements OnInit {
       this.tablesList = tablesList.rows;
     })
   }
+  getTypePartyList() {
+    let pagination: IPagination = {
+      page: 1,
+      size: 1000,
+      field: null,
+      is_reverse_sort: null
+    }
+    this.typePartyService.getList(pagination).subscribe((typePartyList: ITypePartyList | any) => {
+      this.typePartyList = typePartyList.rows;
+    })
+  }
   getTicketPending() {
     this.ticketService.getGetPendingTicket(this.userId).subscribe((ticket: ITicket) => {
       this.ticket = ticket;
@@ -107,6 +129,7 @@ export class ReserveTablePageComponent implements OnInit {
       if (isConfirm) {
         this.ticket.table_id = this.reserveForm.value.table_id;
         this.ticket.received_date = this.reserveForm.value.received_date;
+        this.ticket.type_party_id = this.reserveForm.value.type_party_id;
         this.loadingPanel.show();
         this.ticketService.reserveTable(this.ticket).subscribe(() => {
           this.loadingPanel.hide();

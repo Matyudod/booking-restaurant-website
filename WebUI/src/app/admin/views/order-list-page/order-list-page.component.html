@@ -48,7 +48,12 @@
             <th mat-header-cell *matHeaderCellDef>
                 Status
             </th>
-            <td mat-cell *matCellDef="let element"> {{renderStatus(element.status)}} </td>
+            <td mat-cell *matCellDef="let element">
+                {{renderStatus(element.status)}}
+                <br *ngIf="element.status == 0">
+                <button *ngIf="element.status == 0" mat-raised-button
+                    (click)="updateStatus(element.id)">Delivery</button>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="comment">
@@ -57,7 +62,7 @@
             </th>
             <td mat-cell *matCellDef="let element">
                 <div *ngIf="element.comment != null && element.comment.id == 0">
-                    Comment<br> not found
+                    No comment
                 </div>
                 <div *ngIf="element.comment != null && element.comment.id > 0">
                     {{renderScore(element.comment)}}
@@ -66,7 +71,7 @@
                 </div>
 
                 <div *ngIf="element.comment == null">
-                    Comment<br> not found
+                    No comment
                 </div>
             </td>
         </ng-container>
@@ -88,7 +93,7 @@
                     {{renderFeedback(element.feedback)}}
                 </div>
                 <div *ngIf="element.feedback == null">
-                    Feedback<br>not found
+                    No feedback
                 </div>
             </td>
         </ng-container>
@@ -103,7 +108,8 @@
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef> Action </th>
             <td mat-cell *matCellDef="let element">
-                <mat-icon (click)="deleteOrder(element.id)">delete</mat-icon>
+                <mat-icon *ngIf="element.status == 0" (click)="deleteOrder(element.id)">delete</mat-icon>
+
             </td>
         </ng-container>
 
