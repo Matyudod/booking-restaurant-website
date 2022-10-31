@@ -75,7 +75,7 @@ class MainIngredientController {
     }
     async getList(req, res) {
         try {
-            let params = req.body;
+            let params = req.query;
             let pagination = {
                 page: parseInt(params.page) || 1,
                 size: parseInt(params.size) || 10,

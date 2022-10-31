@@ -27,8 +27,8 @@ export class TypePartyService {
     });
   }
 
-  createTypeParty(typeParty: ITypePartyCreate) {
-    return this.http.post<ITypeParty | IMessage>(
+  createTypeParty(typeParty: ITypePartyCreate): Observable<IMessage | any> {
+    return this.http.post<IMessage>(
       this.url + '/create',
       typeParty
     );

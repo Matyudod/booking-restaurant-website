@@ -12,7 +12,7 @@ export class MainIngredientService {
   constructor(private http: HttpClient) { }
   url = new ConfigService().url + '/api/main-ingredient';
 
-  createMainIngredient(mainIngredient: IMainIngredientCreate) {
+  createMainIngredient(mainIngredient: IMainIngredientCreate): Observable<IMessage | any> {
     return this.http.post<IMainIngredient | IMessage>(
       this.url + '/create',
       mainIngredient

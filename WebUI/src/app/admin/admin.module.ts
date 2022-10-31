@@ -20,6 +20,10 @@ import { AppovalDialogComponent } from './components/appoval-dialog/appoval-dial
 import { CreateNewEmployeeDialogComponent } from './components/create-new-employee-dialog/create-new-employee-dialog.component';
 import { IngredientListPageComponent } from './views/ingredient-list-page/ingredient-list-page.component';
 import { CreateDialogComponent } from './components/create-dialog/create-dialog.component';
+import { TableListPageComponent } from './views/table-list-page/table-list-page.component';
+import { TypePartyListPageComponent } from './views/type-party-list-page/type-party-list-page.component';
+import { UserInfomationPageComponent } from './views/user-infomation-page/user-infomation-page.component';
+import { ChangePasswordPageComponent } from './views/change-password-page/change-password-page.component';
 
 
 @NgModule({
@@ -37,7 +41,11 @@ import { CreateDialogComponent } from './components/create-dialog/create-dialog.
     AppovalDialogComponent,
     CreateNewEmployeeDialogComponent,
     IngredientListPageComponent,
-    CreateDialogComponent
+    CreateDialogComponent,
+    TableListPageComponent,
+    TypePartyListPageComponent,
+    UserInfomationPageComponent,
+    ChangePasswordPageComponent
   ],
   imports: [
     CommonModule,

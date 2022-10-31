@@ -9,34 +9,34 @@ import { LoadingPanel } from 'src/app/services/loading/loading-panel';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSevice } from '../../../services/loading/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
-import { IMainIngredientList } from '../../../models/main-ingredient-list';
-import { MainIngredientService } from '../../../services/http/main-ingredient.service';
-import { IMainIngredient } from '../../../models/main-ingredient';
 import { DialogCreateSevice } from '../../../services/loading/dialog_create';
+import { TypePartyService } from 'src/app/services/http/type-of-party.service';
+import { ITypePartyList } from 'src/app/models/type-party-list';
 
 @Component({
-  selector: 'app-ingredient-list-page',
-  templateUrl: './ingredient-list-page.component.html',
-  styleUrls: ['./ingredient-list-page.component.scss']
+  selector: 'app-type-party-list-page',
+  templateUrl: './type-party-list-page.component.html',
+  styleUrls: ['./type-party-list-page.component.scss']
 })
-export class IngredientListPageComponent implements OnInit {
+export class TypePartyListPageComponent implements OnInit {
+
 
   @ViewChild(MatSort) sort!: MatSort;
-  private mainIngredientService: MainIngredientService;
+  private typePartyService: TypePartyService;
   public pagination: IPagination;
   private confirmDialog: DialogConfirmSevice;
   private createDialog: DialogCreateSevice;
   private dialog: DialogSevice;
   private loadingPanel: LoadingPanel;
   displayedColumns: string[] = ['id', 'name', 'edit', 'action'];
-  public ingredientList: IMainIngredientList | any;
+  public typePartyList: ITypePartyList | any;
   dataSource = new MatTableDataSource([])
   constructor(dialog: MatDialog, private router: Router, http: HttpClient) {
     this.createDialog = new DialogCreateSevice(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
     this.dialog = new DialogSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
-    this.mainIngredientService = new MainIngredientService(http);
+    this.typePartyService = new TypePartyService(http);
     this.pagination = {
       page: 1,
       size: 10,
@@ -48,14 +48,14 @@ export class IngredientListPageComponent implements OnInit {
   ngAfterViewInit() {
   }
   ngOnInit(): void {
-    this.getIngredientList();
+    this.getTypePartyList();
   }
-  getIngredientList() {
+  getTypePartyList() {
     this.loadingPanel.show();
-    this.mainIngredientService.getList(this.pagination).subscribe((ingredientList: IMainIngredient | any) => {
+    this.typePartyService.getList(this.pagination).subscribe((typePartyList: ITypePartyList | any) => {
       this.loadingPanel.hide();
-      this.ingredientList = ingredientList;
-      this.dataSource.data = ingredientList.rows;
+      this.typePartyList = typePartyList;
+      this.dataSource.data = typePartyList.rows;
     })
   }
   renderDate(date: String | any) {
@@ -65,12 +65,12 @@ export class IngredientListPageComponent implements OnInit {
     }
     else return '';
   }
-  async deleteIngredient(ingredientId: Number) {
+  async deleteTypeParty(typePartyId: Number) {
     let isConfirm = await this.confirmDialog.show("confirm_delete");
     isConfirm.subscribe((result: any) => {
       if (result) {
         this.loadingPanel.show();
-        this.mainIngredientService.deteleMainIngredient(ingredientId).subscribe((message: IMessage) => {
+        this.typePartyService.delete(typePartyId).subscribe((message: IMessage) => {
           this.loadingPanel.hide();
           this.ngOnInit();
           this.dialog.show(message);
@@ -80,7 +80,7 @@ export class IngredientListPageComponent implements OnInit {
   }
   loadPageData(page: any) {
     this.pagination.page = page?.pageIndex + 1;
-    this.getIngredientList();
+    this.getTypePartyList();
   }
   announceSortChange(sortState: Sort) {
 
@@ -92,18 +92,20 @@ export class IngredientListPageComponent implements OnInit {
       this.pagination.is_reverse_sort = null;
     }
 
-    this.getIngredientList();
+    this.getTypePartyList();
   }
-  async addIngredient() {
-    let isConfirm = await this.createDialog.show("ingredient");
+  async addTypeParty() {
+    let isConfirm = await this.createDialog.show("type-party");
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
   }
-  async updateIngredient(ingredientId: Number) {
-    let isConfirm = await this.createDialog.show("ingredient", ingredientId);
+  async updateTypeParty(typePartyId: Number) {
+    let isConfirm = await this.createDialog.show("type-party", typePartyId);
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
   }
+
+
 }
