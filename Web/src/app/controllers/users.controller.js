@@ -185,7 +185,7 @@ class UserController {
             let params = req.query;
             let is_admin = false;
             let search_name = params.search;
-            if (search_name == null || search_name == "") {
+            if (search_name != null || search_name != "") {
                 delete params.page;
                 delete params.field;
                 delete params.is_reverse_sort;

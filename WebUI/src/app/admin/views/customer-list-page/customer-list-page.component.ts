@@ -28,6 +28,7 @@ export class CustomerListPageComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['id', 'name', 'username', 'email', 'birthday', 'action'];
   public customerList: IUserList | any;
   dataSource = new MatTableDataSource([])
+  public searchText: String | null = null;
   constructor(dialog: MatDialog, private router: Router, http: HttpClient) {
     this.confirmDialog = new DialogConfirmSevice(dialog);
     this.dialog = new DialogSevice(dialog);
@@ -48,7 +49,7 @@ export class CustomerListPageComponent implements OnInit, AfterViewInit {
   }
   getCustomerList() {
     this.loadingPanel.show();
-    this.userService.getCustomerList(this.pagination).subscribe((customerList: IUserList | any) => {
+    this.userService.getCustomerList(this.pagination, this.searchText).subscribe((customerList: IUserList | any) => {
       this.loadingPanel.hide();
       this.customerList = customerList;
       this.dataSource.data = customerList.rows;
@@ -87,6 +88,10 @@ export class CustomerListPageComponent implements OnInit, AfterViewInit {
       this.pagination.field = null;
       this.pagination.is_reverse_sort = null;
     }
+    this.getCustomerList();
+  }
+  search(input: any) {
+    this.searchText = input.value.trim() != "" ? input.value : null;
     this.getCustomerList();
   }
 }

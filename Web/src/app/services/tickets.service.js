@@ -83,25 +83,39 @@ class TicketService {
 
     async getListOrder(pagination, order, search_name) {
         try {
-            let searchList = search_name.split(" ");
-            search_name = "%" + searchList.join("% %") + "%";
-            searchList = search_name.split(" ");
+            let where = null;
             let iLikeName = [];
-            searchList.forEach((element) => {
-                iLikeName.push({
-                    name: {
-                        [Op.like]: element,
-                    },
+            if (search_name != null && search_name != "" && search_name != undefined) {
+                let searchList = search_name.split(" ");
+                search_name = "%" + searchList.join("% %") + "%";
+                searchList = search_name.split(" ");
+                searchList.forEach((element) => {
+                    iLikeName.push({
+                        name: {
+                            [Op.like]: element,
+                        },
+                    });
                 });
-            });
-            let list = await this.model.findAndCountAll({
-                where: {
+            }
+            if (iLikeName.length > 0) {
+                where = {
                     [Op.or]: iLikeName,
                     table_id: 0,
                     payment_date: {
                         [Op.not]: null,
                     },
-                },
+                };
+            } else {
+                where = {
+                    table_id: 0,
+                    payment_date: {
+                        [Op.not]: null,
+                    },
+                };
+            }
+
+            let list = await this.model.findAndCountAll({
+                where: where,
                 order: [order],
                 limit: pagination.size,
                 offset: (pagination.page - 1) * pagination.size,

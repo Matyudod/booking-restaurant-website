@@ -40,7 +40,7 @@ export class UserService {
     return this.http.put<IMessage>(this.url + '/update_user_info', userData);
   }
 
-  getCustomerList(pagination: IPagination): Observable<IUserList | IMessage> {
+  getCustomerList(pagination: IPagination, searchText: String | null): Observable<IUserList | IMessage> {
     let params = new HttpParams();
     if (pagination.page != null)
       params = params.append("page", pagination.page);
@@ -50,6 +50,8 @@ export class UserService {
       params = params.append("field", pagination.field);
     if (pagination.is_reverse_sort != null)
       params = params.append("is_reverse_sort", pagination.is_reverse_sort);
+    if (searchText != null)
+      params = params.append("search", <string>searchText);
     return this.http.get<IUserList | IMessage>(this.url + '/customer-list', { params: params })
   }
   getEmployeeList(pagination: IPagination): Observable<IUserList | IMessage> {
