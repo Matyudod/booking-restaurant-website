@@ -9,6 +9,9 @@ import { ReversedListPageComponent } from './views/reversed-list-page/reversed-l
 import { IngredientListPageComponent } from './views/ingredient-list-page/ingredient-list-page.component';
 import { TableListPageComponent } from './views/table-list-page/table-list-page.component';
 import { TypePartyListPageComponent } from './views/type-party-list-page/type-party-list-page.component';
+import { UserInfomationPageComponent } from './views/user-infomation-page/user-infomation-page.component';
+import { ChangePasswordPageComponent } from './views/change-password-page/change-password-page.component';
+import { StatisticPageComponent } from './views/statistic-page/statistic-page.component';
 
 const routes: Routes = [{
   path: '',
@@ -18,6 +21,18 @@ const routes: Routes = [{
     //   path: 'test',
     //   component: AddFoodDialogComponent
     // },
+    {
+      path: 'statistic',
+      component: StatisticPageComponent
+    },
+    {
+      path: 'change-password',
+      component: ChangePasswordPageComponent
+    },
+    {
+      path: 'user-infomation',
+      component: UserInfomationPageComponent
+    },
     {
       path: 'type-party-list',
       component: TypePartyListPageComponent

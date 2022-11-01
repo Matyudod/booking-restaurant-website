@@ -24,6 +24,9 @@ import { TableListPageComponent } from './views/table-list-page/table-list-page.
 import { TypePartyListPageComponent } from './views/type-party-list-page/type-party-list-page.component';
 import { UserInfomationPageComponent } from './views/user-infomation-page/user-infomation-page.component';
 import { ChangePasswordPageComponent } from './views/change-password-page/change-password-page.component';
+import { ChartDoughnutComponent } from './components/chart-doughnut/chart-doughnut.component';
+import { NgChartsModule } from 'ng2-charts';
+import { StatisticPageComponent } from './views/statistic-page/statistic-page.component';
 
 
 @NgModule({
@@ -45,7 +48,9 @@ import { ChangePasswordPageComponent } from './views/change-password-page/change
     TableListPageComponent,
     TypePartyListPageComponent,
     UserInfomationPageComponent,
-    ChangePasswordPageComponent
+    ChangePasswordPageComponent,
+    ChartDoughnutComponent,
+    StatisticPageComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +58,8 @@ import { ChangePasswordPageComponent } from './views/change-password-page/change
     MaterialModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgImageSliderModule
+    NgImageSliderModule,
+    NgChartsModule
   ]
 })
 export class AdminModule { }

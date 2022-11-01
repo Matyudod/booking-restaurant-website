@@ -76,11 +76,23 @@ class UserService {
         }
     }
 
-    async getList(is_admin, pagination, order) {
+    async getList(is_admin, pagination, order, search_name) {
         try {
+            let searchList = search_name.split(" ");
+            search_name = "%" + searchList.join("% %") + "%";
+            searchList = search_name.split(" ");
+            let iLikeName = [];
+            searchList.forEach((element) => {
+                iLikeName.push({
+                    name: {
+                        [Op.like]: element,
+                    },
+                });
+            });
             let status = true;
             let list = await this.model.findAndCountAll({
                 where: {
+                    [Op.or]: iLikeName,
                     is_admin: is_admin,
                     status: status,
                     id: { [Op.gt]: 0 },

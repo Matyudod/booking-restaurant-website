@@ -15,6 +15,7 @@ import { FoodInfomationDailogComponent } from './components/food-infomation-dail
 import { DetailTicketDialogComponent } from './components/detail-ticket-dialog/detail-ticket-dialog.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { FoodDialogComponent } from './components/food-dialog/food-dialog.component';
+import { ChartModule } from './modules/chart/chart/chart.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { FoodDialogComponent } from './components/food-dialog/food-dialog.compon
     MaterialModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ChartModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

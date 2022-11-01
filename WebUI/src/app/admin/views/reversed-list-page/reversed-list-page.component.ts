@@ -119,12 +119,16 @@ export class ReversedListPageComponent implements OnInit {
                   this.billService.getByTicketId(ticketOrdered.id).subscribe((bill: IBill) => {
                     ticketOrderedList.rows[<number>index].bill = bill;
                     if (bill == null) {
-                      ticketOrderedList.rows[<number>index].status = 0;
+                      if (ticketOrdered.payment_date == null) {
+                        ticketOrderedList.rows[<number>index].status = 0;
+                      } else {
+                        ticketOrderedList.rows[<number>index].status = 1;
+                      }
                       ticketOrderedList.rows[<number>index].comment = null;
                       ticketOrderedList.rows[<number>index].feedback = null;
                     } else {
                       if (bill.status) {
-                        ticketOrderedList.rows[<number>index].status = 1;
+                        ticketOrderedList.rows[<number>index].status = 2;
                         this.commentService.getCommentWithBillId(bill.id).subscribe((comment: IComment | IMessage | any) => {
                           if (comment.message != undefined) {
                             ticketOrderedList.rows[<number>index].comment = {
@@ -188,8 +192,10 @@ export class ReversedListPageComponent implements OnInit {
   }
   renderStatus(status: Number) {
     if (status == 0) {
-      return "Pending";
+      return "Waiting";
     } else if (status == 1) {
+      return "Pending";
+    } else if (status == 2) {
       return "Completed";
     } else {
       return "Canceled";

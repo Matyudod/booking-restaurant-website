@@ -90,12 +90,24 @@ export class DetailTicketDialogComponent implements OnInit {
               this.billService.getByTicketId(ticketInfo.id).subscribe((bill: IBill) => {
                 ticketInfo.bill = bill;
                 if (bill == null) {
-                  ticketInfo.status = 0;
+                  if (ticketInfo.table.id == 0) {
+                    ticketInfo.status = 0;
+                  } else {
+                    if (ticketInfo.payment_date == null) {
+                      ticketInfo.status = 0;
+                    } else {
+                      ticketInfo.status = 1;
+                    }
+                  }
                   ticketInfo.comment = null;
                 } else {
                   this.getDiscount(bill.discount_id);
                   if (bill.status) {
-                    ticketInfo.status = 1;
+                    if (ticketInfo.table.id == 0) {
+                      ticketInfo.status = 1;
+                    } else {
+                      ticketInfo.status = 2;
+                    }
                     this.commentService.getCommentWithBillId(bill.id).subscribe((comment: IComment | IMessage | any) => {
                       if (comment.message != undefined) {
                         ticketInfo.comment = {
@@ -156,6 +168,17 @@ export class DetailTicketDialogComponent implements OnInit {
     if (status == 0) {
       return "Pending";
     } else if (status == 1) {
+      return "Completed";
+    } else {
+      return "Canceled";
+    }
+  }
+  renderStatusForReverse(status: Number) {
+    if (status == 0) {
+      return "Waiting";
+    } else if (status == 1) {
+      return "Pending";
+    } else if (status == 2) {
       return "Completed";
     } else {
       return "Canceled";

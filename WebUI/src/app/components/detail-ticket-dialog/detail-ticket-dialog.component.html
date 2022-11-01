@@ -39,7 +39,8 @@
             </tr>
             <tr>
                 <td>Status:</td>
-                <td>{{ticketInfo!= null ? renderStatus(ticketInfo.status) : ""}}</td>
+                <td>{{ticketInfo!= null ? ticketInfo.table.id == 0 ? renderStatus(ticketInfo.status) :
+                    renderStatusForReverse(ticketInfo.status) : ""}}</td>
             </tr>
             <tr>
                 <td>Comment of customer:</td>
