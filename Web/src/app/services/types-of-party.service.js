@@ -25,9 +25,24 @@ class TypeOfPartyService {
         }
     }
 
-    async getList(pagination, order) {
+    async getList(pagination, order, search_name) {
         try {
+            let searchList = search_name.split(" ");
+            search_name = "%" + searchList.join("% %") + "%";
+            searchList = search_name.split(" ");
+            let iLikeName = [];
+            searchList.forEach((element) => {
+                iLikeName.push({
+                    name: {
+                        [Op.like]: element,
+                    },
+                });
+            });
             let list = await this.model.findAndCountAll({
+                where: {
+                    [Op.or]: iLikeName,
+                    id: { [Op.gt]: 0 },
+                },
                 order: [order],
                 limit: pagination.size,
                 offset: (pagination.page - 1) * pagination.size,
@@ -39,6 +54,7 @@ class TypeOfPartyService {
             return null;
         }
     }
+
 
     async update(id, data) {
         let status = true;

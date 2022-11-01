@@ -29,8 +29,20 @@ class DiscountService {
 
     async getList(pagination, order) {
         try {
+            let searchList = search_name.split(" ");
+            search_name = "%" + searchList.join("% %") + "%";
+            searchList = search_name.split(" ");
+            let iLikeName = [];
+            searchList.forEach((element) => {
+                iLikeName.push({
+                    name: {
+                        [Op.like]: element,
+                    },
+                });
+            });
             let list = await this.model.findAndCountAll({
                 where: {
+                    [Op.or]: iLikeName,
                     id: {
                         [Op.ne]: 0,
                     },

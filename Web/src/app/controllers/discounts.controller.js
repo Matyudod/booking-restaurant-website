@@ -74,6 +74,12 @@ class DiscountController {
     async getList(req, res) {
         try {
             let params = req.body;
+            let search_name = params.search;
+            if (search_name != null && search_name != "") {
+                delete params.page;
+                delete params.field;
+                delete params.is_reverse_sort;
+            }
             let pagination = {
                 page: parseInt(params.page) || 1,
                 size: parseInt(params.size) || 10,
@@ -100,7 +106,7 @@ class DiscountController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
-                let discountList = await discountService.getList(pagination, order);
+                let discountList = await discountService.getList(pagination, order, search_name);
                 if (discountList != null) {
                     res.status(200).json(discountList);
                 } else {

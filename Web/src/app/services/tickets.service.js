@@ -81,10 +81,22 @@ class TicketService {
         }
     }
 
-    async getListOrder(pagination, order) {
+    async getListOrder(pagination, order, search_name) {
         try {
+            let searchList = search_name.split(" ");
+            search_name = "%" + searchList.join("% %") + "%";
+            searchList = search_name.split(" ");
+            let iLikeName = [];
+            searchList.forEach((element) => {
+                iLikeName.push({
+                    name: {
+                        [Op.like]: element,
+                    },
+                });
+            });
             let list = await this.model.findAndCountAll({
                 where: {
+                    [Op.or]: iLikeName,
                     table_id: 0,
                     payment_date: {
                         [Op.not]: null,

@@ -26,11 +26,23 @@ class FoodService {
         }
     }
 
-    async getList(pagination, order) {
+    async getList(pagination, order, search_name) {
         try {
             let status = true;
+            let searchList = search_name.split(" ");
+            search_name = "%" + searchList.join("% %") + "%";
+            searchList = search_name.split(" ");
+            let iLikeName = [];
+            searchList.forEach((element) => {
+                iLikeName.push({
+                    name: {
+                        [Op.like]: element,
+                    },
+                });
+            });
             let list = await this.model.findAndCountAll({
                 where: {
+                    [Op.or]: iLikeName,
                     status: status,
                 },
                 order: [order],

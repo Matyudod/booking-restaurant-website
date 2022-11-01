@@ -28,11 +28,23 @@ class TableService {
         }
     }
 
-    async getList(pagination, order) {
+    async getList(pagination, order, search_name) {
         let status = true;
         try {
+            let searchList = search_name.split(" ");
+            search_name = "%" + searchList.join("% %") + "%";
+            searchList = search_name.split(" ");
+            let iLikeName = [];
+            searchList.forEach((element) => {
+                iLikeName.push({
+                    name: {
+                        [Op.like]: element,
+                    },
+                });
+            });
             let list = await this.model.findAndCountAll({
                 where: {
+                    [Op.or]: iLikeName,
                     status: status,
                     id: {
                         [Op.ne]: 0,

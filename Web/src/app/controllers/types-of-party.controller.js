@@ -73,6 +73,12 @@ class TypeOfPartyController {
     async getList(req, res) {
         try {
             let params = req.body;
+            let search_name = params.search;
+            if (search_name != null && search_name != "") {
+                delete params.page;
+                delete params.field;
+                delete params.is_reverse_sort;
+            }
             let pagination = {
                 page: parseInt(params.page) || 1,
                 size: parseInt(params.size) || 10,
@@ -99,7 +105,7 @@ class TypeOfPartyController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
-                let typeOfPartyList = await typeOfPartyService.getList(pagination, order);
+                let typeOfPartyList = await typeOfPartyService.getList(pagination, order, search_name);
                 if (typeOfPartyList != null) {
                     res.status(200).json(typeOfPartyList);
                 } else {
