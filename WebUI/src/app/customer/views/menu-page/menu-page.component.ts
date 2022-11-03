@@ -32,6 +32,7 @@ export class MenuPageComponent implements OnInit {
   private dialogService: DialogSevice;
   private foodDialogSevice: FoodDialogSevice;
   private userToken: String;
+  public searchText: String | null = null;
   constructor(http: HttpClient, dialog: MatDialog, private router: Router) {
     this.foodService = new FoodService(http);
     this.userService = new UserService(http);
@@ -72,7 +73,7 @@ export class MenuPageComponent implements OnInit {
       field: null,
       is_reverse_sort: null
     }
-    this.foodService.getList(pagination).subscribe((listFoods: IFoodList | IMessage | any) => {
+    this.foodService.getList(pagination, this.searchText).subscribe((listFoods: IFoodList | IMessage | any) => {
       this.loadingPanel.hide();
       if (listFoods?.rows) {
         this.listFoods = listFoods;
@@ -83,6 +84,11 @@ export class MenuPageComponent implements OnInit {
   }
   formatNumber(number: number) {
     return new Intl.NumberFormat('vi', { style: "currency", currency: "VND" }).format(number);
+  }
+
+  search(input: any) {
+    this.searchText = input.value.trim() != "" ? input.value : null;
+    this.getFoodList();
   }
 
 }

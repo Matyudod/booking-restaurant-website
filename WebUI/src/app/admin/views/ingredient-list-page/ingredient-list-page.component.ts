@@ -17,10 +17,9 @@ import { DialogCreateSevice } from '../../../services/loading/dialog_create';
 @Component({
   selector: 'app-ingredient-list-page',
   templateUrl: './ingredient-list-page.component.html',
-  styleUrls: ['./ingredient-list-page.component.scss']
+  styleUrls: ['./ingredient-list-page.component.scss'],
 })
 export class IngredientListPageComponent implements OnInit {
-
   @ViewChild(MatSort) sort!: MatSort;
   private mainIngredientService: MainIngredientService;
   public pagination: IPagination;
@@ -30,7 +29,8 @@ export class IngredientListPageComponent implements OnInit {
   private loadingPanel: LoadingPanel;
   displayedColumns: string[] = ['id', 'name', 'edit', 'action'];
   public ingredientList: IMainIngredientList | any;
-  dataSource = new MatTableDataSource([])
+  dataSource = new MatTableDataSource([]);
+  public searchText: String | null = null;
   constructor(dialog: MatDialog, private router: Router, http: HttpClient) {
     this.createDialog = new DialogCreateSevice(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
@@ -42,39 +42,41 @@ export class IngredientListPageComponent implements OnInit {
       size: 10,
       field: null,
       is_reverse_sort: null,
-    }
+    };
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
   ngOnInit(): void {
     this.getIngredientList();
   }
   getIngredientList() {
     this.loadingPanel.show();
-    this.mainIngredientService.getList(this.pagination).subscribe((ingredientList: IMainIngredient | any) => {
-      this.loadingPanel.hide();
-      this.ingredientList = ingredientList;
-      this.dataSource.data = ingredientList.rows;
-    })
+    this.mainIngredientService
+      .getList(this.pagination, this.searchText)
+      .subscribe((ingredientList: IMainIngredient | any) => {
+        this.loadingPanel.hide();
+        this.ingredientList = ingredientList;
+        this.dataSource.data = ingredientList.rows;
+      });
   }
   renderDate(date: String | any) {
     if (date != undefined) {
       let datetime = new Date(date);
-      return datetime.toLocaleDateString()
-    }
-    else return '';
+      return datetime.toLocaleDateString();
+    } else return '';
   }
   async deleteIngredient(ingredientId: Number) {
-    let isConfirm = await this.confirmDialog.show("confirm_delete");
+    let isConfirm = await this.confirmDialog.show('confirm_delete');
     isConfirm.subscribe((result: any) => {
       if (result) {
         this.loadingPanel.show();
-        this.mainIngredientService.deteleMainIngredient(ingredientId).subscribe((message: IMessage) => {
-          this.loadingPanel.hide();
-          this.ngOnInit();
-          this.dialog.show(message);
-        })
+        this.mainIngredientService
+          .deteleMainIngredient(ingredientId)
+          .subscribe((message: IMessage) => {
+            this.loadingPanel.hide();
+            this.ngOnInit();
+            this.dialog.show(message);
+          });
       }
     });
   }
@@ -83,10 +85,10 @@ export class IngredientListPageComponent implements OnInit {
     this.getIngredientList();
   }
   announceSortChange(sortState: Sort) {
-
     if (sortState.direction) {
       this.pagination.field = sortState.active;
-      this.pagination.is_reverse_sort = sortState.direction == 'desc' ? "true" : "false";
+      this.pagination.is_reverse_sort =
+        sortState.direction == 'desc' ? 'true' : 'false';
     } else {
       this.pagination.field = null;
       this.pagination.is_reverse_sort = null;
@@ -95,15 +97,20 @@ export class IngredientListPageComponent implements OnInit {
     this.getIngredientList();
   }
   async addIngredient() {
-    let isConfirm = await this.createDialog.show("ingredient");
+    let isConfirm = await this.createDialog.show('ingredient');
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
   }
   async updateIngredient(ingredientId: Number) {
-    let isConfirm = await this.createDialog.show("ingredient", ingredientId);
+    let isConfirm = await this.createDialog.show('ingredient', ingredientId);
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
+  }
+
+  search(input: any) {
+    this.searchText = input.value.trim() != '' ? input.value : null;
+    this.getIngredientList();
   }
 }

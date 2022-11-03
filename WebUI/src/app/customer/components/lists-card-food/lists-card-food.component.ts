@@ -38,7 +38,7 @@ export class ListsCardFoodComponent implements OnInit {
       field: null,
       is_reverse_sort: null
     }
-    this.foodService.getList(pagination).subscribe((listFoods: IFoodList | IMessage | any) => {
+    this.foodService.getList(pagination, null).subscribe((listFoods: IFoodList | IMessage | any) => {
       this.loadingPanel.hide();
       if (listFoods?.rows) {
         this.listFoods = listFoods;

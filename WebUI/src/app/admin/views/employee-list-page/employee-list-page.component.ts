@@ -15,10 +15,9 @@ import { DialogCreateStaffSevice } from '../../../services/loading/dialog_create
 @Component({
   selector: 'app-employee-list-page',
   templateUrl: './employee-list-page.component.html',
-  styleUrls: ['./employee-list-page.component.scss']
+  styleUrls: ['./employee-list-page.component.scss'],
 })
 export class EmployeeListPageComponent implements OnInit {
-
   @ViewChild(MatSort) sort!: MatSort;
   private userService: UserService;
   public pagination: IPagination;
@@ -26,9 +25,17 @@ export class EmployeeListPageComponent implements OnInit {
   private createStaffDialog: DialogCreateStaffSevice;
   private dialog: DialogSevice;
   private loadingPanel: LoadingPanel;
-  displayedColumns: string[] = ['id', 'name', 'username', 'email', 'birthday', 'action'];
+  displayedColumns: string[] = [
+    'id',
+    'name',
+    'username',
+    'email',
+    'birthday',
+    'action',
+  ];
   public employeeList: IUserList | any;
-  dataSource = new MatTableDataSource([])
+  dataSource = new MatTableDataSource([]);
+  public searchText: String | null = null;
   constructor(dialog: MatDialog, private router: Router, http: HttpClient) {
     this.createStaffDialog = new DialogCreateStaffSevice(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
@@ -40,39 +47,41 @@ export class EmployeeListPageComponent implements OnInit {
       size: 10,
       field: null,
       is_reverse_sort: null,
-    }
+    };
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
   ngOnInit(): void {
     this.getEmployeeList();
   }
   getEmployeeList() {
     this.loadingPanel.show();
-    this.userService.getEmployeeList(this.pagination).subscribe((employeeList: IUserList | any) => {
-      this.loadingPanel.hide();
-      this.employeeList = employeeList;
-      this.dataSource.data = employeeList.rows;
-    })
+    this.userService
+      .getEmployeeList(this.pagination, this.searchText)
+      .subscribe((employeeList: IUserList | any) => {
+        this.loadingPanel.hide();
+        this.employeeList = employeeList;
+        this.dataSource.data = employeeList.rows;
+      });
   }
   renderDate(date: String | any) {
     if (date != undefined) {
       let datetime = new Date(date);
-      return datetime.toLocaleDateString()
-    }
-    else return '';
+      return datetime.toLocaleDateString();
+    } else return '';
   }
   async deleteEmployee(employeeId: Number) {
-    let isConfirm = await this.confirmDialog.show("confirm_delete");
+    let isConfirm = await this.confirmDialog.show('confirm_delete');
     isConfirm.subscribe((result: any) => {
       if (result) {
         this.loadingPanel.show();
-        this.userService.deleteUser(employeeId).subscribe((message: IMessage) => {
-          this.loadingPanel.hide();
-          this.ngOnInit();
-          this.dialog.show(message);
-        })
+        this.userService
+          .deleteUser(employeeId)
+          .subscribe((message: IMessage) => {
+            this.loadingPanel.hide();
+            this.ngOnInit();
+            this.dialog.show(message);
+          });
       }
     });
   }
@@ -81,10 +90,10 @@ export class EmployeeListPageComponent implements OnInit {
     this.getEmployeeList();
   }
   announceSortChange(sortState: Sort) {
-
     if (sortState.direction) {
       this.pagination.field = sortState.active;
-      this.pagination.is_reverse_sort = sortState.direction == 'desc' ? "true" : "false";
+      this.pagination.is_reverse_sort =
+        sortState.direction == 'desc' ? 'true' : 'false';
     } else {
       this.pagination.field = null;
       this.pagination.is_reverse_sort = null;
@@ -94,10 +103,14 @@ export class EmployeeListPageComponent implements OnInit {
     this.getEmployeeList();
   }
   async addEmployee() {
-
     let isConfirm = await this.createStaffDialog.show();
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
+  }
+
+  search(input: any) {
+    this.searchText = input.value.trim() != '' ? input.value : null;
+    this.getEmployeeList();
   }
 }

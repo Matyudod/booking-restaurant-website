@@ -16,6 +16,7 @@ import { DetailTicketDialogComponent } from './components/detail-ticket-dialog/d
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { FoodDialogComponent } from './components/food-dialog/food-dialog.component';
 import { ChartModule } from './modules/chart/chart/chart.module';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ChartModule } from './modules/chart/chart/chart.module';
     ReactiveFormsModule,
     HttpClientModule,
     ChartModule,
+    NgChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,13 @@
 <div class="card-container">
     <u class="header-menu">Menu</u>
+    <div class="action-menu">
+        <mat-form-field appearance="standard">
+            <mat-label>Search Name</mat-label>
+            <input matInput placeholder="Search Name" #input (blur)="search(input)">
+            <mat-icon matSuffix (click)="search(input)">search</mat-icon>
+        </mat-form-field>
+    </div>
+
     <div *ngIf="listFoods?.rows && listFoods?.rows.length > 0" class="food-card-container">
         <mat-card class="food-card" *ngFor="let food of listFoods?.rows;let i =index"
             (click)="selectItem(listFoods?.rows[i])">

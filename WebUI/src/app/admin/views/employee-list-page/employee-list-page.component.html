@@ -1,12 +1,16 @@
 <div class="container">
     <h1>Employee Management</h1>
     <div class="action-table">
-
+        <mat-form-field appearance="standard">
+            <mat-label>Search Name</mat-label>
+            <input matInput placeholder="Search Name" #input (blur)="search(input)">
+            <mat-icon matSuffix (click)="search(input)">search</mat-icon>
+        </mat-form-field>
 
         <div class="spacer"></div>
         <div class="action-button">
             <button mat-raised-button color="primary" (click)="addEmployee()">New Employee <mat-icon>add</mat-icon>
-                </button>
+            </button>
         </div>
     </div>
     <table mat-table [dataSource]="dataSource" #table matSort (matSortChange)="announceSortChange($event)">

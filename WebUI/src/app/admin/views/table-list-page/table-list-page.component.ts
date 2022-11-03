@@ -15,10 +15,9 @@ import { TableService } from '../../../services/http/table.service';
 @Component({
   selector: 'app-table-list-page',
   templateUrl: './table-list-page.component.html',
-  styleUrls: ['./table-list-page.component.scss']
+  styleUrls: ['./table-list-page.component.scss'],
 })
 export class TableListPageComponent implements OnInit {
-
   @ViewChild(MatSort) sort!: MatSort;
   private tableService: TableService;
   public pagination: IPagination;
@@ -26,9 +25,16 @@ export class TableListPageComponent implements OnInit {
   private createDialog: DialogCreateSevice;
   private dialog: DialogSevice;
   private loadingPanel: LoadingPanel;
-  displayedColumns: string[] = ['id', 'name', 'number-of-seat', 'edit', 'action'];
+  displayedColumns: string[] = [
+    'id',
+    'name',
+    'number-of-seat',
+    'edit',
+    'action',
+  ];
   public tableList: ITableList | any;
-  dataSource = new MatTableDataSource([])
+  dataSource = new MatTableDataSource([]);
+  public searchText: String | null = null;
   constructor(dialog: MatDialog, private router: Router, http: HttpClient) {
     this.createDialog = new DialogCreateSevice(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
@@ -40,39 +46,41 @@ export class TableListPageComponent implements OnInit {
       size: 10,
       field: null,
       is_reverse_sort: null,
-    }
+    };
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
   ngOnInit(): void {
     this.getTableList();
   }
   getTableList() {
     this.loadingPanel.show();
-    this.tableService.getListTable(this.pagination).subscribe((tableList: ITableList | any) => {
-      this.loadingPanel.hide();
-      this.tableList = tableList;
-      this.dataSource.data = tableList.rows;
-    })
+    this.tableService
+      .getListTable(this.pagination, this.searchText)
+      .subscribe((tableList: ITableList | any) => {
+        this.loadingPanel.hide();
+        this.tableList = tableList;
+        this.dataSource.data = tableList.rows;
+      });
   }
   renderDate(date: String | any) {
     if (date != undefined) {
       let datetime = new Date(date);
-      return datetime.toLocaleDateString()
-    }
-    else return '';
+      return datetime.toLocaleDateString();
+    } else return '';
   }
   async deleteTable(tableId: Number) {
-    let isConfirm = await this.confirmDialog.show("confirm_delete");
+    let isConfirm = await this.confirmDialog.show('confirm_delete');
     isConfirm.subscribe((result: any) => {
       if (result) {
         this.loadingPanel.show();
-        this.tableService.deteleTable(tableId).subscribe((message: IMessage) => {
-          this.loadingPanel.hide();
-          this.ngOnInit();
-          this.dialog.show(message);
-        })
+        this.tableService
+          .deteleTable(tableId)
+          .subscribe((message: IMessage) => {
+            this.loadingPanel.hide();
+            this.ngOnInit();
+            this.dialog.show(message);
+          });
       }
     });
   }
@@ -81,10 +89,10 @@ export class TableListPageComponent implements OnInit {
     this.getTableList();
   }
   announceSortChange(sortState: Sort) {
-
     if (sortState.direction) {
       this.pagination.field = sortState.active;
-      this.pagination.is_reverse_sort = sortState.direction == 'desc' ? "true" : "false";
+      this.pagination.is_reverse_sort =
+        sortState.direction == 'desc' ? 'true' : 'false';
     } else {
       this.pagination.field = null;
       this.pagination.is_reverse_sort = null;
@@ -93,16 +101,19 @@ export class TableListPageComponent implements OnInit {
     this.getTableList();
   }
   async addTable() {
-    let isConfirm = await this.createDialog.show("table");
+    let isConfirm = await this.createDialog.show('table');
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
   }
   async updateTable(tableId: Number) {
-    let isConfirm = await this.createDialog.show("table", tableId);
+    let isConfirm = await this.createDialog.show('table', tableId);
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
   }
-
+  search(input: any) {
+    this.searchText = input.value.trim() != '' ? input.value : null;
+    this.getTableList();
+  }
 }

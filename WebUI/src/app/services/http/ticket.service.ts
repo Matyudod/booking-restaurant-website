@@ -55,7 +55,7 @@ export class TicketService {
   }
 
   getGetReservedListForAdmin(
-    pagination: IPagination
+    pagination: IPagination, searchText: String | null
   ): Observable<IMessage | any> {
     let params = new HttpParams();
     if (pagination.page != null)
@@ -66,6 +66,8 @@ export class TicketService {
       params = params.append('field', pagination.field);
     if (pagination.is_reverse_sort != null)
       params = params.append('is_reverse_sort', pagination.is_reverse_sort);
+    if (searchText != null)
+      params = params.append('search', <string>searchText);
     return this.http.get<IMessage | any>(this.url + '/pagination-reserve', {
       params: params,
     });

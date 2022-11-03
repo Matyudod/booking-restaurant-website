@@ -16,11 +16,9 @@ import { ITypePartyList } from 'src/app/models/type-party-list';
 @Component({
   selector: 'app-type-party-list-page',
   templateUrl: './type-party-list-page.component.html',
-  styleUrls: ['./type-party-list-page.component.scss']
+  styleUrls: ['./type-party-list-page.component.scss'],
 })
 export class TypePartyListPageComponent implements OnInit {
-
-
   @ViewChild(MatSort) sort!: MatSort;
   private typePartyService: TypePartyService;
   public pagination: IPagination;
@@ -30,7 +28,8 @@ export class TypePartyListPageComponent implements OnInit {
   private loadingPanel: LoadingPanel;
   displayedColumns: string[] = ['id', 'name', 'edit', 'action'];
   public typePartyList: ITypePartyList | any;
-  dataSource = new MatTableDataSource([])
+  dataSource = new MatTableDataSource([]);
+  public searchText: String | null = null;
   constructor(dialog: MatDialog, private router: Router, http: HttpClient) {
     this.createDialog = new DialogCreateSevice(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
@@ -42,39 +41,41 @@ export class TypePartyListPageComponent implements OnInit {
       size: 10,
       field: null,
       is_reverse_sort: null,
-    }
+    };
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
   ngOnInit(): void {
     this.getTypePartyList();
   }
   getTypePartyList() {
     this.loadingPanel.show();
-    this.typePartyService.getList(this.pagination).subscribe((typePartyList: ITypePartyList | any) => {
-      this.loadingPanel.hide();
-      this.typePartyList = typePartyList;
-      this.dataSource.data = typePartyList.rows;
-    })
+    this.typePartyService
+      .getList(this.pagination, this.searchText)
+      .subscribe((typePartyList: ITypePartyList | any) => {
+        this.loadingPanel.hide();
+        this.typePartyList = typePartyList;
+        this.dataSource.data = typePartyList.rows;
+      });
   }
   renderDate(date: String | any) {
     if (date != undefined) {
       let datetime = new Date(date);
-      return datetime.toLocaleDateString()
-    }
-    else return '';
+      return datetime.toLocaleDateString();
+    } else return '';
   }
   async deleteTypeParty(typePartyId: Number) {
-    let isConfirm = await this.confirmDialog.show("confirm_delete");
+    let isConfirm = await this.confirmDialog.show('confirm_delete');
     isConfirm.subscribe((result: any) => {
       if (result) {
         this.loadingPanel.show();
-        this.typePartyService.delete(typePartyId).subscribe((message: IMessage) => {
-          this.loadingPanel.hide();
-          this.ngOnInit();
-          this.dialog.show(message);
-        })
+        this.typePartyService
+          .delete(typePartyId)
+          .subscribe((message: IMessage) => {
+            this.loadingPanel.hide();
+            this.ngOnInit();
+            this.dialog.show(message);
+          });
       }
     });
   }
@@ -83,10 +84,10 @@ export class TypePartyListPageComponent implements OnInit {
     this.getTypePartyList();
   }
   announceSortChange(sortState: Sort) {
-
     if (sortState.direction) {
       this.pagination.field = sortState.active;
-      this.pagination.is_reverse_sort = sortState.direction == 'desc' ? "true" : "false";
+      this.pagination.is_reverse_sort =
+        sortState.direction == 'desc' ? 'true' : 'false';
     } else {
       this.pagination.field = null;
       this.pagination.is_reverse_sort = null;
@@ -95,17 +96,20 @@ export class TypePartyListPageComponent implements OnInit {
     this.getTypePartyList();
   }
   async addTypeParty() {
-    let isConfirm = await this.createDialog.show("type-party");
+    let isConfirm = await this.createDialog.show('type-party');
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
   }
   async updateTypeParty(typePartyId: Number) {
-    let isConfirm = await this.createDialog.show("type-party", typePartyId);
+    let isConfirm = await this.createDialog.show('type-party', typePartyId);
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
   }
 
-
+  search(input: any) {
+    this.searchText = input.value.trim() != '' ? input.value : null;
+    this.getTypePartyList();
+  }
 }

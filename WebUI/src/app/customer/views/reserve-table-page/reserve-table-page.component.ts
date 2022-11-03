@@ -24,24 +24,17 @@ import { ITypePartyList } from 'src/app/models/type-party-list';
 @Component({
   selector: 'app-reserve-table-page',
   templateUrl: './reserve-table-page.component.html',
-  styleUrls: ['./reserve-table-page.component.scss']
+  styleUrls: ['./reserve-table-page.component.scss'],
 })
 export class ReserveTablePageComponent implements OnInit {
-
-  tableId = new FormControl('', [
-    Validators.required,
-  ]);
-  receivedDate = new FormControl('', [
-    Validators.required
-  ]);
-  typePartyId = new FormControl('', [
-    Validators.required
-  ]);
+  tableId = new FormControl('', [Validators.required]);
+  receivedDate = new FormControl('', [Validators.required]);
+  typePartyId = new FormControl('', [Validators.required]);
   reserveForm = new FormGroup({
     table_id: this.tableId,
     received_date: this.receivedDate,
     type_party_id: this.typePartyId,
-  },);
+  });
   protected ticket: ITicket | any;
   public tablesList: ITable[] = [];
   public typePartyList: ITypeParty[] = [];
@@ -49,15 +42,17 @@ export class ReserveTablePageComponent implements OnInit {
     {
       image: '/assets/images/panel3.png',
       thumbImage: '/assets/images/panel3.png',
-      order: 0
-    }, {
+      order: 0,
+    },
+    {
       image: '/assets/images/panel2.png',
-      thumbImage: '/assets/images/panel2.png'
+      thumbImage: '/assets/images/panel2.png',
     },
     {
       image: '/assets/images/panel1.png',
       thumbImage: '/assets/images/panel1.png',
-    }, {
+    },
+    {
       image: '/assets/images/panel4.png',
       thumbImage: '/assets/images/panel4.png',
     },
@@ -75,6 +70,7 @@ export class ReserveTablePageComponent implements OnInit {
   private loadingPanel: LoadingPanel;
   private confirmDialog: DialogConfirmSevice;
   minDate: Date;
+  public searchText: String | null = null;
   constructor(http: HttpClient, dialog: MatDialog, private router: Router) {
     this.dialogService = new DialogSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
@@ -86,9 +82,13 @@ export class ReserveTablePageComponent implements OnInit {
     this.publicFileService = new PublicFileService(http);
     this.ticketService = new TicketService(http);
     this.userService = new UserService(http);
-    this.userToken = <string>localStorage.getItem('SessionID') as string;
+    this.userToken = (<string>localStorage.getItem('SessionID')) as string;
     const currentYear = new Date();
-    this.minDate = new Date(currentYear.getFullYear(), currentYear.getMonth(), currentYear.getDate());
+    this.minDate = new Date(
+      currentYear.getFullYear(),
+      currentYear.getMonth(),
+      currentYear.getDate()
+    );
   }
 
   ngOnInit(): void {
@@ -96,31 +96,33 @@ export class ReserveTablePageComponent implements OnInit {
       this.userId = userID;
       this.getTableList();
       this.getTicketPending();
-    })
+    });
   }
   getTableList() {
     this.tableService.getList().subscribe((tablesList: ITableList) => {
       this.tablesList = tablesList.rows;
-    })
+    });
   }
   getTypePartyList() {
     let pagination: IPagination = {
       page: 1,
       size: 1000,
       field: null,
-      is_reverse_sort: null
-    }
-    this.typePartyService.getList(pagination).subscribe((typePartyList: ITypePartyList | any) => {
-      this.typePartyList = typePartyList.rows;
-    })
+      is_reverse_sort: null,
+    };
+    this.typePartyService
+      .getList( pagination, null)
+      .subscribe((typePartyList: ITypePartyList | any) => {
+        this.typePartyList = typePartyList.rows;
+      });
   }
   getTicketPending() {
-    this.ticketService.getGetPendingTicket(this.userId).subscribe((ticket: ITicket) => {
-      this.ticket = ticket;
-    });
-
+    this.ticketService
+      .getGetPendingTicket(this.userId)
+      .subscribe((ticket: ITicket) => {
+        this.ticket = ticket;
+      });
   }
-
 
   async onSubmit() {
     let message: String = 'confirm_reserve';
@@ -136,8 +138,6 @@ export class ReserveTablePageComponent implements OnInit {
           this.ngOnInit();
         });
       }
-    })
+    });
   }
-
-
 }

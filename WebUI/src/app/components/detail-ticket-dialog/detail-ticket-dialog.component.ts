@@ -216,6 +216,9 @@ export class DetailTicketDialogComponent implements OnInit {
         total = total * <number>this.discount.percent / 100;
       }
     }
+    else {
+      total = 0;
+    }
     return this.formatNumber(total * -1);
   }
   sumTotal(cartlist: ICartItem[]) {

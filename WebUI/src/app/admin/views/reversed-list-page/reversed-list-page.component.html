@@ -1,7 +1,11 @@
 <div class="container">
     <h1>Reserve Management</h1>
     <div class="action-table">
-
+        <mat-form-field appearance="standard">
+            <mat-label>Search Name</mat-label>
+            <input matInput placeholder="Search Name" #input (blur)="search(input)">
+            <mat-icon matSuffix (click)="search(input)">search</mat-icon>
+        </mat-form-field>
         <div class="spacer"></div>
 
     </div>

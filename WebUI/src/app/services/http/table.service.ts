@@ -9,7 +9,7 @@ import { ITableCreate } from 'src/app/models/table-create';
 import { IPagination } from 'src/app/models/pagination';
 @Injectable()
 export class TableService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   url = new ConfigService().url + '/api/table';
 
   addTable(table: ITableCreate): Observable<IMessage | any> {
@@ -19,7 +19,10 @@ export class TableService {
   getTableInfo(table_id: Number): Observable<ITable | IMessage | any> {
     return this.http.get<ITable | IMessage>(this.url + '/detail/' + table_id);
   }
-  getListTable(pagination: IPagination): Observable<ITableList | IMessage | any> {
+  getListTable(
+    pagination: IPagination,
+    searchText: String | null
+  ): Observable<ITableList | IMessage | any> {
     let params = new HttpParams();
     if (pagination.page != null)
       params = params.append('page', pagination.page);
@@ -29,6 +32,8 @@ export class TableService {
       params = params.append('field', pagination.field);
     if (pagination.is_reverse_sort != null)
       params = params.append('is_reverse_sort', pagination.is_reverse_sort);
+    if (searchText != null)
+      params = params.append('search', <string>searchText);
     return this.http.get<ITableList | IMessage>(this.url + '/pagination', {
       params: params,
     });
@@ -42,7 +47,10 @@ export class TableService {
     });
   }
 
-  updateTable(table_id: Number, tableUpdate: ITableCreate): Observable<ITable | IMessage | any> {
+  updateTable(
+    table_id: Number,
+    tableUpdate: ITableCreate
+  ): Observable<ITable | IMessage | any> {
     return this.http.put<ITable | IMessage>(
       this.url + '/update/' + table_id,
       tableUpdate

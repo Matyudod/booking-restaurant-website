@@ -71,6 +71,7 @@ export class ReversedListPageComponent implements OnInit {
   displayedColumns: string[] = ['id', 'customer-name', 'received-date', 'type-table', 'type-party', 'status', 'comment', 'feedback', 'detail', 'action'];
   dataSource = new MatTableDataSource([])
   private mainIngredientDetailService: MainIngredientDetailService;
+  public searchText: String | null = null;
   constructor(dialog: MatDialog, private router: Router, http: HttpClient, @Inject(DOCUMENT) public document: Document) {
     this.dialogService = new DialogSevice(dialog);
     this.foodDetailDialog = new DialogFoodDetailSevice(dialog);
@@ -103,7 +104,7 @@ export class ReversedListPageComponent implements OnInit {
     this.getOderedList();
   }
   getOderedList() {
-    this.ticketService.getGetReservedListForAdmin(this.pagination).subscribe((ticketOrderedList) => {
+    this.ticketService.getGetReservedListForAdmin(this.pagination, this.searchText).subscribe((ticketOrderedList) => {
       let promise = new Promise((resolveOuter) => {
         ticketOrderedList.rows.forEach((ticketOrdered: any, index: Number) => {
           resolveOuter(this.userService.getInfo(ticketOrdered.customer_id).subscribe((user: any) => {
@@ -270,5 +271,9 @@ export class ReversedListPageComponent implements OnInit {
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
+  }
+  search(input: any) {
+    this.searchText = input.value.trim() != "" ? input.value : null;
+    this.getOderedList();
   }
 }
