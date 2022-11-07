@@ -25,9 +25,14 @@
                         <input matInput type="number" min="1" max="20" formControlName="quantity">
                         <mat-hint *ngIf="!quantity.valid">Quantity is required!</mat-hint>
                     </mat-form-field>
-                    <button mat-raised-button color="primary" [disabled]="!orderForm.valid" type="submit"
-                        mat-dialog-close="true">Add to
-                        cart</button>
+                    <div>
+                        <button *ngIf="ticketReserveId != 0 && ticketReserveTableId != 1 && ticketReserveTableId != 0"
+                            mat-raised-button color="accent" [disabled]="!orderForm.valid" type="button"
+                            (click)="orderForTable()" mat-dialog-close="true">Prepare for the table</button>
+                        <button mat-raised-button color="primary" [disabled]="!orderForm.valid" type="button"
+                            (click)="orderToHome()" mat-dialog-close="true">Add to cart</button>
+                    </div>
+
                 </form>
             </div>
         </div>

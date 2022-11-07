@@ -20,8 +20,9 @@ const {
 router.get("/pagination", tickets.getListOrder);
 router.get("/pagination-reserve", tickets.getListReserveTable);
 router.get("/get/:id", tickets.getById);
-router.get("/get-pending/:customer_id", tickets.getPendingOfCustomer);
-router.get("/get-orderd/:customer_id", tickets.getListOrderdOfCustomer);
+router.get("/get-pending-order/:customer_id", tickets.getPendingOrderTicketOfCustomer);
+router.get("/get-pending-reserve/:customer_id", tickets.getPendingReserveTicketOfCustomer);
+router.get("/get-ordered/:customer_id", tickets.getListOrderdOfCustomer);
 router.get("/get-reserved/:customer_id", tickets.getListReservedOfCustomer);
 router.post("/create", tickets.create);
 router.put("/update/:id", tickets.update);

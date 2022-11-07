@@ -1,7 +1,6 @@
 <mat-toolbar>
     <div class="title" routerLink="/customer"><img src="/assets/images/logo.png" class="logo">{{title}}</div>
     <span class="spacer" id="spacer"></span>
-    <button mat-button routerLink="/customer/test">Test Compoent</button>
     <button mat-button routerLink="/customer/menu">Menu</button>
     <button mat-button [matMenuTriggerFor]="ordered">Cart</button>
     <mat-menu #ordered="matMenu">

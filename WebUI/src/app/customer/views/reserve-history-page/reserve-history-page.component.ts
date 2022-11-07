@@ -81,7 +81,7 @@ export class ReserveHistoryPageComponent implements OnInit {
   }
 
   getOderedList() {
-    this.ticketService.getGetReservedTicket(this.userId).subscribe((ticketOrderedList) => {
+    this.ticketService.getReservedTicket(this.userId).subscribe((ticketOrderedList) => {
       let promise = new Promise((resolveOuter) => {
         ticketOrderedList.rows.forEach((ticketOrdered: any, index: Number) => {
           resolveOuter(this.userService.getInfo(ticketOrdered.customer_id).subscribe((user: any) => {

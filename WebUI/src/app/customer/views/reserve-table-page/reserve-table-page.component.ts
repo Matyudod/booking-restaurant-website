@@ -21,6 +21,7 @@ import { TypePartyService } from 'src/app/services/http/type-of-party.service';
 import { IPagination } from '../../../models/pagination';
 import { ITypeParty } from '../../../models/type-party';
 import { ITypePartyList } from 'src/app/models/type-party-list';
+import { ITicketCreate } from 'src/app/models/ticket-create';
 @Component({
   selector: 'app-reserve-table-page',
   templateUrl: './reserve-table-page.component.html',
@@ -95,6 +96,7 @@ export class ReserveTablePageComponent implements OnInit {
     this.userService.getIdByToken(this.userToken).subscribe((userID) => {
       this.userId = userID;
       this.getTableList();
+      this.getTypePartyList();
       this.getTicketPending();
     });
   }
@@ -111,16 +113,32 @@ export class ReserveTablePageComponent implements OnInit {
       is_reverse_sort: null,
     };
     this.typePartyService
-      .getList( pagination, null)
+      .getList(pagination, null)
       .subscribe((typePartyList: ITypePartyList | any) => {
         this.typePartyList = typePartyList.rows;
       });
   }
   getTicketPending() {
     this.ticketService
-      .getGetPendingTicket(this.userId)
-      .subscribe((ticket: ITicket) => {
-        this.ticket = ticket;
+      .getPendingReserveTicketOfCustomer(this.userId)
+      .subscribe((ticket: ITicket | null) => {
+        if (ticket != null) {
+          this.ticket = ticket;
+        } else {
+          let ticketCreate: ITicketCreate = {
+            customer_address: '',
+            customer_id: this.userId,
+            customer_phone: '',
+            payment_date: null,
+            received_date: new Date(),
+            table_id: 1,
+            type_party_id: 0,
+          }
+          this.ticketService.createTicket(ticketCreate).subscribe((ticket: ITicket | any) => {
+            this.ticket = ticket;
+            this.ngOnInit();
+          });
+        }
       });
   }
 

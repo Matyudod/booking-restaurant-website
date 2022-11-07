@@ -199,10 +199,10 @@ export class DetailTicketDialogComponent implements OnInit {
     else return '';
   }
   renderScore(comment: IComment | any) {
-    return comment != null ? 'Score: ' + comment.point : '';
+    return comment != null && comment.id > 0 ? 'Score: ' + comment.point : '';
   }
   renderComment(comment: IComment | any) {
-    return comment != null ? comment.content : '';
+    return comment != null && comment.id > 0 ? comment.content : '';
   }
   renderDiscount(cartlist: ICartItem[]) {
     let total = 0;

@@ -91,7 +91,7 @@ export class CartHistoryPageComponent implements OnInit {
   }
 
   getOderedList() {
-    this.ticketService.getGetOrderedTicket(this.userId).subscribe((ticketOrderedList) => {
+    this.ticketService.getOrderedTicket(this.userId).subscribe((ticketOrderedList) => {
       let promise = new Promise((resolveOuter) => {
         ticketOrderedList.rows.forEach((ticketOrdered: any, index: Number) => {
           resolveOuter(this.userService.getInfo(ticketOrdered.customer_id).subscribe((user: any) => {

@@ -42,12 +42,13 @@ section {
               min-width: 10%;
               text-align: center;
             }
-            .phone {
-              min-width: 10%;
+            .table {
+              flex-grow: 1;
               text-align: center;
             }
-            .address {
-              flex-grow: 1;
+            .type-party {
+              min-width: 15%;
+              text-align: center;
             }
             .status {
               min-width: 10%;

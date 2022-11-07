@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   padding: 100px 30px;
+  padding-top: 0;
   background-color: palegoldenrod;
   h1 {
     margin: 50px auto;
@@ -45,5 +46,8 @@
         padding-top: 20px;
       }
     }
+  }
+  app-order-for-table {
+    width: 100%;
   }
 }

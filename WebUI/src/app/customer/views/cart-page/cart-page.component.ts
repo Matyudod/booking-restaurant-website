@@ -98,21 +98,49 @@ export class CartPageComponent implements OnInit {
     })
   }
   getListOrdering() {
-    this.ticketService.getGetPendingTicket(this.userId).subscribe((ticket: ITicket) => {
-      this.orderService.getListWithTicketId(ticket.id).subscribe((orderingList) => {
-        orderingList.rows.forEach((orderingItem: IOrder, index: number) => {
-          this.foodService.getById(orderingItem.food_id).subscribe((food) => {
-            this.foodList.countAll = orderingList.count;
-            let foodItem: ICartItem = {
-              quantity: orderingItem.quantity,
-              ticket: ticket,
-              food: <IFood>food
-            }
-            this.foodChecked.push(false);
-            this.foodList.rows.push(foodItem);
+    this.ticketService.getPendingOrderTicketOfCustomer(this.userId).subscribe((ticket: ITicket | null) => {
+      if (ticket != null) {
+        this.orderService.getListWithTicketId(ticket.id).subscribe((orderingList) => {
+          orderingList.rows.forEach((orderingItem: IOrder, index: number) => {
+            this.foodService.getById(orderingItem.food_id).subscribe((food) => {
+              this.foodList.countAll = orderingList.count;
+              let foodItem: ICartItem = {
+                quantity: orderingItem.quantity,
+                ticket: ticket,
+                food: <IFood>food
+              }
+              this.foodChecked.push(false);
+              this.foodList.rows.push(foodItem);
+            });
           });
         });
-      });
+      } else {
+        let ticketCreate: ITicketCreate = {
+          customer_address: '',
+          customer_id: this.userId,
+          customer_phone: '',
+          payment_date: null,
+          received_date: new Date(),
+          table_id: 0,
+          type_party_id: 0,
+        }
+        this.ticketService.createTicket(ticketCreate).subscribe((ticket: ITicket | any) => {
+          this.orderService.getListWithTicketId(ticket.id).subscribe((orderingList) => {
+            orderingList.rows.forEach((orderingItem: IOrder, index: number) => {
+              this.foodService.getById(orderingItem.food_id).subscribe((food) => {
+                this.foodList.countAll = orderingList.count;
+                let foodItem: ICartItem = {
+                  quantity: orderingItem.quantity,
+                  ticket: ticket,
+                  food: <IFood>food
+                }
+                this.foodChecked.push(false);
+                this.foodList.rows.push(foodItem);
+              });
+            });
+          });
+        })
+      }
     });
 
   }

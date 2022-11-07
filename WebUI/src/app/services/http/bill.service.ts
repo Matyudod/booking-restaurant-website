@@ -14,6 +14,27 @@ export class BillService {
     return this.http.get<IBill | IMessage>(this.url + '/is-paid/' + ticket_id);
   }
 
+  getTotalRevenue(): Observable<Number | any> {
+    return this.http.get<Number>(this.url + '/get-total-revenue');
+  }
+
+  getTheBestSellingProductInCurrentMonth(): Observable<any> {
+    return this.http.get<any>(this.url + '/get-best-seller');
+  }
+
+  getTheMostBookedTableTypeInCurrentMonth(): Observable<any> {
+    return this.http.get<any>(this.url + '/get-most-table-type-booked');
+  }
+
+  getTotolRevenueListOfYear(): Observable<number[] | any> {
+    return this.http.get<number[]>(this.url + '/get-list-total-revenue');
+  }
+
+
+  getTotolRevenueOfOrderInCurrentMonth(): Observable<number[] | any> {
+    return this.http.get<number[]>(this.url + '/get-total-revenue-of-order');
+  }
+
   createBill(ticket_id: Number, admin_id: Number = 0, discount_id: Number = 0): Observable<IBillResponse | IMessage | any> {
     let bill = {
       ticket_id: ticket_id,

@@ -75,7 +75,7 @@ class TicketController {
         }
     }
 
-    async getPendingOfCustomer(req, res) {
+    async getPendingOrderTicketOfCustomer(req, res) {
         try {
             let customerId = {
                 id: parseInt(req.params.customer_id),
@@ -85,19 +85,32 @@ class TicketController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorIdFieldIsNull);
             } else {
-                let ticket = await ticketService.getPendingOfCustomer(customerId.id);
-                if (ticket != null) {
-                    res.status(200).json(ticket);
-                } else {
-                    let errorNotFound = message.errorNotFound;
-                    errorNotFound.message = errorNotFound.message.replace("{1}", "Ticket");
-                    res.status(200).json(errorNotFound);
-                }
+                let ticket = await ticketService.getPendingOrderTicketOfCustomer(customerId.id);
+                res.status(200).json(ticket);
             }
         } catch (err) {
             res.status(500).json(message.APIErrorServer);
         }
     }
+
+    async getPendingReserveTicketOfCustomer(req, res) {
+        try {
+            let customerId = {
+                id: parseInt(req.params.customer_id),
+            };
+            const v = new Validator();
+            let validationResponse = v.validate(customerId, scheme.idValidation);
+            if (validationResponse !== true) {
+                res.status(400).json(message.errorIdFieldIsNull);
+            } else {
+                let ticket = await ticketService.getPendingReserveTicketOfCustomer(customerId.id);
+                res.status(200).json(ticket);
+            }
+        } catch (err) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
     async getListOrderdOfCustomer(req, res) {
         try {
             let customerId = {
@@ -145,10 +158,11 @@ class TicketController {
             res.status(500).json(message.APIErrorServer);
         }
     }
+
     async getListOrder(req, res) {
         try {
             let params = req.query;
-           
+
             let pagination = {
                 page: parseInt(params.page) || 1,
                 size: parseInt(params.size) || 10,
@@ -186,6 +200,7 @@ class TicketController {
             res.status(500).json(message.APIErrorServer);
         }
     }
+
     async getListReserveTable(req, res) {
         try {
             let params = req.query;

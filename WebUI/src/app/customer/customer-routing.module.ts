@@ -17,10 +17,6 @@ const routes: Routes = [
     component: CustomerComponent,
     children: [
       {
-        path: 'test',
-        component: ChangePasswordPageComponent
-      },
-      {
         path: 'change-password',
         component: ChangePasswordPageComponent
       },

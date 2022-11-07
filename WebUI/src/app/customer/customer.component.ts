@@ -59,7 +59,7 @@ export class CustomerComponent implements OnInit {
   ngOnInit(): void {
   }
   getQuantityOfFoodsOrdering() {
-    this.ticketService.getGetPendingTicket(this.userInfo.id).subscribe((ticket) => {
+    this.ticketService.getPendingOrderTicketOfCustomer(this.userInfo.id).subscribe((ticket) => {
       this.orderService.getListWithTicketId(ticket.id).subscribe((orderingList) => {
         this.orderingCount = <number>orderingList.count;
       })

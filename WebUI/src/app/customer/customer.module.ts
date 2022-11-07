@@ -21,6 +21,7 @@ import { ReserveTablePageComponent } from './views/reserve-table-page/reserve-ta
 import { ReserveHistoryPageComponent } from './views/reserve-history-page/reserve-history-page.component';
 import { CommentDialogComponent } from './components/comment-dialog/comment-dialog.component';
 import { ChangePasswordPageComponent } from './views/change-password-page/change-password-page.component';
+import { OrderForTableComponent } from './components/order-for-table/order-for-table.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ChangePasswordPageComponent } from './views/change-password-page/change
     ReserveHistoryPageComponent,
     CommentDialogComponent,
     ChangePasswordPageComponent,
+    OrderForTableComponent,
   ],
   imports: [
     CommonModule,

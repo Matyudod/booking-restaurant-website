@@ -42,7 +42,17 @@ class BillController {
                 res.status(400).json(message.errorFieldIsNull);
             } else {
                 let detailBill = await orderService.getSumTotalOfTicket(bill.ticket_id);
+
                 bill.sum_total = parseInt(detailBill[0].sum_total);
+                let discount = await discountService.getById(bill.discount_id);
+                let amountCoupon = 0;
+                if (discount != null) {
+                    amountCoupon =
+                        discount.amount != null
+                            ? discount.amount
+                            : (bill.sum_total * discount.percent) / 100;
+                }
+                bill.sum_total -= amountCoupon;
                 let newBill = await billService.create(bill);
                 if (newBill != null) {
                     let error = message.createSuccessful;
@@ -229,6 +239,79 @@ class BillController {
                     res.status(200).json(deleteSuccessful);
                 }
             }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async getTotolRevenueInCurrentMonth(req, res) {
+        try {
+            let totolRevenue = await billService.getTotolRevenueInCurrentMonth();
+            if (totolRevenue != null) {
+                res.status(200).json(totolRevenue);
+            } else {
+                res.status(200).json(0);
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async getTotolRevenueOfOrderInCurrentMonth(req, res) {
+        try {
+            let totolRevenue = [0, 0];
+            let totolRevenueOfOrder = await billService.getTotolRevenueOfOrderInCurrentMonth();
+            let totolRevenueOfReserve =
+                await billService.getTotolRevenueOfReserveTableInCurrentMonth();
+            if (totolRevenueOfOrder != null) {
+                totolRevenue[0] = totolRevenueOfOrder;
+            }
+            if (totolRevenueOfReserve != null) {
+                totolRevenue[1] = totolRevenueOfReserve;
+            }
+            res.status(200).json(totolRevenue);
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async getTheBestSellingProductInCurrentMonth(req, res) {
+        try {
+            let theBestSellingProduct = await billService.getTheBestSellingProductInCurrentMonth();
+            if (theBestSellingProduct != null) {
+                res.status(200).json(theBestSellingProduct);
+            } else {
+                res.status(200).json(null);
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async getTheMostBookedTableTypeInCurrentMonth(req, res) {
+        try {
+            let theMostBookedTableType =
+                await billService.getTheMostBookedTableTypeInCurrentMonth();
+            if (theMostBookedTableType != null) {
+                res.status(200).json(theMostBookedTableType);
+            } else {
+                res.status(200).json(null);
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
+    async getTotolRevenueListOfYear(req, res) {
+        try {
+            let date = new Date();
+            let thisMonth = date.getMonth();
+            let totolRevenueList = [];
+            for (let i = 1; i <= thisMonth; i++) {
+                let totolRevenueItem = await billService.getTotolRevenueAtMonth(i);
+                totolRevenueList.push(totolRevenueItem != null ? parseInt(totolRevenueItem) : 0);
+            }
+            res.status(200).json(totolRevenueList);
         } catch (error) {
             res.status(500).json(message.APIErrorServer);
         }

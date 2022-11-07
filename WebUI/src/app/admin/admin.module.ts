@@ -27,6 +27,8 @@ import { ChangePasswordPageComponent } from './views/change-password-page/change
 import { ChartDoughnutComponent } from './components/chart-doughnut/chart-doughnut.component';
 import { NgChartsModule } from 'ng2-charts';
 import { StatisticPageComponent } from './views/statistic-page/statistic-page.component';
+import { ChartLineComponent } from './components/chart-line/chart-line.component';
+import { MenuDialogComponent } from './components/menu-dialog/menu-dialog.component';
 
 
 @NgModule({
@@ -50,7 +52,9 @@ import { StatisticPageComponent } from './views/statistic-page/statistic-page.co
     UserInfomationPageComponent,
     ChangePasswordPageComponent,
     ChartDoughnutComponent,
-    StatisticPageComponent
+    StatisticPageComponent,
+    ChartLineComponent,
+    MenuDialogComponent
   ],
   imports: [
     CommonModule,

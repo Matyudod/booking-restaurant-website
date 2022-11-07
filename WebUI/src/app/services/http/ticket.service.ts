@@ -9,16 +9,22 @@ import { ITicketOrderdList } from 'src/app/models/ticket-ordered-list';
 import { IPagination } from 'src/app/models/pagination';
 @Injectable()
 export class TicketService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   url = new ConfigService().url + '/api/ticket';
 
   createTicket(ticket: ITicketCreate) {
     return this.http.post<ITicket | IMessage>(this.url + '/create', ticket);
   }
 
-  getGetPendingTicket(userId: Number): Observable<ITicket | IMessage | any> {
+  getPendingOrderTicketOfCustomer(userId: Number): Observable<ITicket | IMessage | any> {
     return this.http.get<ITicket | IMessage>(
-      this.url + '/get-pending/' + userId
+      this.url + '/get-pending-order/' + userId
+    );
+  }
+
+  getPendingReserveTicketOfCustomer(userId: Number): Observable<ITicket | IMessage | any> {
+    return this.http.get<ITicket | IMessage>(
+      this.url + '/get-pending-reserve/' + userId
     );
   }
 
@@ -29,11 +35,11 @@ export class TicketService {
     );
   }
 
-  getGetOrderedTicket(userId: Number): Observable<IMessage | any> {
-    return this.http.get<IMessage | any>(this.url + '/get-orderd/' + userId);
+  getOrderedTicket(userId: Number): Observable<IMessage | any> {
+    return this.http.get<IMessage | any>(this.url + '/get-ordered/' + userId);
   }
 
-  getGetReservedTicket(userId: Number): Observable<IMessage | any> {
+  getReservedTicket(userId: Number): Observable<IMessage | any> {
     return this.http.get<IMessage | any>(this.url + '/get-reserved/' + userId);
   }
 
@@ -55,7 +61,7 @@ export class TicketService {
   }
 
   getGetReservedListForAdmin(
-    pagination: IPagination, searchText: String | null
+    pagination: IPagination
   ): Observable<IMessage | any> {
     let params = new HttpParams();
     if (pagination.page != null)
@@ -66,8 +72,6 @@ export class TicketService {
       params = params.append('field', pagination.field);
     if (pagination.is_reverse_sort != null)
       params = params.append('is_reverse_sort', pagination.is_reverse_sort);
-    if (searchText != null)
-      params = params.append('search', <string>searchText);
     return this.http.get<IMessage | any>(this.url + '/pagination-reserve', {
       params: params,
     });

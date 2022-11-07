@@ -36,6 +36,8 @@ import { IFeedback } from 'src/app/models/feedback';
 import { IUser } from 'src/app/models/user';
 import { DOCUMENT } from '@angular/common';
 import { DialogApprovalDeliverSevice } from 'src/app/services/loading/dialog_approval_delivery';
+import { DialogOrderForAdminSevice } from 'src/app/services/loading/dialog_order_for_admin';
+import { IFeedbackCreate } from 'src/app/models/feedback-create';
 
 @Component({
   selector: 'app-reversed-list-page',
@@ -66,15 +68,18 @@ export class ReversedListPageComponent implements OnInit {
   private loadingPanel: LoadingPanel;
   private confirmDialog: DialogConfirmSevice;
   private foodDetailDialog: DialogFoodDetailSevice;
+  private orderForAdminDialog: DialogOrderForAdminSevice;
   private commentDialog: DialogCommentSevice;
   private approvalDeliverDialog: DialogApprovalDeliverSevice;
-  displayedColumns: string[] = ['id', 'customer-name', 'received-date', 'type-table', 'type-party', 'status', 'comment', 'feedback', 'detail', 'action'];
+  private userToken: String;
+  displayedColumns: string[] = ['id', 'customer-name', 'received-date', 'type-table', 'type-party', 'status', 'order-more', 'comment', 'feedback', 'detail', 'action'];
   dataSource = new MatTableDataSource([])
   private mainIngredientDetailService: MainIngredientDetailService;
-  public searchText: String | null = null;
+
   constructor(dialog: MatDialog, private router: Router, http: HttpClient, @Inject(DOCUMENT) public document: Document) {
     this.dialogService = new DialogSevice(dialog);
     this.foodDetailDialog = new DialogFoodDetailSevice(dialog);
+    this.orderForAdminDialog = new DialogOrderForAdminSevice(dialog);
     this.loadingPanel = new LoadingPanel(dialog);
     this.confirmDialog = new DialogConfirmSevice(dialog);
     this.approvalDeliverDialog = new DialogApprovalDeliverSevice(dialog);
@@ -96,6 +101,7 @@ export class ReversedListPageComponent implements OnInit {
       field: null,
       is_reverse_sort: null,
     }
+    this.userToken = <string>localStorage.getItem('SessionID') as string;
   }
 
   ngAfterViewInit() {
@@ -104,7 +110,7 @@ export class ReversedListPageComponent implements OnInit {
     this.getOderedList();
   }
   getOderedList() {
-    this.ticketService.getGetReservedListForAdmin(this.pagination, this.searchText).subscribe((ticketOrderedList) => {
+    this.ticketService.getGetReservedListForAdmin(this.pagination).subscribe((ticketOrderedList) => {
       let promise = new Promise((resolveOuter) => {
         ticketOrderedList.rows.forEach((ticketOrdered: any, index: Number) => {
           resolveOuter(this.userService.getInfo(ticketOrdered.customer_id).subscribe((user: any) => {
@@ -262,18 +268,45 @@ export class ReversedListPageComponent implements OnInit {
     this.foodDetailDialog.show(ticketId);
   }
   sendFeedback(ticketId: Number) {
-
     let content = (this.document.getElementById('feedback-' + ticketId) as HTMLInputElement).value;
-    console.log(content);
+    this.billService.getByTicketId(ticketId).subscribe((bill: IBill) => {
+      this.commentService.getCommentWithBillId(bill.id).subscribe((comment: IComment) => {
+        this.userService.getIdByToken(this.userToken).subscribe((userId: Number | any) => {
+          let newFeedback: IFeedbackCreate = {
+            comment_id: comment.id,
+            admin_id: userId,
+            content: content,
+          }
+          this.feedbackService.createNewFeedback(newFeedback).subscribe(() => {
+            let message: IMessage = {
+              message: "You have responded!",
+              type_message: "success_dialog"
+            }
+            this.dialogService.show(message);
+          });
+        });
+      });
+    });
   }
-  async updateStatus(ticketId: Number) {
+
+  toPending(ticketId: Number) {
+    this.ticketService.paid(ticketId).subscribe((a: any) => {
+      let message: IMessage = {
+        message: "Booking has been approved!",
+        type_message: "success_dialog"
+      }
+      this.dialogService.show(message);
+      this.ngOnInit();
+    })
+  }
+
+  async paid(ticketId: Number) {
     let isConfirm = await this.approvalDeliverDialog.show(ticketId);
     isConfirm.subscribe((result: any) => {
       this.ngOnInit();
     });
   }
-  search(input: any) {
-    this.searchText = input.value.trim() != "" ? input.value : null;
-    this.getOderedList();
+  openMenu(ticketId: Number) {
+    this.orderForAdminDialog.show(ticketId);
   }
 }

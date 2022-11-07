@@ -6,8 +6,8 @@
                 <mat-list role="list">
                     <mat-list-item role="listitem" class=" list-item-header">
                         <div class="received-date">Received Date</div>
-                        <div class="phone">Phone</div>
-                        <div class="address">Address</div>
+                        <div class="table">Type of Table</div>
+                        <div class="type-party">Type of Party</div>
                         <div class="status">Status</div>
                         <div class="comment">Comment</div>
                         <div class="view">View</div>
@@ -19,8 +19,9 @@
                             <br>
                             {{renderTime(orderedItem.received_date)}}
                         </div>
-                        <div class="phone">{{orderedItem.customer_phone}}</div>
-                        <div class="address">{{orderedItem.customer_address}}</div>
+                        <div class="table">{{orderedItem.table != null ? orderedItem.table.name : ""}}</div>
+                        <div class="type-party">{{orderedItem.type_party != null ? orderedItem.type_party.name : ""}}
+                        </div>
                         <div class="status">
                             {{renderStatus(orderedItem.status)}}
                         </div>

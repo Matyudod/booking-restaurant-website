@@ -36,6 +36,7 @@ import { IFeedback } from 'src/app/models/feedback';
 import { IUser } from 'src/app/models/user';
 import { DOCUMENT } from '@angular/common';
 import { DialogApprovalDeliverSevice } from 'src/app/services/loading/dialog_approval_delivery';
+import { IFeedbackCreate } from '../../../models/feedback-create';
 
 @Component({
   selector: 'app-order-list-page',
@@ -69,6 +70,7 @@ export class OrderListPageComponent implements OnInit {
   private foodDetailDialog: DialogFoodDetailSevice;
   private commentDialog: DialogCommentSevice;
   private approvalDeliverDialog: DialogApprovalDeliverSevice;
+  private userToken: String;
   displayedColumns: string[] = ['id', 'customer-name', 'received-date', 'phone', 'address', 'status', 'comment', 'feedback', 'detail', 'action'];
   dataSource = new MatTableDataSource([])
   private mainIngredientDetailService: MainIngredientDetailService;
@@ -96,6 +98,7 @@ export class OrderListPageComponent implements OnInit {
       field: null,
       is_reverse_sort: null,
     }
+    this.userToken = <string>localStorage.getItem('SessionID') as string;
   }
 
   ngAfterViewInit() {
@@ -256,9 +259,25 @@ export class OrderListPageComponent implements OnInit {
     this.foodDetailDialog.show(ticketId);
   }
   sendFeedback(ticketId: Number) {
-
     let content = (this.document.getElementById('feedback-' + ticketId) as HTMLInputElement).value;
-    console.log(content);
+    this.billService.getByTicketId(ticketId).subscribe((bill: IBill) => {
+      this.commentService.getCommentWithBillId(bill.id).subscribe((comment: IComment) => {
+        this.userService.getIdByToken(this.userToken).subscribe((userId: Number | any) => {
+          let newFeedback: IFeedbackCreate = {
+            comment_id: comment.id,
+            admin_id: userId,
+            content: content,
+          }
+          this.feedbackService.createNewFeedback(newFeedback).subscribe(() => {
+            let message: IMessage = {
+              message: "You have responded!",
+              type_message: "success_dialog"
+            }
+            this.dialogService.show(message);
+          });
+        });
+      });
+    });
   }
   async updateStatus(ticketId: Number) {
     let isConfirm = await this.approvalDeliverDialog.show(ticketId);
