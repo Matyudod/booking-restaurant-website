@@ -5,9 +5,16 @@ class FeedbackService {
 
     async create(data) {
         try {
-            let [feadback, created] = await this.model.findOrCreate({ where: data });
+            let [feedback, created] = await this.model.findOrCreate({ where: {
+               admin_id: data.admin_id,
+               comment_id: data.comment_id
+            }, 
+            defaults: {
+                content: data.content
+            }
+         });
             if (created) {
-                return feadback;
+                return feedback;
             } else {
                 return null;
             }
@@ -18,8 +25,8 @@ class FeedbackService {
 
     async getById(id) {
         try {
-            let feadback = await this.model.findOne({ where: { id: id } });
-            return feadback;
+            let feedback = await this.model.findOne({ where: { id: id } });
+            return feedback;
         } catch (err) {
             return null;
         }
@@ -27,10 +34,10 @@ class FeedbackService {
 
     async getByCommentId(comment_id) {
         try {
-            let feadback = await this.model.findOne({
+            let feedback = await this.model.findOne({
                 where: { comment_id: comment_id },
             });
-            return feadback;
+            return feedback;
         } catch (err) {
             return null;
         }
@@ -38,8 +45,8 @@ class FeedbackService {
 
     async getByAdminId(admin_id) {
         try {
-            let feadback = await this.model.findOne({ where: { admin_id: admin_id } });
-            return feadback;
+            let feedback = await this.model.findOne({ where: { admin_id: admin_id } });
+            return feedback;
         } catch (err) {
             return null;
         }

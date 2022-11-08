@@ -95,8 +95,8 @@ module.exports = {
     },
     feedbackCreateValidation: {
         comment_id: "number|min:1",
-        admin_id: "string|min:1|max:255",
-        content: "number|min:1",
+        admin_id: "number|min:1",
+        content: "string|min:1|max:255",
     },
     feedbackIdValidation: {
         comment_id: "number|min:1|default:0",
