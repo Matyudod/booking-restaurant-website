@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ICart } from 'src/app/models/cart';
 import { ICartItem } from 'src/app/models/cart-item';
 import { IFood } from 'src/app/models/food';
+import { IMessage } from 'src/app/models/message';
 import { IOrder } from 'src/app/models/order';
 import { ITicket } from 'src/app/models/ticket';
 import { FoodService } from 'src/app/services/http/food.service';
@@ -103,7 +104,7 @@ export class OrderForTableComponent implements OnInit {
   }
 
   changeQuantity($event: any, food_id: Number) {
-    if ($event.target.value > 0) {
+    if ($event.target.value > 0 && $event.target.value <= 50) {
       this.loadingPanel.show();
       let ticket_id = this.foodList.rows[0].ticket.id ?? 0;
       this.orderService.getOrderWithTicketAndFodd(ticket_id, food_id).subscribe((orderItem) => {
@@ -112,6 +113,12 @@ export class OrderForTableComponent implements OnInit {
           this.loadingPanel.hide();
         });
       });
+    } else {
+      let message: IMessage = {
+        message: "This quantity is limit on 1 - 50!",
+        type_message: "error_dialog"
+      }
+      this.dialogService.show(message);
     }
 
   }

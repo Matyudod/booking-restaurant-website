@@ -22,7 +22,7 @@
                     <input matInput type="number" hidden formControlName="ticket_id">
                     <mat-form-field appearance="fill">
                         <mat-label>Quantity</mat-label>
-                        <input matInput type="number" min="1" max="20" formControlName="quantity">
+                        <input matInput type="number" min="1" max="50" formControlName="quantity">
                         <mat-hint *ngIf="!quantity.valid">Quantity is required!</mat-hint>
                     </mat-form-field>
                     <div>

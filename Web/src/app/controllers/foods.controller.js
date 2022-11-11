@@ -87,6 +87,22 @@ class FoodController {
         }
     }
 
+    async getFoodWithMainIngredientId(req, res) {
+        try {
+            let main_ingredient_id = req.params.main_ingredient_id;
+            let foodList = await foodService.getFoodWithMainIngredientId(main_ingredient_id);
+            if (foodList != null && foodList.length > 0) {
+                res.status(200).json(foodList);
+            } else {
+                let error = message.errorNotFound;
+                error.message = error.message.replace("{1}", "Food");
+                res.status(400).json(message.errorNotFound);
+            }
+        } catch (error) {
+            res.status(500).json(message.APIErrorServer);
+        }
+    }
+
     async getList(req, res) {
         try {
             let params = req.query;

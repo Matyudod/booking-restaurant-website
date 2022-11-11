@@ -10,6 +10,7 @@ const tables = require("./tables.route");
 const tickets = require("./tickets.route");
 const typesofparty = require("./types-of-party.route");
 const users = require("./users.route");
+const payment = require("./payment.route");
 const authentication = require("../app/middlewares/authentication");
 const checkAdmin = require("../app/middlewares/check-admin");
 function route(app) {
@@ -27,5 +28,6 @@ function route(app) {
     app.use(urlDefault + "ticket", tickets);
     app.use(urlDefault + "type-of-party", typesofparty);
     app.use(urlDefault + "user", users);
+    app.use("/payment", payment);
 }
 module.exports = route;

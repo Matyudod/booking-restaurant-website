@@ -6,6 +6,17 @@
             <input matInput placeholder="Search Name" #input (blur)="search(input)">
             <mat-icon matSuffix (click)="search(input)">search</mat-icon>
         </mat-form-field>
+        <div class="spacer"></div>
+        <mat-form-field appearance="standard">
+            <mat-label>Ingredient</mat-label>
+            <input type="text" matInput [formControl]="myControl" #inputIngredient [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option.name}}
+                </mat-option>
+            </mat-autocomplete>
+            <mat-icon matSuffix (click)="searchIngredient()">search</mat-icon>
+        </mat-form-field>
     </div>
 
     <div *ngIf="listFoods?.rows && listFoods?.rows.length > 0" class="food-card-container">

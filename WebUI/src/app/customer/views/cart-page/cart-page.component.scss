@@ -90,6 +90,29 @@ section {
               mat-form-field {
                 width: 85%;
               }
+              .payment {
+                display: flex;
+                width: 100%;
+                justify-content: space-around;
+                .payment-container {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  opacity: 0.8;
+                  border: 1px solid black;
+                  border-radius: 20px;
+                  padding: 0 20px;
+                  background-color: white;
+                  img {
+                    width: 120px;
+                  }
+                }
+                .active-payment {
+                  opacity: 1;
+                  box-shadow: 0 3px 20px gray;
+                  border: 1px solid gray;
+                }
+              }
               .button-fields {
                 display: flex;
                 justify-content: space-around;

@@ -20,6 +20,7 @@ import { LoadingPanel } from 'src/app/services/loading/loading-panel';
 import { Router } from '@angular/router';
 import { DialogConfirmSevice } from 'src/app/services/loading/dialog_confirm';
 import { ITicket } from '../../../models/ticket';
+import { IMessage } from '../../../models/message';
 
 @Component({
   selector: 'app-cart-page',
@@ -66,6 +67,7 @@ export class CartPageComponent implements OnInit {
     countAll: 0,
     rows: []
   };
+  protected payWithVNPay: Boolean = false;
   private dialogService: DialogSevice;
   private loadingPanel: LoadingPanel;
   private confirmDialog: DialogConfirmSevice;
@@ -80,6 +82,7 @@ export class CartPageComponent implements OnInit {
     this.userService = new UserService(http);
     this.userToken = <string>localStorage.getItem('SessionID') as string;
   }
+
 
   ngOnInit(): void {
     this.foodList = {
@@ -180,7 +183,7 @@ export class CartPageComponent implements OnInit {
   }
 
   changeQuantity($event: any, food_id: Number) {
-    if ($event.target.value > 0) {
+    if ($event.target.value > 0 && $event.target.value <= 50) {
       this.loadingPanel.show();
       let ticket_id = this.foodList.rows[0].ticket.id ?? 0;
       this.orderService.getOrderWithTicketAndFodd(ticket_id, food_id).subscribe((orderItem) => {
@@ -189,6 +192,12 @@ export class CartPageComponent implements OnInit {
           this.loadingPanel.hide();
         });
       });
+    } else {
+      let message: IMessage = {
+        message: "This quantity is limit on 1 - 50!",
+        type_message: "error_dialog"
+      }
+      this.dialogService.show(message);
     }
 
   }
@@ -228,10 +237,13 @@ export class CartPageComponent implements OnInit {
       this.loadingPanel.hide();
       let closed = await this.dialogService.show(ticketRes);
       closed.subscribe((value: any) => {
+        if (this.payWithVNPay) {
+          window.open('http://localhost:3000/payment/create_payment_url/' + ticket_id);
+        }
+
         this.ngOnInit();
       })
     });
-
 
   }
 

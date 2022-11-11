@@ -71,6 +71,19 @@
                                 <input matInput type="text" formControlName="address">
                                 <mat-hint *ngIf="!address.valid">Address is required!</mat-hint>
                             </mat-form-field>
+                            <div>
+                                <h3>Payments</h3>
+                            </div>
+                            <div class="payment">
+                                <div class="payment-container {{!payWithVNPay ? 'active-payment' : ''}}"
+                                    (click)="payWithVNPay = false">
+                                    <img src="assets/images/payment1.png" alt="Payment">
+                                </div>
+                                <div class="payment-container {{payWithVNPay ? 'active-payment' : ''}}"
+                                    (click)="payWithVNPay = true">
+                                    <img src="assets/images/payment.jpg" alt="VN-Pay">
+                                </div>
+                            </div>
                             <div class="button-fields">
                                 <button mat-raised-button type="button" color="accent"
                                     routerLink="/customer/reserse-table">Reserve a Table</button>

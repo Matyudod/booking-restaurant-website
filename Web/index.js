@@ -6,7 +6,8 @@ require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+app.set("views", path.join(__dirname, "src/app/views"));
+app.set("view engine", "jade");
 app.use(cors());
 //public file routers
 app.use(express.static("src/public/src"));

@@ -12,6 +12,8 @@ import { IOrder } from '../../models/order';
 import { LoadingPanel } from 'src/app/services/loading/loading-panel';
 import { ITicketCreate } from 'src/app/models/ticket-create';
 import { UserService } from 'src/app/services/http/user.service';
+import { IMessage } from 'src/app/models/message';
+import { DialogSevice } from '../../services/loading/dialog';
 
 @Component({
   selector: 'app-food-infomation-dailog',
@@ -25,6 +27,7 @@ export class FoodInfomationDailogComponent implements OnInit {
   private userService: UserService;
   private orderService: OrderService;
   private loadingPanel: LoadingPanel;
+  private dialogService: DialogSevice;
   protected ticketOrderId: Number = 0;
   protected ticketReserveId: Number = 0;
   protected ticketReserveTableId: Number = 0;
@@ -33,6 +36,7 @@ export class FoodInfomationDailogComponent implements OnInit {
     this.orderService = new OrderService(http);
     this.userService = new UserService(http);
     this.loadingPanel = new LoadingPanel(dialog);
+    this.dialogService = new DialogSevice(dialog);
     this.userToken = <string>localStorage.getItem('SessionID') as string;
   }
   foodId = new FormControl(<Number>0, [
@@ -91,16 +95,33 @@ export class FoodInfomationDailogComponent implements OnInit {
   }
   orderToHome() {
     this.ticketId.setValue(this.ticketOrderId);
-    this.loadingPanel.show();
-    this.orderService.order(<IOrder>this.orderForm.value).subscribe((result) => {
-      this.loadingPanel.hide();
-    })
+    if (<number>this.orderForm.value.quantity > 0 && <number>this.orderForm.value.quantity <= 50) {
+      this.loadingPanel.show();
+      this.orderService.order(<IOrder>this.orderForm.value).subscribe((result) => {
+        this.loadingPanel.hide();
+      })
+    } else {
+      let message: IMessage = {
+        message: "This quantity is limit on 1 - 50!",
+        type_message: "error_dialog"
+      }
+      this.dialogService.show(message);
+    }
+
   }
   orderForTable() {
     this.ticketId.setValue(this.ticketReserveId);
-    this.loadingPanel.show();
-    this.orderService.order(<IOrder>this.orderForm.value).subscribe((result) => {
-      this.loadingPanel.hide();
-    })
+    if (<number>this.orderForm.value.quantity > 0 && <number>this.orderForm.value.quantity <= 50) {
+      this.loadingPanel.show();
+      this.orderService.order(<IOrder>this.orderForm.value).subscribe((result) => {
+        this.loadingPanel.hide();
+      })
+    } else {
+      let message: IMessage = {
+        message: "This quantity is limit on 1 - 50!",
+        type_message: "error_dialog"
+      }
+      this.dialogService.show(message);
+    }
   }
 }

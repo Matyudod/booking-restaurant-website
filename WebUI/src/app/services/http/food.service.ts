@@ -9,7 +9,7 @@ import { IFood } from 'src/app/models/food';
 import { IFoodCreate } from 'src/app/models/food-create';
 @Injectable()
 export class FoodService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   url = new ConfigService().url + '/api/food';
 
   getList(
@@ -38,6 +38,10 @@ export class FoodService {
 
   updateFood(id: Number, food: IFoodCreate) {
     return this.http.put<IFood | IMessage>(this.url + '/update/' + id, food);
+  }
+
+  getFoodWithMainIngredientId(main_ingredient_id: Number): Observable<IFood[] | IMessage> {
+    return this.http.get<IFood[] | IMessage>(this.url + '/list/' + main_ingredient_id);
   }
 
   getById(id: Number): Observable<IFood | IMessage> {
