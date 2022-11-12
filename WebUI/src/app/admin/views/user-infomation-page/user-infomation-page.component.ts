@@ -104,7 +104,6 @@ export class UserInfomationPageComponent implements OnInit {
     this.isUpdate = false;
   }
   onSubmit() {
-    console.log(this.updateUserInfoForm.value);
     this.loadingPanel.show()
     this.userService.updateInfo(this.updateUserInfoForm.value).subscribe((isUpdateMessage: IMessage) => {
       this.loadingPanel.hide();

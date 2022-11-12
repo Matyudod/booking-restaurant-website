@@ -58,7 +58,9 @@ class FeedbackController {
             if (validationResponse !== true) {
                 res.status(200).json(message.errorIdFieldIsNull);
             } else {
-                let feedback = await feedbackService.getByCommentId(feedbackWithCommentId.id);
+                let feedback = await feedbackService.getByCommentId(
+                    feedbackWithCommentId.comment_id
+                );
                 if (feedback != null) {
                     res.status(200).json(feedback);
                 } else {
@@ -83,7 +85,7 @@ class FeedbackController {
             if (validationResponse !== true) {
                 res.status(400).json(message.errorIdFieldIsNull);
             } else {
-                let feedback = await feedbackService.getByAdminId(feedbackWithAdminId.id);
+                let feedback = await feedbackService.getByAdminId(feedbackWithAdminId.admin_id);
                 if (feedback != null) {
                     res.status(200).json(feedback);
                 } else {

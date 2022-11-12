@@ -53,7 +53,13 @@
             </tr>
             <tr>
                 <td>Feedback of admin:</td>
-                <td></td>
+                <td>
+                    <div *ngIf=" ticketInfo!= null && ticketInfo.feedback != null && ticketInfo.feedback.id > 0">
+                        {{renderAdmin(ticketInfo.admin)}}
+                        <br>
+                        {{renderFeedback(ticketInfo.feedback)}}
+                    </div>
+                </td>
             </tr>
         </table>
     </div>

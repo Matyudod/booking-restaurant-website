@@ -98,7 +98,6 @@ export class FoodListPageComponent implements OnInit {
   }
 
   selectItem(food: IFood) {
-    console.log(food);
     this.mainIngredientDetailService
       .getList(food.id)
       .subscribe((data: IMainIngredientDetail[] | any) => {

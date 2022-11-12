@@ -27,7 +27,6 @@ export class PageNotFoundComponent implements OnInit {
     }
   }
   heightScreen() {
-    console.log("height : " + this.getHeight() + "px");
     return "height : " + this.getHeight() + "px";
   }
   getHeight() {

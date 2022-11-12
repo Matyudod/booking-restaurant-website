@@ -27,6 +27,9 @@ import { DialogConfirmSevice } from 'src/app/services/loading/dialog_confirm';
 import { LoadingPanel } from 'src/app/services/loading/loading-panel';
 import { DiscountService } from '../../services/http/discount.service';
 import { IDiscount } from '../../models/discount';
+import { FeedbackService } from '../../services/http/feedback.service';
+import { IFeedback } from 'src/app/models/feedback';
+import { IUser } from 'src/app/models/user';
 
 @Component({
   selector: 'app-detail-ticket-dialog',
@@ -43,6 +46,7 @@ export class DetailTicketDialogComponent implements OnInit {
   private billService: BillService;
   private publicFileService: PublicFileService;
   private ticketService: TicketService;
+  private feedbackService: FeedbackService;
   private dialogService: DialogSevice;
   private loadingPanel: LoadingPanel;
   private confirmDialog: DialogConfirmSevice;
@@ -60,6 +64,7 @@ export class DetailTicketDialogComponent implements OnInit {
     this.confirmDialog = new DialogConfirmSevice(dialog);
     this.commentDialog = new DialogCommentSevice(dialog);
     this.discountService = new DiscountService(http);
+    this.feedbackService = new FeedbackService(http);
     this.typePartyService = new TypePartyService(http);
     this.foodService = new FoodService(http);
     this.commentService = new CommentService(http);
@@ -100,6 +105,8 @@ export class DetailTicketDialogComponent implements OnInit {
                     }
                   }
                   ticketInfo.comment = null;
+                  ticketInfo.feedback = null;
+                  ticketInfo.admin = null;
                 } else {
                   this.getDiscount(bill.discount_id);
                   if (bill.status) {
@@ -120,11 +127,31 @@ export class DetailTicketDialogComponent implements OnInit {
                         };
                       } else {
                         ticketInfo.comment = comment;
+                        this.feedbackService.getFeedbackWithCommentId(comment.id).subscribe((feedback: IFeedback | IMessage | any) => {
+                          if (feedback.message != undefined) {
+                            ticketInfo.feedback = {
+                              id: 0,
+                              comment_id: 0,
+                              admin_id: 0,
+                              content: '',
+                              createdAt: new Date(),
+                              updatedAt: new Date()
+                            };
+                            ticketInfo.admin = null;
+                          } else {
+                            ticketInfo.feedback = feedback;
+                            this.userService.getInfo(feedback.admin_id).subscribe((admin: IUser | IMessage) => {
+                              ticketInfo.admin = admin;
+                            })
+                          }
+                        })
                       }
                     })
                   } else {
                     ticketInfo.status = -1;
                     ticketInfo.comment = null;
+                    ticketInfo.feedback = null;
+                    ticketInfo.admin = null;
                   }
                 }
               })
@@ -135,7 +162,6 @@ export class DetailTicketDialogComponent implements OnInit {
       })
       promise.then(() => {
         this.ticketInfo = ticketInfo;
-        console.log(this.ticketInfo);
 
       })
     })
@@ -234,5 +260,12 @@ export class DetailTicketDialogComponent implements OnInit {
       }
     }
     return this.formatNumber(total);
+  }
+
+  renderAdmin(admin: IUser | any) {
+    return admin != null ? admin.name : '';
+  }
+  renderFeedback(feedback: IFeedback | any) {
+    return feedback != null ? feedback.content : '';
   }
 }

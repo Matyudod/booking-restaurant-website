@@ -193,7 +193,6 @@ export class ReversedListPageComponent implements OnInit {
         this.orderedList = ticketOrderedList;
         this.length = <number>ticketOrderedList.count;
         this.dataSource.data = ticketOrderedList.rows;
-        console.log(ticketOrderedList);
       })
     })
   }
@@ -238,12 +237,12 @@ export class ReversedListPageComponent implements OnInit {
     let isConfirm = await this.confirmDialog.show("confirm_delete");
     isConfirm.subscribe((result: any) => {
       if (result) {
-        // this.loadingPanel.show();
-        // this.foodService.delete(customerId).subscribe((message: IMessage) => {
-        //   this.loadingPanel.hide();
-        //   this.ngOnInit();
-        //   this.dialog.show(message);
-        // })
+        this.loadingPanel.show();
+        this.ticketService.delete(orderId).subscribe((message: IMessage) => {
+          this.loadingPanel.hide();
+          this.ngOnInit();
+          this.dialogService.show(message);
+        })
       }
     });
   }
@@ -283,6 +282,8 @@ export class ReversedListPageComponent implements OnInit {
               type_message: "success_dialog"
             }
             this.dialogService.show(message);
+
+            this.ngOnInit();
           });
         });
       });

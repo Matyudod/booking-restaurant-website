@@ -182,7 +182,6 @@ export class CartHistoryPageComponent implements OnInit {
   }
   showCommentDialog(ticket_id: Number) {
     this.billService.getByTicketId(ticket_id).subscribe((bill: IBill) => {
-      console.log(bill);
       this.commentDialog.show(bill.id).then((value) => {
         value.subscribe(() => {
           this.ngOnInit();

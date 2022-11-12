@@ -50,7 +50,7 @@ export class EmployeeListPageComponent implements OnInit {
     };
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
   ngOnInit(): void {
     this.getEmployeeList();
   }
@@ -98,7 +98,6 @@ export class EmployeeListPageComponent implements OnInit {
       this.pagination.field = null;
       this.pagination.is_reverse_sort = null;
     }
-    console.log(this.pagination);
 
     this.getEmployeeList();
   }
