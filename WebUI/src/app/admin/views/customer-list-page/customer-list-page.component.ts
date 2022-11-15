@@ -48,9 +48,9 @@ export class CustomerListPageComponent implements OnInit, AfterViewInit {
     this.getCustomerList();
   }
   getCustomerList() {
-    this.loadingPanel.show();
+    // this.loadingPanel.show();
     this.userService.getCustomerList(this.pagination, this.searchText).subscribe((customerList: IUserList | any) => {
-      this.loadingPanel.hide();
+      // this.loadingPanel.hide();
       this.customerList = customerList;
       this.dataSource.data = customerList.rows;
     })

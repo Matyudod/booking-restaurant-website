@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './modules/material/material.module';
 import { LoginViewComponent } from './views/login-view/login-view.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { SignUpViewComponent } from './views/sign-up-view/sign-up-view.component';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
@@ -17,6 +17,9 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
 import { FoodDialogComponent } from './components/food-dialog/food-dialog.component';
 import { ChartModule } from './modules/chart/chart/chart.module';
 import { NgChartsModule } from 'ng2-charts';
+import { HeadersInterceptor } from './middlewares/headers.interceptor';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { ResponsesInterceptor } from './middlewares/responses.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,8 @@ import { NgChartsModule } from 'ng2-charts';
     FoodInfomationDailogComponent,
     DetailTicketDialogComponent,
     PageNotFoundComponent,
-    FoodDialogComponent
+    FoodDialogComponent,
+    SnackBarComponent
   ],
   imports: [
     BrowserModule,

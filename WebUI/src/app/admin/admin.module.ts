@@ -6,7 +6,7 @@ import { AdminComponent } from './admin.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MaterialModule } from '../modules/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { FooterComponent } from './components/footer/footer.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -29,6 +29,8 @@ import { NgChartsModule } from 'ng2-charts';
 import { StatisticPageComponent } from './views/statistic-page/statistic-page.component';
 import { ChartLineComponent } from './components/chart-line/chart-line.component';
 import { MenuDialogComponent } from './components/menu-dialog/menu-dialog.component';
+import { HeadersInterceptor } from '../middlewares/headers.interceptor';
+import { ResponsesInterceptor } from '../middlewares/responses.interceptor';
 
 
 @NgModule({
@@ -64,6 +66,18 @@ import { MenuDialogComponent } from './components/menu-dialog/menu-dialog.compon
     HttpClientModule,
     NgImageSliderModule,
     NgChartsModule
-  ]
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HeadersInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponsesInterceptor,
+      multi: true
+    }
+  ],
 })
 export class AdminModule { }

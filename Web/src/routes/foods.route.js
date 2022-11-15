@@ -20,8 +20,8 @@ const {
 router.get("/pagination", foods.getList);
 router.get("/detail/:id", foods.detail);
 router.get("/list/:main_ingredient_id", foods.getFoodWithMainIngredientId);
-router.post("/create", foods.create);
-router.put("/update/:id", foods.update);
-router.delete("/delete/:id", foods.delete);
+router.post("/create", checkAdmins, foods.create);
+router.put("/update/:id", checkAdmins, foods.update);
+router.delete("/delete/:id", checkAdmins, foods.delete);
 
 module.exports = router;

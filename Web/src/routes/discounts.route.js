@@ -18,9 +18,9 @@ const {
 } = require("../app/controllers/index.controller");
 
 router.get("/get/:id", discounts.getById);
-router.get("/pagination", discounts.getList);
-router.post("/create", discounts.create);
-router.put("/update/:id", discounts.update);
-router.delete("/delete/:id", discounts.delete);
+router.get("/pagination", checkAdmins, discounts.getList);
+router.post("/create", checkAdmins, discounts.create);
+router.put("/update/:id", checkAdmins, discounts.update);
+router.delete("/delete/:id", checkAdmins, discounts.delete);
 
 module.exports = router;
